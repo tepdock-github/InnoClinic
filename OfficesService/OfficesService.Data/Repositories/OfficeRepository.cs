@@ -4,7 +4,7 @@ using OfficesService.Domain.Models;
 
 namespace OfficesService.Data.Repositories
 {
-    public class OfficeRepository
+    public class OfficeRepository : IOfficeRepository
     {
         private readonly IMongoCollection<Office> _offices;
 
@@ -19,7 +19,7 @@ namespace OfficesService.Data.Repositories
             await _offices.Find(p => true).ToListAsync();
 
         public async Task<Office> GetOfficeAsync(string id) =>
-            await _offices.Find<Office>(p => p.Id.Equals(id)).FirstOrDefaultAsync();
+            await _offices.Find(p => p.Id.Equals(id)).FirstOrDefaultAsync();
 
         public async Task<Office> CreateOfficeAsync(Office office) 
         { 

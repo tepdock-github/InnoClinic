@@ -3,7 +3,7 @@ using CloudinaryDotNet.Actions;
 
 namespace OfficesService.ImageServices
 {
-    public class ImageService
+    public class ImageService : IImageService
     {
         private readonly Cloudinary _cloudinary;
         private readonly IConfiguration _configuration;
