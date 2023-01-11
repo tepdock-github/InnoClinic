@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OfficesService</name>
+    </assembly>
+    <members>
+        <member name="M:OfficesService.Controllers.OfficeController.GetOffices">
+            <summary>
+                Get All Officies
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OfficesService.Controllers.OfficeController.GetOfficeById(System.String)">
+            <summary>
+                Get Office by Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OfficesService.Controllers.OfficeController.CreateOffice(OfficesService.Domain.DataTransferObjects.OfficeForManipulationDto)">
+            <summary>
+                Create new Office
+            </summary>
+            <param name="officeDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OfficesService.Controllers.OfficeController.UpdateOffice(System.String,OfficesService.Domain.DataTransferObjects.OfficeForManipulationDto)">
+            <summary>
+                Update Office By Id
+            </summary>
+            <param name="id"></param>
+            <param name="officeDto"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

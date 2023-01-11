@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService", "AuthorizationService\AuthorizationService.csproj", "{3A675147-F396-4D16-BBA6-ED96F1FCBA44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService", "AuthorizationService\AuthorizationService.csproj", "{3A675147-F396-4D16-BBA6-ED96F1FCBA44}"
+	ProjectSection(ProjectDependencies) = postProject
+		{620357EE-D430-4D9B-86EA-FAA64F6A270B} = {620357EE-D430-4D9B-86EA-FAA64F6A270B}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Domain", "Authorization.Domain\Authorization.Domain.csproj", "{923E97E7-E107-4CCD-8177-A229427A2E1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Domain", "Authorization.Domain\Authorization.Domain.csproj", "{923E97E7-E107-4CCD-8177-A229427A2E1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Application", "Authorization.Application\Authorization.Application.csproj", "{3B753E8D-8D8C-4037-9DF9-4FB8CE67A9F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Data", "Authorization.Data\Authorization.Data.csproj", "{620357EE-D430-4D9B-86EA-FAA64F6A270B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +26,10 @@ Global
 		{923E97E7-E107-4CCD-8177-A229427A2E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{923E97E7-E107-4CCD-8177-A229427A2E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{923E97E7-E107-4CCD-8177-A229427A2E1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B753E8D-8D8C-4037-9DF9-4FB8CE67A9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B753E8D-8D8C-4037-9DF9-4FB8CE67A9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B753E8D-8D8C-4037-9DF9-4FB8CE67A9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B753E8D-8D8C-4037-9DF9-4FB8CE67A9F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{620357EE-D430-4D9B-86EA-FAA64F6A270B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{620357EE-D430-4D9B-86EA-FAA64F6A270B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{620357EE-D430-4D9B-86EA-FAA64F6A270B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{620357EE-D430-4D9B-86EA-FAA64F6A270B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

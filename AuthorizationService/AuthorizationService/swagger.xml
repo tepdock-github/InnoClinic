@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AuthorizationService</name>
+    </assembly>
+    <members>
+        <member name="M:AuthorizationService.Controllers.AuthController.Register(Authorization.Domain.DataTransferObject.RegisterAccountDto)">
+            <summary>
+             for registrattion 
+            </summary>
+            <param name="registerAccountDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AuthorizationService.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:AuthorizationService.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AuthorizationService.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AuthorizationService.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

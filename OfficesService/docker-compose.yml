@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  OfficesMongo:
+    image: mongo
+  officesservice:
+    image: ${DOCKER_REGISTRY-}officesservice
+    build:
+      context: .
+      dockerfile: OfficesService/Dockerfile

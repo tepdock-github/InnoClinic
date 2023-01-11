@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  OfficesMongo:
+    container_name: mongodb
+    restart: always
+    volumes:
+      - ${WEBAPP_STORAGE_HOME}/site:/data/db
+    ports:
+      - "27017:27017"
+      
+  officesservice:
+    container_name: OfficesAPI
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "OfficeDatabaseSettings:ConnectionString=mongodb://mongodb:27017"
+    ports:
+      - "8000:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

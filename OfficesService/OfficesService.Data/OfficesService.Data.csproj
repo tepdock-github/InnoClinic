@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Commands\SignUp\" />
-    <Folder Include="Authentication\Queries\SignOut\" />
-    <Folder Include="Authentication\Queries\SignIn\" />
+    <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OfficesService.Domain\OfficesService.Domain.csproj" />
   </ItemGroup>
 
 </Project>
