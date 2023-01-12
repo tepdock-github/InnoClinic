@@ -6,7 +6,6 @@ namespace OfficesService.Domain.DataTransferObjects
 {
     public class PhotoForManipulationDto
     {
-        [FromForm(Name = "Url")]
         public IFormFile Url { get; set; }
     }
 }

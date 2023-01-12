@@ -10,9 +10,6 @@ namespace OfficesService
         {
             CreateMap<Office, OfficeDto>();
             CreateMap<OfficeForManipulationDto, Office>();
-
-            CreateMap<Photo, PhotoDto>();
-            CreateMap<PhotoForManipulationDto, Photo>();
         }
     }
 }

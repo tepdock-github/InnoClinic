@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using OfficesService.Data.Repositories;
 using OfficesService.Domain.DataTransferObjects;
 using OfficesService.Domain.Interfaces;
-using OfficesService.Domain.Models;
 using OfficesService.ImageServices;
 
 namespace OfficesService.Controllers
@@ -16,7 +15,7 @@ namespace OfficesService.Controllers
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public OfficeController(OfficeRepository officeRepository, IMapper mapper, 
+        public OfficeController(OfficeRepository officeRepository, IMapper mapper,
             ImageService imageService)
         {
             _officeRepository = officeRepository;
@@ -68,21 +67,22 @@ namespace OfficesService.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var office = _mapper.Map<Office>(officeDto);
+            //var office = _mapper.Map<Office>(officeDto);
 
-            for (int i = 0; i < office.PhotosList.Count; i++)
-            {
-                var result = _imageService.UploadImageAsync(officeDto.PhotosList[i].Url);
-                if (result.Result.Success)
-                {
-                    office.PhotosList[i].Url = result.Result.Result.Url.ToString();
-                }
-            }
+            //for (int i = 0; i < office.PhotosList.Count; i++)
+            //{
+            //    var result = officeDto.PhotosList;
+            //    if (result.Result.Success)
+            //    {
+            //        office.PhotosList[i].Url = result.Result.Result.Url.ToString();
+            //    }
+            //}
 
-            await _officeRepository.CreateOfficeAsync(office);
-            var officeToReturn = _mapper.Map<OfficeDto>(office);
+            //await _officeRepository.CreateOfficeAsync(office);
+            //var officeToReturn = _mapper.Map<OfficeDto>(office);
 
-            return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
+            //return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
+            return Ok();
         }
 
         /// <summary>
