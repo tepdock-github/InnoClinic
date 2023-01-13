@@ -50,6 +50,10 @@ namespace AppointmentsService.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateResult([FromBody]ResultManipulationDto result) 
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
             var resultEntity = _mapper.Map<Result>(result);
 
             resultEntity.Id = Guid.NewGuid().ToString();

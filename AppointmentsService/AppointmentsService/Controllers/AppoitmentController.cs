@@ -74,6 +74,10 @@ namespace AppointmentsService.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAppoitment([FromBody]AppoitmentManipulationDto appoitmentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
             var appoitmentEntity = _mapper.Map<Appoitment>(appoitmentDto);
 
             appoitmentEntity.Id = Guid.NewGuid().ToString();
