@@ -8,6 +8,6 @@ namespace OfficesService.Domain.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public required string Id { get; set; }
-        public required string Url { get; set; }
+        public string Url { get; set; }
     }
 }

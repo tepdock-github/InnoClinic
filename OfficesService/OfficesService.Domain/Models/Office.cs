@@ -1,5 +1,7 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Xml.Linq;
 
 namespace OfficesService.Domain.Models
 {
@@ -12,9 +14,6 @@ namespace OfficesService.Domain.Models
         public string PhoneNumber { get; set; }
         public required bool IsActive { get; set; }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public List<string> Photos { get; set; }
-        [BsonIgnore]
         public List<Photo> PhotosList { get; set; }
     }
 }

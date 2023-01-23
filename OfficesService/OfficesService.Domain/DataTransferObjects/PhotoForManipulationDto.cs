@@ -1,7 +1,11 @@
-﻿namespace OfficesService.Domain.DataTransferObjects
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
+
+namespace OfficesService.Domain.DataTransferObjects
 {
     public class PhotoForManipulationDto
     {
-        public required string Url { get; set; }
+        public IFormFile Url { get; set; }
     }
 }

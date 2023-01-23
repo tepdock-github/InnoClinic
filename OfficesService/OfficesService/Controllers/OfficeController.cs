@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OfficesService.Data.Repositories;
 using OfficesService.Domain.DataTransferObjects;
-using OfficesService.Domain.Models;
+using OfficesService.Domain.Interfaces;
 using OfficesService.ImageServices;
 
 namespace OfficesService.Controllers
@@ -11,11 +11,11 @@ namespace OfficesService.Controllers
     [ApiController]
     public class OfficeController : ControllerBase
     {
-        private readonly OfficeRepository _officeRepository;
-        private readonly ImageService _imageService;
+        private readonly IOfficeRepository _officeRepository;
+        private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public OfficeController(OfficeRepository officeRepository, IMapper mapper, 
+        public OfficeController(OfficeRepository officeRepository, IMapper mapper,
             ImageService imageService)
         {
             _officeRepository = officeRepository;
@@ -51,9 +51,7 @@ namespace OfficesService.Controllers
                 return NotFound();
             }
 
-            var officeDto = _mapper.Map<OfficeDto>(office);
-
-            return Ok(officeDto);
+            return Ok(_mapper.Map<OfficeDto>(office));
         }
 
         /// <summary>
@@ -62,30 +60,29 @@ namespace OfficesService.Controllers
         /// <param name="officeDto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateOffice([FromBody] OfficeForManipulationDto officeDto)
+        public async Task<IActionResult> CreateOffice([FromForm] OfficeForManipulationDto officeDto)
         {
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity(ModelState);
             }
 
-            var office = _mapper.Map<Office>(officeDto);
+            //var office = _mapper.Map<Office>(officeDto);
 
             //for (int i = 0; i < office.PhotosList.Count; i++)
             //{
-            //    var pictureBytes = Convert.FromBase64String(officeDto.PhotosList[i].Url);
-            //    var stream = new MemoryStream(pictureBytes);
-            //    var result = _imageService.UploadImageAsync(new FormFile(stream, 0, stream.Length, office.Address, office.Address));
+            //    var result = officeDto.PhotosList;
             //    if (result.Result.Success)
             //    {
             //        office.PhotosList[i].Url = result.Result.Result.Url.ToString();
             //    }
             //}
 
-            await _officeRepository.CreateOfficeAsync(office);
-            var officeToReturn = _mapper.Map<OfficeDto>(office);
+            //await _officeRepository.CreateOfficeAsync(office);
+            //var officeToReturn = _mapper.Map<OfficeDto>(office);
 
-            return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
+            //return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
+            return Ok();
         }
 
         /// <summary>

@@ -3,7 +3,6 @@ version: '3.4'
 services:
   OfficesMongo:
     container_name: mongodb
-    restart: always
     volumes:
       - ${WEBAPP_STORAGE_HOME}/site:/data/db
     ports:
