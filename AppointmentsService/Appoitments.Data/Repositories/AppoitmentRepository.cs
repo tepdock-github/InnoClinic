@@ -19,11 +19,11 @@ namespace Appoitments.Data.Repositories
         public async Task<IEnumerable<Appoitment>> GetAllAppoitments(bool trackChanges) =>
             await FindAll(trackChanges).ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitHistoryByDoctor(string doctorId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByDoctor(string doctorId, bool trackChanges) =>
             await FindByCondition(a => a.DoctorId.Equals(doctorId) && a.isComplete == true, trackChanges)
             .ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitHistoryByPatient(string patientId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByPatient(string patientId, bool trackChanges) =>
             await FindByCondition(a => a.PatientId.Equals(patientId) && a.isComplete == true, trackChanges)
             .ToListAsync();
 

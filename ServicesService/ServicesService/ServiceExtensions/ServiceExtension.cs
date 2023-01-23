@@ -30,7 +30,13 @@ namespace ServicesService.ServiceExtensions
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-        public static void ConfigureServicesManager(this IServiceCollection services) =>
-            services.AddScoped<IServicesManager, ServicesManager>();
+        public static void ConfigureCategoryServices(this IServiceCollection services) =>
+            services.AddScoped<ICategoryServices, CategoryServices>();
+
+        public static void ConfigureServiceServices(this IServiceCollection services) =>
+            services.AddScoped<IServiceCollection, ServiceCollection>();
+
+        public static void ConfigureSpecializationServices(this IServiceCollection services) =>
+            services.AddScoped<ISpecializationServices, SpecializationServices>();
     }
 }

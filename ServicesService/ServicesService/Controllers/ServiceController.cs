@@ -11,10 +11,10 @@ namespace ServicesService.Controklers
     [ApiController]
     public class ServiceController : ControllerBase
     {
-        private readonly IServicesManager _servicesManager;
+        private readonly IServiceServices _servicesManager;
         private readonly IMapper _mapper;
 
-        public ServiceController(IServicesManager servicesManager, IMapper mapper)
+        public ServiceController(IServiceServices servicesManager, IMapper mapper)
         {
             _servicesManager = servicesManager;
             _mapper = mapper;
@@ -23,7 +23,7 @@ namespace ServicesService.Controklers
         [HttpGet]
         public async Task<IActionResult> GetAllServices()
         {
-            var services = await _servicesManager.ServiceServices.GetServices();
+            var services = await _servicesManager.GetServices();
 
             return Ok(_mapper.Map<IEnumerable<ServicesManipulationDto>>(services));
         }
@@ -31,9 +31,7 @@ namespace ServicesService.Controklers
         [HttpGet("{id}", Name = "GetServiceById")]
         public async Task<IActionResult> GetService(int id)
         {
-            var service = await _servicesManager.ServiceServices.GetServiceById(id);
-            if (service == null)
-                return NotFound();
+            var service = await _servicesManager.GetServiceById(id);
 
             return Ok(_mapper.Map<ServiceDto>(service));
         }
@@ -43,10 +41,8 @@ namespace ServicesService.Controklers
         public async Task<IActionResult> CreaeteService([FromBody] ServicesManipulationDto serviceDto)
         {
             var service = _mapper.Map<Service>(serviceDto);
-            var serviceToReturn = await _servicesManager.ServiceServices.CreateService(service);
+            var serviceToReturn = await _servicesManager.CreateService(service);
 
-            if (serviceToReturn == null)
-                return NotFound();
             return CreatedAtRoute("GetServiceById", new { id = serviceToReturn.Id }, serviceToReturn);
         }
 
@@ -54,9 +50,7 @@ namespace ServicesService.Controklers
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> EditService(int id, [FromBody] ServicesManipulationDto service)
         {
-            var success = await _servicesManager.ServiceServices.EditService(id, service);
-            if (success == false)
-                return NotFound();
+            await _servicesManager.EditService(id, service);
 
             return NoContent();
         }

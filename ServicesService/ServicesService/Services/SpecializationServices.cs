@@ -3,6 +3,7 @@ using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
 using ServicesService.ServicesInterfaces;
+using System.Web.Http;
 
 namespace ServicesService.Services
 {
@@ -25,15 +26,14 @@ namespace ServicesService.Services
             return _mapper.Map<SpecializationDto>(specialization);
         }
 
-        public async Task<bool> EditSpecialization(int id, SpecializationManipulationDto specializationDto)
+        public async Task EditSpecialization(int id, SpecializationManipulationDto specializationDto)
         {
             var specialization = await _repositoryManager.SpecializationRepository.GetSpecializationAsync(id, trackChanges: true);
             if (specialization == null)
-                return false;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
 
             _mapper.Map(specializationDto, specialization);
             await _repositoryManager.SaveAsync();
-            return true;
         }
 
         public async Task<IEnumerable<Specialization>> GetAllSpecializations() => await _repositoryManager.SpecializationRepository.GetAllSpecializationsAsync(trackChanges: false);
