@@ -5,6 +5,10 @@ import App from './App';
 import '@fontsource/roboto/400.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignIn from './components/SignIn/SignIn';
+import ServicesList from './pages/Services/ServicesList';
+import AppoitmentsList from './pages/Appoitments/AppoitmentsList';
+import Doctors from './pages/Doctors/DoctorsList';
+import ResultsList from './pages/Results/ResultsList';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,6 +16,10 @@ root.render(
     <Routes>
         <Route path='/' element={<App/>}>
             <Route path='/authentication' element={<SignIn/>}/>
+            <Route path='/services' element={<ServicesList/>}/>
+            <Route path='/appoitments' element={<AppoitmentsList/>}/> 
+            <Route path='/doctors' element={<Doctors/>}/>
+            <Route path='/medical-results' element={<ResultsList/>}/>
         </Route>
     </Routes>
     </BrowserRouter>

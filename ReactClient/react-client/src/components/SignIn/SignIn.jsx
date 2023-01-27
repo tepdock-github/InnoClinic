@@ -31,7 +31,7 @@ const SignIn = () => {
         },
     });
     return (
-        <Grid item xs={9}>
+        <Grid item xs={8} sx={{marginLeft: '320 px'}}>
             <form onSubmit={formik.handleSubmit}>
                 <label htmlFor='email'>Email:</label>
                 <input

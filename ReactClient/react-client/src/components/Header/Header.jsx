@@ -45,7 +45,7 @@ const Header = ({ title }) => {
         <Box sx={headerStyles.wrapper}>
             <Box sx={headerStyles.topRow}>
                 <NotificarionBell iconColor={"white"} />
-                <BackgroundLetterAvatars firstName={"K"} lastName={"K"} />
+                <BackgroundLetterAvatars firstName={"B"} lastName={"C"} />
             </Box>
             <Box sx={headerStyles.middleRow}>
                 <Typography
