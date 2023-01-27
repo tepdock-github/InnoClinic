@@ -42,7 +42,7 @@ namespace AppointmentsService.Controllers
         [HttpGet("doctor-history/{doctorId}")]
         public async Task<IActionResult> GetDoctorHistory(string doctorId)
         {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitHistoryByDoctor(doctorId, trackChanges: false);
+            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByDoctor(doctorId, trackChanges: false);
 
             return Ok(_mapper.Map< IEnumerable<AppoitmentDto>>(appoitments));
         }
@@ -50,7 +50,7 @@ namespace AppointmentsService.Controllers
         [HttpGet("patient-history/{patientId}")]
         public async Task<IActionResult> GetPatientHistory(string patientId)
         {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitHistoryByPatient(patientId, trackChanges: false);
+            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByPatient(patientId, trackChanges: false);
 
             return Ok(_mapper.Map<IEnumerable<AppoitmentDto>>(appoitments));
         }

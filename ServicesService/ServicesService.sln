@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesService", "ServicesService\ServicesService.csproj", "{DA83EBA3-A727-4A4D-9D4F-A8B19E305F86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesService", "ServicesService\ServicesService.csproj", "{DA83EBA3-A727-4A4D-9D4F-A8B19E305F86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesService.Domain", "ServicesService.Domain\ServicesService.Domain.csproj", "{EEE1784C-8C47-46CD-954C-34CBF124B1E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesService.Domain", "ServicesService.Domain\ServicesService.Domain.csproj", "{EEE1784C-8C47-46CD-954C-34CBF124B1E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesService.Data", "ServicesService.Data\ServicesService.Data.csproj", "{254F60C6-D72D-4FBB-9F44-3AEC23D268F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesService.Data", "ServicesService.Data\ServicesService.Data.csproj", "{254F60C6-D72D-4FBB-9F44-3AEC23D268F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

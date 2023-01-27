@@ -3,6 +3,7 @@ using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
 using ServicesService.ServicesInterfaces;
+using System.Web.Http;
 
 namespace ServicesService.Services
 {
@@ -25,26 +26,24 @@ namespace ServicesService.Services
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<bool> DeleteCategory(int id)
+        public async Task DeleteCategory(int id)
         {
             var category = await _repositoryManager.CategoryRepository.GetCategoryByIdAsync(id, trackChanges: false);
             if (category == null)
-                return false;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
 
             _repositoryManager.CategoryRepository.DeleteCategory(category);
             await _repositoryManager.SaveAsync();
-            return true;
         }
 
-        public async Task<bool> EditCategory(int id, CategoryManipulationDto categoryDto)
+        public async Task EditCategory(int id, CategoryManipulationDto categoryDto)
         {
             var category = await _repositoryManager.CategoryRepository.GetCategoryByIdAsync(id, trackChanges: true);
-            if(category == null)
-                return false;
+            if (category == null)
+                throw new BadHttpRequestException("category not found", 404);
 
             _mapper.Map(categoryDto, category);
             await _repositoryManager.SaveAsync();
-            return true;
         }
 
         public Task<IEnumerable<Category>> GetCategories() => _repositoryManager.CategoryRepository.GetAllCategoriesAsync(trackChanges: false);

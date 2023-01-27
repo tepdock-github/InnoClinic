@@ -5,7 +5,7 @@ namespace ServicesService.ServicesInterfaces
 {
     public interface ISpecializationServices
     {
-        Task<bool> EditSpecialization(int id, SpecializationManipulationDto specializationDto);
+        Task EditSpecialization(int id, SpecializationManipulationDto specializationDto);
         Task<SpecializationDto> CreateSpecialization(Specialization specialization);
         Task<Specialization?> GetSpecializationById(int id);
         Task<IEnumerable<Specialization>> GetAllSpecializations();

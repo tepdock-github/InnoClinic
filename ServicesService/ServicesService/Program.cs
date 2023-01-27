@@ -16,7 +16,9 @@ namespace ServicesService
             var connectionString = builder.Configuration.GetConnectionString("sqlConnection");
             builder.Services.AddAutoMapper(typeof(Program));
 
-            builder.Services.ConfigureServicesManager();
+            builder.Services.ConfigureServiceServices();
+            builder.Services.ConfigureSpecializationServices();
+            builder.Services.ConfigureCategoryServices();
             builder.Services.AddControllers();
 
             builder.Services.AddAuthorization();
@@ -43,12 +45,13 @@ namespace ServicesService
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseHsts();
             }
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
