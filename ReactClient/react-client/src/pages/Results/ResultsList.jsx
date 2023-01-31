@@ -1,9 +1,6 @@
 import React from 'react';
 import GridWrapper from '../../components/common/GridWrapper/GridWrapper';
 import BasicCard from '../../components/common/Card/BasicCard';
-import SearchBar from '../../components/common/SearchBar/SearchBar';
-import Box from '@mui/material/Box';
-import { cardHeaderStyles } from './styles';
 import Typography from '@mui/material/Typography';
 
 const ResultsList = () => {

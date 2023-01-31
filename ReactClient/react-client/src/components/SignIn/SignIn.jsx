@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import Grid from '@mui/material/Grid';
+import GridWrapper from '../common/GridWrapper/GridWrapper';
+import { stylesSignIn } from './styles';
 
 const validate = values => {
     const errors = {};
@@ -31,7 +32,7 @@ const SignIn = () => {
         },
     });
     return (
-        <Grid item xs={8} sx={{marginLeft: '320 px'}}>
+        <GridWrapper sx={stylesSignIn.wrapper}>
             <form onSubmit={formik.handleSubmit}>
                 <label htmlFor='email'>Email:</label>
                 <input
@@ -55,7 +56,7 @@ const SignIn = () => {
 
                 <button type='submit'>Sign In</button>
             </form>
-        </Grid>
+        </GridWrapper>
     )
 }
 

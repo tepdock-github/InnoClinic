@@ -12,6 +12,7 @@ const BasicMenu = ({ anchorEl, handleClose, open, menuItems }) => {
         >
             {menuItems.map((item) => (
                 <MenuItem
+                    key={item.id}
                     onClick={handleClose}
                 >
                     {item.label}

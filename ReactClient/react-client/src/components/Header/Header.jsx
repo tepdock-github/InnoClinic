@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
@@ -6,9 +6,17 @@ import HelpIcon from '@mui/icons-material/Help';
 import Box from '@mui/material/Box';
 import BackgroundLetterAvatars from '../common/Avatar/Avatar';
 import NotificarionBell from '../Notification/NotificarionBell';
+import SignUpModal from '../../components/Modals/SignUpModal';
+import SignInModal from '../../components/Modals/SignInModal';
 import Button from '@mui/material/Button';
 
 const Header = ({ title }) => {
+    const [openSignUp, setOpenSignUp] = useState(false); 
+    const SignUp = () => setOpenSignUp(true);
+
+    const [openSignIn, setOpenSignIn] = useState(false);
+    const SignIn = () => setOpenSignIn(true);
+
     const headerStyles = {
         wrapper: {
             width: '100%',
@@ -37,7 +45,7 @@ const Header = ({ title }) => {
         },
         logotButton: {
             marginRight: '5px',
-            color: 'white'
+            color: 'white',
         },
     };
 
@@ -56,10 +64,22 @@ const Header = ({ title }) => {
                 <Box>
                     <Button
                         sx={headerStyles.logotButton}
-                        variant="outlined">Logout</Button>
+                        variant="contained"
+                        onClick={SignUp}
+                        >
+                            Sign Up
+                    </Button>
+                    <SignUpModal open={openSignUp} onClose={()=>setOpenSignUp(false)} />
+                    <Button
+                        sx={headerStyles.logotButton}
+                        variant="contained"
+                        onClick={SignIn}
+                        >
+                            Sign In
+                    </Button>
+                    <SignInModal open={openSignIn} onClose={()=>setOpenSignIn(false)}/>
                     <Tooltip title="help">
                         <IconButton
-                            color="white"
                             sx={headerStyles.helpIcon}
                         >
                             <HelpIcon />

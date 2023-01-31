@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GridWrapper from '../../components/common/GridWrapper/GridWrapper';
 import BasicCard from '../../components/common/Card/BasicCard';
-import SearchBar from '../../components/common/SearchBar/SearchBar';
+import NewAppoitmentModal from '../../components/Modals/NewAppoitmentModal';
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
@@ -10,18 +10,14 @@ import Typography from '@mui/material/Typography';
 import { cardHeaderStyles } from './styles';
 
 const AppoitmentsList = () => {
+    const [open, setOpen] = useState(false); 
+
     const getHeader = () => {
 
-        const addAppoitment = () => console.log('placeholder click');
-        const handleChange = (value) => console.log(value);
+        const addAppoitment = () => setOpen(true);
 
         return (
             <Box sx={cardHeaderStyles.wrapper}>
-                <SearchBar
-                    placeholder="search"
-                    onChange={(event) => handleChange(event.target.value)}
-                    searchBarWidth='720px'
-                />
                 <Box>
                     <Button
                         variant='contained'
@@ -35,6 +31,9 @@ const AppoitmentsList = () => {
                         <RefreshIcon />
                     </IconButton>
                 </Box>
+                <Button>
+                    History
+                </Button>
             </Box>
         )
     };
@@ -54,6 +53,7 @@ const AppoitmentsList = () => {
                 header={getHeader()}
                 content={getContent()}
             />
+            <NewAppoitmentModal open={open} onClose={()=>setOpen(false)} />
         </GridWrapper>
     )
 }
