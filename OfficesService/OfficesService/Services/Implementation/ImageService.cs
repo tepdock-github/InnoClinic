@@ -1,7 +1,8 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using OfficesService.Services.Interfaces;
 
-namespace OfficesService.ImageServices
+namespace OfficesService.Services.Implementation
 {
     public class ImageService : IImageService
     {
@@ -38,7 +39,7 @@ namespace OfficesService.ImageServices
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
             if (uploadResult.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                return new ServiceResult<string> 
+                return new ServiceResult<string>
                 {
                     Success = false,
                     Message = uploadResult.Error.Message

@@ -20,35 +20,52 @@ namespace Appoitments.Domain.Configuration
                 (
                     new Appoitment
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        PatientId = "123",
-                        DoctorId = "123",
-                        ServiceId = "123",
-                        Date = "13.01.2023",
-                        Time = "10am",
-                        isApproved= true,
-                        isComplete= false
-                    },
-                    new Appoitment
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        PatientId = "123",
-                        DoctorId = "204",
-                        ServiceId = "123",
-                        Date = "12.01.2023",
-                        Time = "12am",
+                        Id = 1,
+                        PatientId = 1,
+                        PatientFirstName = "Patient1_testData",
+                        PatientLastName = "Patient1_testData",
+                        DoctorId = 1,
+                        DoctorFirstName = "Doctor1_testData",
+                        DoctorLastName = "Doctor1_testData",
+                        ServiceId = 1,
+                        ServiceName = "Service1_testData",
+                        Date = "20 jan 2022",
+                        Time = "10 am",
                         isApproved = true,
-                        isComplete = true
+                        isComplete = true,
+                        ResultId = 1
+
                     },
                     new Appoitment
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        PatientId = "204",
-                        DoctorId = "123",
-                        ServiceId = "123",
-                        Date = "13.01.2023",
-                        Time = "1pm",
+                        Id = 2,
+                        PatientId = 1,
+                        PatientFirstName = "Patient1_testData",
+                        PatientLastName = "Patient1_testData",
+                        DoctorId = 2,
+                        DoctorFirstName = "Doctor2_testData",
+                        DoctorLastName = "Doctor2_testData",
+                        ServiceId = 1,
+                        ServiceName = "Service1_testData",
+                        Date = "20 jan 2024",
+                        Time = "10 am",
                         isApproved = false,
+                        isComplete = false
+                    },
+                    new Appoitment
+                    {
+                        Id = 3,
+                        PatientId = 2,
+                        PatientFirstName = "Patient2_testData",
+                        PatientLastName = "Patient2_testData",
+                        DoctorId = 1,
+                        DoctorFirstName = "Doctor1_testData",
+                        DoctorLastName = "Doctor1_testData",
+                        ServiceId = 1,
+                        ServiceName = "Service1_testData",
+                        Date = "21 feb 2023",
+                        Time = "10 am",
+                        isApproved = true,
                         isComplete = false
                     }
                 );

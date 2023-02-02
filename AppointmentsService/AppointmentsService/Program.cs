@@ -1,3 +1,4 @@
+using AppointmentsService.Filters;
 using AppointmentsService.ServiceExtensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,14 @@ namespace AppointmentService
 
             builder.Services.ConfigureSqlContext(builder.Configuration);
             builder.Services.ConfigureRepositoryManager();
+
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddControllers();
+            builder.Services.AddAppoitmentService();
+            builder.Services.AddResultService();
+
+            builder.Services.AddScoped<ValidateModelFilter>();
             builder.Services.Configure<ApiBehaviorOptions>(opt =>
             {
                 opt.SuppressModelStateInvalidFilter = true;
@@ -43,7 +49,7 @@ namespace AppointmentService
             {
                 app.UseHsts();
             }
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

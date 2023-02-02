@@ -1,4 +1,8 @@
 ﻿using Microsoft.OpenApi.Models;
+using OfficesService.Data.Repositories;
+using OfficesService.Domain.Interfaces;
+using OfficesService.Services.Implementation;
+using OfficesService.Services.Interfaces;
 
 namespace OfficesService.ServiceExtensions
 {
@@ -15,5 +19,10 @@ namespace OfficesService.ServiceExtensions
                 });
             });
         }
+
+        public static void ConfigureRepository(this IServiceCollection services) =>
+            services.AddScoped<IOfficeRepository, OfficeRepository>();
+        public static void ConfigureOfficeService(this IServiceCollection services) =>
+            services.AddScoped<IOfficeService, OfficeService>();
     }
 }

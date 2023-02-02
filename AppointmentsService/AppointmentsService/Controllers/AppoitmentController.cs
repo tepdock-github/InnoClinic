@@ -1,7 +1,6 @@
-﻿using Appoitments.Domain.DataTransferObjects;
-using Appoitments.Domain.Entities;
-using Appoitments.Domain.Interfaces;
-using AutoMapper;
+﻿using AppointmentsService.Filters;
+using AppointmentsService.Services.Interfaces;
+using Appoitments.Domain.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentsService.Controllers
@@ -10,97 +9,92 @@ namespace AppointmentsService.Controllers
     [ApiController]
     public class AppoitmentController : ControllerBase
     {
-        private readonly IRepositoryManager _repositoryManager;
-        private readonly IMapper _mapper;
+        private readonly IAppoitmentService _appoitmentService;
 
-        public AppoitmentController(IRepositoryManager repository, IMapper mapper)
+        public AppoitmentController(IAppoitmentService appoitmentService)
         {
-            _repositoryManager = repository;
-            _mapper = mapper;
+            _appoitmentService = appoitmentService;
         }
 
+        /// <summary>
+        ///     Get All Appoitmens
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllAppoitments()
-        {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAllAppoitments(trackChanges: false);
+        public async Task<IActionResult> GetAllAppoitments() =>
+            Ok(await _appoitmentService.GetAppoitments());
 
-            return Ok(_mapper.Map<IEnumerable<AppoitmentDto>>(appoitments));
-        }
-
+        /// <summary>
+        ///     Get Appoitment By Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetAppoitmentById")]
-        public async Task<IActionResult> GetAppoitmentById(string id)
-        {
-            var appoitment = await _repositoryManager.AppoitmentRepository.GetAppoitmentId(id, trackChanges: false);
-            if(appoitment == null)
-            {
-                return NotFound();
-            }
+        public async Task<IActionResult> GetAppoitmentById(int id) =>
+            Ok(await _appoitmentService.GetAppoitmentById(id));
 
-            return Ok(_mapper.Map<AppoitmentDto>(appoitment));
-        }
-
+        /// <summary>
+        ///     Get Doctor's History: all appoitments that was completed for the doctor
+        /// </summary>
+        /// <param name="doctorId"></param>
+        /// <returns></returns>
         [HttpGet("doctor-history/{doctorId}")]
-        public async Task<IActionResult> GetDoctorHistory(string doctorId)
-        {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByDoctor(doctorId, trackChanges: false);
+        public async Task<IActionResult> GetDoctorHistory(int doctorId) =>
+            Ok(await _appoitmentService.GetDoctorHistory(doctorId));
 
-            return Ok(_mapper.Map< IEnumerable<AppoitmentDto>>(appoitments));
-        }
-
+        /// <summary>
+        ///     Get Patient's History: all appoitments that was completed for the patient
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
         [HttpGet("patient-history/{patientId}")]
-        public async Task<IActionResult> GetPatientHistory(string patientId)
-        {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByPatient(patientId, trackChanges: false);
+        public async Task<IActionResult> GetPatientHistory(int patientId) =>
+         Ok(await _appoitmentService.GetPatientHistory(patientId));
 
-            return Ok(_mapper.Map<IEnumerable<AppoitmentDto>>(appoitments));
-        }
-
+        /// <summary>
+        ///     Get Doctor's Schedule: all appoitments that was approved for doctor
+        /// </summary>
+        /// <param name="doctorId"></param>
+        /// <returns></returns>
         [HttpGet("doctor-schedule/{doctorId}")]
-        public async Task<IActionResult> GetDoctorSchedule(string doctorId)
-        {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsScheduleByDocrot(doctorId, trackChanges: false);
+        public async Task<IActionResult> GetDoctorSchedule(int doctorId) =>
+         Ok(await _appoitmentService.GetDoctorSchedule(doctorId));
 
-            return Ok(_mapper.Map<IEnumerable<AppoitmentDto>>(appoitments));
-        }
-
+        /// <summary>
+        ///     Get Patient's Schedule: all appoitments for patient
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
         [HttpGet("patient-schedule/{patientId}")]
-        public async Task<IActionResult> GetPatientAppoitments(string patientId)
-        {
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsByPatient(patientId, trackChanges: false);
+        public async Task<IActionResult> GetPatientAppoitments(int patientId) =>
+            Ok(await _appoitmentService.GetPatientAppoitments(patientId));
 
-            return Ok(_mapper.Map<IEnumerable<AppoitmentDto>>(appoitments));
-        }
-
+        /// <summary>
+        ///     Create new Appoitment
+        /// </summary>
+        /// <param name="appoitmentDto"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateAppoitment([FromBody]AppoitmentManipulationDto appoitmentDto)
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> CreateAppoitment([FromBody] AppoitmentManipulationDto appoitmentDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
-            var appoitmentEntity = _mapper.Map<Appoitment>(appoitmentDto);
-
-            appoitmentEntity.Id = Guid.NewGuid().ToString();
-
-            _repositoryManager.AppoitmentRepository.CreateAppoitment(appoitmentEntity);
-            await _repositoryManager.SaveAsync();
-
-            var appoitmentToReturn = _mapper.Map<AppoitmentDto>(appoitmentEntity);
+            var appoitmentToReturn = await _appoitmentService.CreateAppoitment(appoitmentDto);
 
             return CreatedAtRoute("GetAppoitmentById", new { id = appoitmentToReturn.Id }, appoitmentToReturn);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppoitment(string id, [FromBody]AppoitmentManipulationDto appoitmentDto)
-        {
-            var appoitment = await _repositoryManager.AppoitmentRepository.GetAppoitmentId(id, trackChanges: true);
-            if (appoitment == null)
-            {
-                return NotFound();
-            }
 
-            _mapper.Map(appoitmentDto, appoitment);
-            await _repositoryManager.SaveAsync();
+        /// <summary>
+        ///     Update Existing Appoitment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="appoitmentDto"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> UpdateAppoitment(int id, [FromBody] AppoitmentManipulationDto appoitmentDto)
+        {
+            await _appoitmentService.UpdateAppoitment(id, appoitmentDto);
 
             return NoContent();
         }

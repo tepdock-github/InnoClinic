@@ -1,7 +1,6 @@
-﻿using Appoitments.Domain.DataTransferObjects;
-using Appoitments.Domain.Entities;
-using Appoitments.Domain.Interfaces;
-using AutoMapper;
+﻿using AppointmentsService.Filters;
+using AppointmentsService.Services.Interfaces;
+using Appoitments.Domain.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentsService.Controllers
@@ -10,88 +9,79 @@ namespace AppointmentsService.Controllers
     [ApiController]
     public class ResultController : ControllerBase
     {
-        private readonly IRepositoryManager _repositoryManager;
-        private readonly IMapper _mapper;
+        private readonly IResultService _resultService;
 
-        public ResultController(IRepositoryManager repositoryManager, IMapper mapper)
+        public ResultController(IResultService resultService)
         {
-            _repositoryManager = repositoryManager;
-            _mapper = mapper;
+            _resultService = resultService;
         }
 
+        /// <summary>
+        ///     Get Result By Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetResultById")]
-        public async Task<IActionResult> GetResultById(string id)
-        {
-            var result = await _repositoryManager.ResultRepository.GetResultById(id, trackChanges: false);
-            if(result == null) 
-            {
-                return NotFound();
-            }
+        public async Task<IActionResult> GetResultById(int id) =>
+            Ok(await _resultService.GetResultById(id));
 
-            return Ok(_mapper.Map<ResultDto>(result));
-        }
-
+        /// <summary>
+        ///     Get all Patient's Results
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
         [HttpGet("patient/{patientId}")]
-        public async Task<IActionResult> GetResultsByPatients(string patientId) 
-        {
-            var results = await _repositoryManager.ResultRepository.GetAllResultByPatient(patientId, trackChanges: false);
+        public async Task<IActionResult> GetResultsByPatients(int patientId) =>
+            Ok(await _resultService.GetResultsByPatient(patientId));
 
-            return Ok(_mapper.Map<IEnumerable<ResultDto>>(results));
-        }
-
+        /// <summary>
+        ///     Get all Results made by the Doctor
+        /// </summary>
+        /// <param name="doctorId"></param>
+        /// <returns></returns>
         [HttpGet("doctor/{doctorId}")]
-        public async Task<IActionResult> GetResultsByDoctors(string doctorId)
-        {
-            var results = await _repositoryManager.ResultRepository.GetAllResultByDoctor(doctorId, trackChanges: false);
+        public async Task<IActionResult> GetResultsByDoctors(int doctorId) =>
+            Ok(await _resultService.GetResultsByDoctor(doctorId));
 
-            return Ok(_mapper.Map<IEnumerable<ResultDto>>(results));
-        }
-
+        /// <summary>
+        ///     Create new Result
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateResult([FromBody]ResultManipulationDto result) 
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> CreateResult([FromBody] ResultManipulationDto result)
         {
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
-            var resultEntity = _mapper.Map<Result>(result);
 
-            resultEntity.Id = Guid.NewGuid().ToString();
+            var resultToReturn = await _resultService.CreateResult(result);
 
-            _repositoryManager.ResultRepository.CreateResult(resultEntity);
-            await _repositoryManager.SaveAsync();
-
-            var resultToReturn = _mapper.Map<ResultDto>(resultEntity);
-
-            return CreatedAtRoute("GetResultById", new { id = resultToReturn.Id}, resultToReturn);
+            return CreatedAtRoute("GetResultById", new { id = resultToReturn.Id }, resultToReturn);
         }
 
+        /// <summary>
+        ///     Delete Existing Result
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteResult(string id)
+        public async Task<IActionResult> DeleteResult(int id)
         {
-            var result = await _repositoryManager.ResultRepository.GetResultById(id, trackChanges: false);
-            if (result == null)
-            {
-                return NotFound();
-            }
-
-            _repositoryManager.ResultRepository.DeleteResult(result);
-            await _repositoryManager.SaveAsync();
+            await _resultService.DeleteResult(id);
 
             return NoContent();
         }
 
+        /// <summary>
+        ///     Update Existing Result
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="resultDto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateResult(string id, [FromBody]ResultManipulationDto resultDto)
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> UpdateResult(int id, [FromBody] ResultManipulationDto resultDto)
         {
-            var result = await _repositoryManager.ResultRepository.GetResultById(id, trackChanges: true);
-            if(result == null) 
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(resultDto, result);
-            await _repositoryManager.SaveAsync();
+            await _resultService.UpdateResult(id, resultDto);
 
             return NoContent();
         }

@@ -1,6 +1,6 @@
 ﻿using CloudinaryDotNet.Actions;
 
-namespace OfficesService.ImageServices
+namespace OfficesService.Services
 {
     public class ServiceResult<T>
     {

@@ -1,4 +1,4 @@
-﻿namespace OfficesService.ImageServices
+﻿namespace OfficesService.Services.Interfaces
 {
     public interface IImageService
     {

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { cardHeaderStyles } from './styles';
 import Filter from '../../components/common/Filter/Filter';
+import Button from '@mui/material/Button';
 
 const specializations = [
     {
@@ -41,10 +42,13 @@ const Doctors = () => {
                 <SearchBar
                     placeholder='search doctors by name'
                     onChange={(event) => handleChange(event.target.value)}
-                    searchBarWidth='680px'
+                    searchBarWidth='630px'
                 />
                 <Filter items={specializations} label={"specialization"}/>
                 <Filter items={offices} label={"office"}/>
+                <Button>
+                    Apply
+                </Button>
             </Box>
         )
     }

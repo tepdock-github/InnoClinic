@@ -4,7 +4,9 @@ using OfficesService.Data.Repositories;
 using OfficesService.Domain.DataTransferObjects;
 using OfficesService.Domain.Interfaces;
 using OfficesService.Domain.Models;
-using OfficesService.ImageServices;
+using OfficesService.Filters;
+using OfficesService.Services.Implementation;
+using OfficesService.Services.Interfaces;
 
 namespace OfficesService.Controllers
 {
@@ -12,17 +14,13 @@ namespace OfficesService.Controllers
     [ApiController]
     public class OfficeController : ControllerBase
     {
-        private readonly IOfficeRepository _officeRepository;
-        private readonly IImageService _imageService;
-        private readonly IMapper _mapper;
+        private readonly IOfficeService _officeService;
 
-        public OfficeController(OfficeRepository officeRepository, IMapper mapper,
-            ImageService imageService)
+        public OfficeController(IOfficeService officeService)
         {
-            _officeRepository = officeRepository;
-            _mapper = mapper;
-            _imageService = imageService;
+            _officeService = officeService;
         }
+
 
         /// <summary>
         ///     Get All Officies
@@ -31,11 +29,7 @@ namespace OfficesService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOffices()
         {
-            var offices = await _officeRepository.GetOfficesAsync();
-
-            var officesDto = _mapper.Map<IEnumerable<OfficeDto>>(offices);
-
-            return Ok(officesDto);
+            return Ok(await _officeService.GetOffices());
         }
 
         /// <summary>
@@ -46,13 +40,7 @@ namespace OfficesService.Controllers
         [HttpGet("{id}", Name = "GetOfficeById")]
         public async Task<IActionResult> GetOfficeById(string id)
         {
-            var office = await _officeRepository.GetOfficeAsync(id);
-            if (office == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<OfficeDto>(office));
+            return Ok(await _officeService.GetOfficeById(id));
         }
 
         /// <summary>
@@ -61,28 +49,12 @@ namespace OfficesService.Controllers
         /// <param name="officeDto"></param>
         /// <returns></returns>
         [HttpPost]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> CreateOffice([FromForm] OfficeForManipulationDto officeDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
+            var office = await _officeService.AddOffice(officeDto);
 
-            var office = _mapper.Map<Office>(officeDto);
-
-            //for (int i = 0; i < office.PhotosList.Count; i++)
-            //{
-            //    var result = officeDto.PhotosList;
-            //    if (result.Result.Success)
-            //    {
-            //        office.PhotosList[i].Url = result.Result.Result.Url.ToString();
-            //    }
-            //}
-
-            await _officeRepository.CreateOfficeAsync(office);
-            var officeToReturn = _mapper.Map<OfficeDto>(office);
-
-            return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
+            return CreatedAtRoute("GetOfficeById", new { id = office.Id }, office);
         }
 
         /// <summary>
@@ -92,22 +64,12 @@ namespace OfficesService.Controllers
         /// <param name="officeDto"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> UpdateOffice(string id,
             [FromBody] OfficeForManipulationDto officeDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
+            await _officeService.UpdateOffice(id, officeDto);
 
-            var office = await _officeRepository.GetOfficeAsync(id);
-            if (office == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(officeDto, office);
-            await _officeRepository.UpdateOfficeAsync(id, office);
             return NoContent();
         }
     }
