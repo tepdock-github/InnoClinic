@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OfficesService.Data.Repositories;
 using OfficesService.Domain.DataTransferObjects;
 using OfficesService.Domain.Interfaces;
+using OfficesService.Domain.Models;
 using OfficesService.ImageServices;
 
 namespace OfficesService.Controllers
@@ -67,7 +68,7 @@ namespace OfficesService.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            //var office = _mapper.Map<Office>(officeDto);
+            var office = _mapper.Map<Office>(officeDto);
 
             //for (int i = 0; i < office.PhotosList.Count; i++)
             //{
@@ -78,11 +79,10 @@ namespace OfficesService.Controllers
             //    }
             //}
 
-            //await _officeRepository.CreateOfficeAsync(office);
-            //var officeToReturn = _mapper.Map<OfficeDto>(office);
+            await _officeRepository.CreateOfficeAsync(office);
+            var officeToReturn = _mapper.Map<OfficeDto>(office);
 
-            //return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
-            return Ok();
+            return CreatedAtRoute("GetOfficeById", new { id = officeToReturn.Id }, officeToReturn);
         }
 
         /// <summary>
