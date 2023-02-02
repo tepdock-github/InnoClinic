@@ -9,6 +9,7 @@ import NotificarionBell from '../Notification/NotificarionBell';
 import SignUpModal from '../../components/Modals/SignUpModal';
 import SignInModal from '../../components/Modals/SignInModal';
 import Button from '@mui/material/Button';
+import { headerStyles } from './styles';
 
 const Header = ({ title }) => {
     const [openSignUp, setOpenSignUp] = useState(false); 
@@ -17,43 +18,11 @@ const Header = ({ title }) => {
     const [openSignIn, setOpenSignIn] = useState(false);
     const SignIn = () => setOpenSignIn(true);
 
-    const headerStyles = {
-        wrapper: {
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#2176FF',
-            padding: '10px',
-        },
-        topRow: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'end',
-            alignItems: 'center',
-            marginBottom: '20px',
-            '*': {
-                marginRight: '5px',
-            },
-        },
-        middleRow: {
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '20px',
-            marginLeft: '320px',
-        },
-        logotButton: {
-            marginRight: '5px',
-            color: 'white',
-        },
-    };
-
     return (
         <Box sx={headerStyles.wrapper}>
             <Box sx={headerStyles.topRow}>
                 <NotificarionBell iconColor={"white"} />
-                <BackgroundLetterAvatars firstName={"B"} lastName={"C"} />
+                <BackgroundLetterAvatars firstName={"N"} lastName={"H"} />
             </Box>
             <Box sx={headerStyles.middleRow}>
                 <Typography
