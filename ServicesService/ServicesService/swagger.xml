@@ -4,6 +4,97 @@
         <name>ServicesService</name>
     </assembly>
     <members>
+        <member name="M:ServicesService.Controklers.CategoryController.GetAllCategories">
+            <summary>
+            Get all categories
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.CategoryController.GetCategory(System.Int32)">
+            <summary>
+            Get category bu id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.CategoryController.CreateCategory(ServicesService.Domain.DataTransferObjects.CategoryManipulationDto)">
+            <summary>
+            Add new category
+            </summary>
+            <param name="categoryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.CategoryController.DeleteCategory(System.Int32)">
+            <summary>
+            Delete category by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.CategoryController.EditCategory(System.Int32,ServicesService.Domain.DataTransferObjects.CategoryManipulationDto)">
+            <summary>
+            Edit chosen by id category
+            </summary>
+            <param name="id"></param>
+            <param name="categoryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.ServiceController.GetAllServices">
+            <summary>
+            get all services
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.ServiceController.GetService(System.Int32)">
+            <summary>
+            Get Service by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.ServiceController.CreaeteService(ServicesService.Domain.DataTransferObjects.ServicesManipulationDto)">
+            <summary>
+            Add new service
+            </summary>
+            <param name="serviceDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.ServiceController.EditService(System.Int32,ServicesService.Domain.DataTransferObjects.ServicesManipulationDto)">
+            <summary>
+            Edit chosen by id service
+            </summary>
+            <param name="id"></param>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.SpecializationController.GetAllSpecializations">
+            <summary>
+            Get all specializations
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.SpecializationController.GetSpecialization(System.Int32)">
+            <summary>
+            Get specialization by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.SpecializationController.CreateSpecialization(ServicesService.Domain.DataTransferObjects.SpecializationManipulationDto)">
+            <summary>
+            Add new specialization
+            </summary>
+            <param name="specializationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ServicesService.Controklers.SpecializationController.EditSpecialization(System.Int32,ServicesService.Domain.DataTransferObjects.SpecializationManipulationDto)">
+            <summary>
+            Edit chosen by id specialization
+            </summary>
+            <param name="id"></param>
+            <param name="specializationDto"></param>
+            <returns></returns>
+        </member>
         <member name="T:ServicesService.Migrations.Initial">
             <inheritdoc />
         </member>
@@ -16,16 +107,16 @@
         <member name="M:ServicesService.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:ServicesService.Migrations.Initialv2">
+        <member name="T:ServicesService.Migrations.Initial2">
             <inheritdoc />
         </member>
-        <member name="M:ServicesService.Migrations.Initialv2.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:ServicesService.Migrations.Initial2.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:ServicesService.Migrations.Initialv2.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:ServicesService.Migrations.Initial2.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:ServicesService.Migrations.Initialv2.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:ServicesService.Migrations.Initial2.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

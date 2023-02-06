@@ -11,8 +11,8 @@ using ServicesService.Domain;
 namespace ServicesService.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230117120845_Initialv2")]
-    partial class Initialv2
+    [Migration("20230206095627_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,26 @@ namespace ServicesService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ServicesService.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TimeSlotSize")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceCategories");
+                });
 
             modelBuilder.Entity("ServicesService.Domain.Entities.Service", b =>
                 {
@@ -57,26 +77,6 @@ namespace ServicesService.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("ServicesService.Domain.Entities.ServiceCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeSlotSize")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceCategories");
-                });
-
             modelBuilder.Entity("ServicesService.Domain.Entities.Specialization", b =>
                 {
                     b.Property<int>("Id")
@@ -99,7 +99,7 @@ namespace ServicesService.Migrations
 
             modelBuilder.Entity("ServicesService.Domain.Entities.Service", b =>
                 {
-                    b.HasOne("ServicesService.Domain.Entities.ServiceCategory", "ServiceCategory")
+                    b.HasOne("ServicesService.Domain.Entities.Category", "ServiceCategory")
                         .WithMany("Services")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -116,7 +116,7 @@ namespace ServicesService.Migrations
                     b.Navigation("Specialization");
                 });
 
-            modelBuilder.Entity("ServicesService.Domain.Entities.ServiceCategory", b =>
+            modelBuilder.Entity("ServicesService.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Services");
                 });

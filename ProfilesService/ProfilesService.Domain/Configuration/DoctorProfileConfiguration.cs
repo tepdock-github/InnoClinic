@@ -21,6 +21,7 @@ namespace ProfilesService.Domain.Configuration
                     CareerStartYear = new DateOnly().Year.ToString(),
                     Status = "Remote",
                     SpecializationId = 3,
+                    SpecializationName = "Hello",
                     AccountId = 1,
                     OfficeId= 2
                 },
@@ -34,6 +35,7 @@ namespace ProfilesService.Domain.Configuration
                     CareerStartYear = new DateOnly().Year.ToString(),
                     Status = "At office",
                     SpecializationId = 4,
+                    SpecializationName = "spec4",
                     AccountId = 4,
                     OfficeId = 2
                 },
@@ -47,6 +49,7 @@ namespace ProfilesService.Domain.Configuration
                     CareerStartYear = new DateOnly().Year.ToString(),
                     Status = "At office",
                     SpecializationId = 4,
+                    SpecializationName = "spec4",
                     AccountId = 3,
                     OfficeId = 3
                 }

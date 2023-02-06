@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServicesService.Domain.DataTransferObjects;
-using ServicesService.Domain.Entities;
 using ServicesService.Filters;
 using ServicesService.ServicesInterfaces;
 
@@ -12,40 +10,49 @@ namespace ServicesService.Controklers
     public class ServiceController : ControllerBase
     {
         private readonly IServiceServices _servicesManager;
-        private readonly IMapper _mapper;
 
-        public ServiceController(IServiceServices servicesManager, IMapper mapper)
+        public ServiceController(IServiceServices servicesManager)
         {
             _servicesManager = servicesManager;
-            _mapper = mapper;
         }
 
+        /// <summary>
+        /// get all services
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllServices()
-        {
-            var services = await _servicesManager.GetServices();
+        public async Task<IActionResult> GetAllServices() =>
+            Ok(await _servicesManager.GetServices());
 
-            return Ok(_mapper.Map<IEnumerable<ServicesManipulationDto>>(services));
-        }
-
+        /// <summary>
+        /// Get Service by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetServiceById")]
-        public async Task<IActionResult> GetService(int id)
-        {
-            var service = await _servicesManager.GetServiceById(id);
+        public async Task<IActionResult> GetService(int id) =>
+            Ok(await _servicesManager.GetServiceById(id));
 
-            return Ok(_mapper.Map<ServiceDto>(service));
-        }
-
+        /// <summary>
+        /// Add new service
+        /// </summary>
+        /// <param name="serviceDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> CreaeteService([FromBody] ServicesManipulationDto serviceDto)
         {
-            var service = _mapper.Map<Service>(serviceDto);
-            var serviceToReturn = await _servicesManager.CreateService(service);
+            var serviceToReturn = await _servicesManager.CreateService(serviceDto);
 
-            return CreatedAtRoute("GetServiceById", new { id = serviceToReturn.Id }, serviceToReturn);
+            return CreatedAtRoute("GetServiceById", new { id = serviceToReturn?.Id }, serviceToReturn);
         }
 
+        /// <summary>
+        /// Edit chosen by id service
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="service"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> EditService(int id, [FromBody] ServicesManipulationDto service)

@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServicesService.Domain.DataTransferObjects;
-using ServicesService.Domain.Entities;
 using ServicesService.Filters;
 using ServicesService.ServicesInterfaces;
 
@@ -12,40 +10,49 @@ namespace ServicesService.Controklers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryServices _servicesManager;
-        private readonly IMapper _mapper;
 
-        public CategoryController(IMapper mapper, ICategoryServices servicesManager)
+        public CategoryController(ICategoryServices servicesManager)
         {
-            _mapper = mapper;
             _servicesManager = servicesManager;
         }
 
+        /// <summary>
+        /// Get all categories
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
-        {
-            var categories = await _servicesManager.GetCategories();
+        public async Task<IActionResult> GetAllCategories() =>
+            Ok(await _servicesManager.GetCategories());
 
-            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
-        }
-
+        /// <summary>
+        /// Get category bu id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetCategoryById")]
-        public async Task<IActionResult> GetCategory(int id)
-        {
-            var category = await _servicesManager.GetCategoryById(id);
+        public async Task<IActionResult> GetCategory(int id) =>
+            Ok(await _servicesManager.GetCategoryById(id));
 
-            return Ok(_mapper.Map<CategoryDto>(category));
-        }
 
+        /// <summary>
+        /// Add new category
+        /// </summary>
+        /// <param name="categoryDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryManipulationDto categoryDto)
         {
-            var category = _mapper.Map<Category>(categoryDto);
+            var categoryToReturn = await _servicesManager.CreateCategory(categoryDto);
 
-            var categoryToReturn = await _servicesManager.CreateCategory(category);
             return CreatedAtRoute("GetCategoryById", new { id = categoryToReturn.Id }, categoryToReturn);
         }
 
+        /// <summary>
+        /// Delete category by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
@@ -54,6 +61,13 @@ namespace ServicesService.Controklers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Edit chosen by id category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="categoryDto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> EditCategory(int id, [FromBody] CategoryManipulationDto categoryDto)

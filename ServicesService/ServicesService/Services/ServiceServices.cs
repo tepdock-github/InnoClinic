@@ -2,8 +2,8 @@
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
+using ServicesService.ServiceExtensions.Exceptions;
 using ServicesService.ServicesInterfaces;
-using System.Web.Http;
 
 namespace ServicesService.Services
 {
@@ -18,12 +18,16 @@ namespace ServicesService.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceDto?> CreateService(Service service)
+        public async Task<ServiceDto?> CreateService(ServicesManipulationDto serviceDto)
         {
+            var service = _mapper.Map<Service>(serviceDto);
+
             var category = await _repositoryManager.CategoryRepository.GetCategoryByIdAsync(service.CategoryId, trackChanges: false);
             var specialization = await _repositoryManager.SpecializationRepository.GetSpecializationAsync(service.SpecializationId, trackChanges: false);
-            if (category == null || specialization == null)
-                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
+            if (category == null)
+                throw new NotFoundException("Category wasn't found");
+            if (specialization == null)
+                throw new NotFoundException("Specialization wasn't found");
 
             _repositoryManager.ServiceRepository.CreateService(service);
             await _repositoryManager.SaveAsync();
@@ -35,14 +39,26 @@ namespace ServicesService.Services
         {
             var service = await _repositoryManager.ServiceRepository.GetServiceByIdAsync(id, trackChanges: true);
             if (service == null)
-                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
+                throw new NotFoundException("Service with id: " + id + "wasn't found");
 
             _mapper.Map(serviceDto, service);
             await _repositoryManager.SaveAsync();
         }
 
-        public async Task<Service> GetServiceById(int id) => await _repositoryManager.ServiceRepository.GetServiceByIdAsync(id, trackChanges: false);
+        public async Task<ServiceDto> GetServiceById(int id)
+        {
+            var service = await _repositoryManager.ServiceRepository.GetServiceByIdAsync(id, trackChanges: false);
+            if (service == null)
+                throw new NotFoundException("Service with id: " + id + "wasn't found");
 
-        public async Task<IEnumerable<Service>> GetServices() => await _repositoryManager.ServiceRepository.GetAllServicesAsync(trackChanges: false);
+            return _mapper.Map<ServiceDto>(service);
+        }
+
+        public async Task<IEnumerable<ServiceDto>> GetServices()
+        {
+            var services = await _repositoryManager.ServiceRepository.GetAllServicesAsync(trackChanges: false);
+
+            return _mapper.Map<IEnumerable<ServiceDto>>(services);
+        }
     }
 }

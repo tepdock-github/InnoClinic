@@ -11,8 +11,8 @@ using ServicesService.Domain;
 namespace ServicesService.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230117105312_Initial")]
-    partial class Initial
+    [Migration("20230206100101_Initial2")]
+    partial class Initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,26 @@ namespace ServicesService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ServicesService.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TimeSlotSize")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceCategories");
+                });
 
             modelBuilder.Entity("ServicesService.Domain.Entities.Service", b =>
                 {
@@ -41,9 +61,6 @@ namespace ServicesService.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("ServiceCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -53,29 +70,11 @@ namespace ServicesService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceCategoryId");
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SpecializationId");
 
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("ServicesService.Domain.Entities.ServiceCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeSlotSize")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceCategories");
                 });
 
             modelBuilder.Entity("ServicesService.Domain.Entities.Specialization", b =>
@@ -100,13 +99,31 @@ namespace ServicesService.Migrations
 
             modelBuilder.Entity("ServicesService.Domain.Entities.Service", b =>
                 {
-                    b.HasOne("ServicesService.Domain.Entities.ServiceCategory", "ServiceCategory")
-                        .WithMany()
-                        .HasForeignKey("ServiceCategoryId")
+                    b.HasOne("ServicesService.Domain.Entities.Category", "ServiceCategory")
+                        .WithMany("Services")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServicesService.Domain.Entities.Specialization", "Specialization")
+                        .WithMany("Services")
+                        .HasForeignKey("SpecializationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ServiceCategory");
+
+                    b.Navigation("Specialization");
+                });
+
+            modelBuilder.Entity("ServicesService.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("ServicesService.Domain.Entities.Specialization", b =>
+                {
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

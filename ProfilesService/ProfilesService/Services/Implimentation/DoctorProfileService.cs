@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using MassTransit;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Domain.Entities;
 using ProfilesService.Domain.Interfaces;
 using ProfilesService.Domain.RequestFeatures;
+using ProfilesService.Extensions.Exceptions;
 using ProfilesService.Services.Interfaces;
+using SharedModels;
 
 namespace ProfilesService.Services.Implimentation
 {
@@ -11,11 +14,14 @@ namespace ProfilesService.Services.Implimentation
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public DoctorProfileService(IRepositoryManager repositoryManager, IMapper mapper)
+        public DoctorProfileService(IRepositoryManager repositoryManager, IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<DoctorProfileDto> CreateDoctorProfile(DoctorProfileManipulationDto doctorProfileDto)
@@ -32,7 +38,7 @@ namespace ProfilesService.Services.Implimentation
         {
             var profile = await _repositoryManager.DoctorProfile.GetDoctorProfile(id, trackChanges: false);
             if (profile == null)
-                throw new BadHttpRequestException("doctor with id: " + id + " wasnt found", 404);
+                throw new NotFoundException("doctor with id: " + id + " wasnt found");
 
             _repositoryManager.DoctorProfile.DeleteDoctorProfile(profile);
             await _repositoryManager.SaveAsync();
@@ -42,7 +48,7 @@ namespace ProfilesService.Services.Implimentation
         {
             var profile = await _repositoryManager.DoctorProfile.GetDoctorProfile(id, trackChanges: false);
             if (profile == null)
-                throw new BadHttpRequestException("doctor with id: " + id + " wasnt found", 404);
+                throw new NotFoundException("doctor with id: " + id + " wasnt found");
 
             return _mapper.Map<DoctorProfileDto>(profile);
         }
@@ -58,10 +64,18 @@ namespace ProfilesService.Services.Implimentation
         {
             var profile = await _repositoryManager.DoctorProfile.GetDoctorProfile(id, trackChanges: true);
             if(profile == null)
-                throw new BadHttpRequestException("doctor with id: " + id + " wasnt found", 404);
+                throw new NotFoundException("doctor with id: " + id + " wasnt found");
 
             _mapper.Map(doctorProfileDto, profile);
             await _repositoryManager.SaveAsync();
+
+            await _publishEndpoint.Publish<IDoctorProfileManipulation>(new
+            {
+                Id = id,
+                doctorProfileDto.FirstName,
+                doctorProfileDto.LastName,
+                doctorProfileDto.MiddleName
+            });
         }
     }
 }

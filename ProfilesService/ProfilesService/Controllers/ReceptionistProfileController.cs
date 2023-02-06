@@ -17,16 +17,12 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllReceptionistsProfiles()
-        {
-            return Ok(await _receptionistProfile.GetReceptionistProfiles());
-        }
+        public async Task<IActionResult> GetAllReceptionistsProfiles() =>
+            Ok(await _receptionistProfile.GetReceptionistProfiles());
 
         [HttpGet("{id}", Name = "GetReceptionistProfileById")]
-        public async Task<IActionResult> GetReceptionistProfileById(int id) 
-        {
-            return Ok(await _receptionistProfile.GetReceptionistProfile(id));
-        }
+        public async Task<IActionResult> GetReceptionistProfileById(int id) =>
+            Ok(await _receptionistProfile.GetReceptionistProfile(id));
 
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]

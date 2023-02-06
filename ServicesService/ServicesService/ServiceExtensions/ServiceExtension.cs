@@ -34,7 +34,7 @@ namespace ServicesService.ServiceExtensions
             services.AddScoped<ICategoryServices, CategoryServices>();
 
         public static void ConfigureServiceServices(this IServiceCollection services) =>
-            services.AddScoped<IServiceCollection, ServiceCollection>();
+            services.AddScoped<IServiceServices, ServiceServices>();
 
         public static void ConfigureSpecializationServices(this IServiceCollection services) =>
             services.AddScoped<ISpecializationServices, SpecializationServices>();

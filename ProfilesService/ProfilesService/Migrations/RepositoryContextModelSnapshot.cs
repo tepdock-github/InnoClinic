@@ -49,7 +49,6 @@ namespace ProfilesService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OfficeId")
@@ -57,6 +56,10 @@ namespace ProfilesService.Migrations
 
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SpecializationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -78,6 +81,7 @@ namespace ProfilesService.Migrations
                             MiddleName = "Hello",
                             OfficeId = 2,
                             SpecializationId = 3,
+                            SpecializationName = "Hello",
                             Status = "Remote"
                         },
                         new
@@ -91,6 +95,7 @@ namespace ProfilesService.Migrations
                             MiddleName = "Hello",
                             OfficeId = 2,
                             SpecializationId = 4,
+                            SpecializationName = "spec4",
                             Status = "At office"
                         },
                         new
@@ -104,6 +109,7 @@ namespace ProfilesService.Migrations
                             MiddleName = "Hello",
                             OfficeId = 3,
                             SpecializationId = 4,
+                            SpecializationName = "spec4",
                             Status = "At office"
                         });
                 });
@@ -135,7 +141,6 @@ namespace ProfilesService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

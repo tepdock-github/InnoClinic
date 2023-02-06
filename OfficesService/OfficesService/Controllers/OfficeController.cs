@@ -1,11 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using OfficesService.Data.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
 using OfficesService.Domain.DataTransferObjects;
-using OfficesService.Domain.Interfaces;
-using OfficesService.Domain.Models;
 using OfficesService.Filters;
-using OfficesService.Services.Implementation;
 using OfficesService.Services.Interfaces;
 
 namespace OfficesService.Controllers
@@ -27,10 +22,8 @@ namespace OfficesService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOffices()
-        {
-            return Ok(await _officeService.GetOffices());
-        }
+        public async Task<IActionResult> GetOffices() =>
+            Ok(await _officeService.GetOffices());
 
         /// <summary>
         ///     Get Office by Id
@@ -38,10 +31,8 @@ namespace OfficesService.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetOfficeById")]
-        public async Task<IActionResult> GetOfficeById(string id)
-        {
-            return Ok(await _officeService.GetOfficeById(id));
-        }
+        public async Task<IActionResult> GetOfficeById(string id) =>
+            Ok(await _officeService.GetOfficeById(id));
 
         /// <summary>
         ///     Create new Office

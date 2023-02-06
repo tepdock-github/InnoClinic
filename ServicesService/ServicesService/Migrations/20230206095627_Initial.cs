@@ -48,24 +48,34 @@ namespace ServicesService.Migrations
                     Price = table.Column<float>(type: "real", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    ServiceCategoryId = table.Column<int>(type: "int", nullable: false),
                     SpecializationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Services", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Services_ServiceCategories_ServiceCategoryId",
-                        column: x => x.ServiceCategoryId,
+                        name: "FK_Services_ServiceCategories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "ServiceCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Services_Specializations_SpecializationId",
+                        column: x => x.SpecializationId,
+                        principalTable: "Specializations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_ServiceCategoryId",
+                name: "IX_Services_CategoryId",
                 table: "Services",
-                column: "ServiceCategoryId");
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_SpecializationId",
+                table: "Services",
+                column: "SpecializationId");
         }
 
         /// <inheritdoc />
@@ -75,10 +85,10 @@ namespace ServicesService.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Specializations");
+                name: "ServiceCategories");
 
             migrationBuilder.DropTable(
-                name: "ServiceCategories");
+                name: "Specializations");
         }
     }
 }
