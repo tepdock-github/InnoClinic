@@ -1,5 +1,7 @@
+using AppointmentsService.Consumers.ProfilesConsumers;
 using AppointmentsService.Filters;
 using AppointmentsService.ServiceExtensions;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentService 
@@ -34,6 +36,19 @@ namespace AppointmentService
             builder.Services.AddSwaggerGen(s =>
             {
                 s.IncludeXmlComments("swagger.xml");
+            });
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumer<DoctorProfileManipulationConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ReceiveEndpoint("doctor-profile-event", e =>
+                    {
+                        e.ConfigureConsumer<DoctorProfileManipulationConsumer>(context);
+                    });
+                });
             });
 
             #endregion

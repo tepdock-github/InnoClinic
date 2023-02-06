@@ -4,6 +4,7 @@ using Appoitments.Domain.DataTransferObjects;
 using Appoitments.Domain.Entities;
 using Appoitments.Domain.Interfaces;
 using AutoMapper;
+using MassTransit;
 
 namespace AppointmentsService.Services.Implementation
 {

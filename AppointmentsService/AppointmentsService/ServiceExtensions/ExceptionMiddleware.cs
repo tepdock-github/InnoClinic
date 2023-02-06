@@ -27,56 +27,39 @@ namespace AppointmentsService.ServiceExtensions
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     context.Response.ContentType = "application/json";
 
-                    var message = ex.Message;
-                    var details = ex.ToString();
-
-                    var problem = new ProblemDetails
-                    {
-                        Status = context.Response.StatusCode,
-                        Title = message,
-                        Detail = details
-                    };
-
-                    var stream = context.Response.Body;
-                    await JsonSerializer.SerializeAsync(stream, problem);
+                    await WriteErrorMessage(ex, context);
                 }
                 else if (ex is BadRequestException)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     context.Response.ContentType = "application/json";
 
-                    var message = ex.Message;
-                    var details = ex.ToString();
-
-                    var problem = new ProblemDetails
-                    {
-                        Status = context.Response.StatusCode,
-                        Title = message,
-                        Detail = details
-                    };
-
-                    var stream = context.Response.Body;
-                    await JsonSerializer.SerializeAsync(stream, problem);
+                    await WriteErrorMessage(ex, context);
                 }
                 else
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
 
-                    var message = ex.Message;
-                    var details = ex.ToString();
-
-                    var problem = new ProblemDetails
-                    {
-                        Status = context.Response.StatusCode,
-                        Title = message,
-                        Detail = details
-                    };
-
-                    var stream = context.Response.Body;
-                    await JsonSerializer.SerializeAsync(stream, problem);
+                    await WriteErrorMessage(ex, context);
                 }
             }
+        }
+
+        async Task WriteErrorMessage(Exception ex, HttpContext context)
+        {
+            var message = ex.Message;
+            var details = ex.ToString();
+
+            var problem = new ProblemDetails
+            {
+                Status = context.Response.StatusCode,
+                Title = message,
+                Detail = details
+            };
+
+            var stream = context.Response.Body;
+            await JsonSerializer.SerializeAsync(stream, problem);
         }
     }
 

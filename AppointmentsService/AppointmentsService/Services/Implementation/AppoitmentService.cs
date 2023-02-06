@@ -14,7 +14,7 @@ namespace AppointmentsService.Services.Implementation
 
         public AppoitmentService(IRepositoryManager repositoryManager, IMapper mapper)
         {
-            _repositoryManager = repositoryManager;
+            _repositoryManager = repositoryManager;;
             _mapper = mapper;
         }
 
@@ -80,6 +80,18 @@ namespace AppointmentsService.Services.Implementation
 
             _mapper.Map(appoitmentDto, appoitment);
             await _repositoryManager.SaveAsync();
+
+            //await _publishEndpoint.Publish<IAppoitmentManipulation>(new
+            //{
+            //    appoitmentDto.PatientId,
+            //    appoitmentDto.PatientFirstName,
+            //    appoitmentDto.PatientLastName,
+            //    appoitmentDto.DoctorId,
+            //    appoitmentDto.DoctorFirstName,
+            //    appoitmentDto.DoctorLastName,
+            //    appoitmentDto.ServiceId,
+            //    appoitmentDto.ServiceName
+            //});
         }
     }
 }
