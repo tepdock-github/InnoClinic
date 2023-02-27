@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using CustomExceptionMiddleware.Exceptions;
+using MassTransit;
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
-using ServicesService.ServiceExtensions.Exceptions;
 using ServicesService.ServicesInterfaces;
+using SharedModelsInnoClinic;
 
 namespace ServicesService.Services
 {
@@ -11,11 +13,14 @@ namespace ServicesService.Services
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ServiceServices(IRepositoryManager repositoryManager, IMapper mapper)
+        public ServiceServices(IRepositoryManager repositoryManager, IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<ServiceDto?> CreateService(ServicesManipulationDto serviceDto)
@@ -41,8 +46,26 @@ namespace ServicesService.Services
             if (service == null)
                 throw new NotFoundException("Service with id: " + id + "wasn't found");
 
+            var category = await _repositoryManager.CategoryRepository.GetCategoryByIdAsync(service.CategoryId, trackChanges: false);
+            var specialization = await _repositoryManager.SpecializationRepository.GetSpecializationAsync(service.SpecializationId, trackChanges: false);
+            if (category == null)
+                throw new NotFoundException("Category wasn't found");
+            if (specialization == null)
+                throw new NotFoundException("Specialization wasn't found");
+
             _mapper.Map(serviceDto, service);
             await _repositoryManager.SaveAsync();
+
+            await _publishEndpoint.Publish<IServiceManipulation>(new
+            {
+                Id = id,
+                serviceDto.ServiceName,
+                serviceDto.Price,
+                serviceDto.IsActive,
+                serviceDto.CategoryId,
+                serviceDto.SpecializationId
+
+            });
         }
 
         public async Task<ServiceDto> GetServiceById(int id)

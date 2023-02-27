@@ -318,6 +318,47 @@
           "Port": 5261
         }
       ]
+    },
+
+
+    //Blob Microservice
+
+    //Blob
+    {
+      "UpstreamPathTemplate": "/gateway/storage/get",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/storage/get",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5097
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/storage/{filename}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "DownstreamPathTemplate": "/api/storage/{filename}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5097
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/storage/{file}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/storage/{file}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5097
+        }
+      ]
     }
   ]
 }

@@ -9,8 +9,10 @@ namespace Appoitments.Domain.Interfaces
         Task<IEnumerable<Appoitment>> GetAppoitmentsScheduleByDocrot(int doctorId, bool trackChanges);
         Task<IEnumerable<Appoitment>> GetAllAppoitments(bool trackChanges);
         Task<IEnumerable<Appoitment>> GetAppoitmentsByPatient(int patientId, bool trackChanges);
+        Task<IEnumerable<Appoitment>> GetAppoitmentsByDoctor(int doctorId, bool trackChanges);
         Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByDoctor(int doctorId, bool trackChanges);
         Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByPatient(int patientId, bool trackChanges);
         Task<Appoitment?> GetAppoitmentId(int id, bool trackChanges);
+        Task<IEnumerable<Appoitment>> GetAppoitmentsByServiceId(int serviceId, bool trackChanges);
     }
 }

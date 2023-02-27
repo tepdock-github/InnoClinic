@@ -1,4 +1,4 @@
-﻿namespace ServicesService.ServiceExtensions.Exceptions
+﻿namespace CustomExceptionMiddleware.Exceptions
 {
     public class BadRequestException : Exception
     {

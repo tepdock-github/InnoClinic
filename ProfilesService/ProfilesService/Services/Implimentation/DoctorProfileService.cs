@@ -6,7 +6,7 @@ using ProfilesService.Domain.Interfaces;
 using ProfilesService.Domain.RequestFeatures;
 using ProfilesService.Extensions.Exceptions;
 using ProfilesService.Services.Interfaces;
-using SharedModels;
+using SharedModelsInnoClinic;
 
 namespace ProfilesService.Services.Implimentation
 {

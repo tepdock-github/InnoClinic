@@ -1,7 +1,8 @@
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
-using ServicesService.Domain.Entities;
 using ServicesService.Filters;
 using ServicesService.ServiceExtensions;
+using CustomExceptionMiddleware;
 
 namespace ServicesService
 {
@@ -37,6 +38,11 @@ namespace ServicesService
             builder.Services.AddSwaggerGen(s =>
             {
                 s.IncludeXmlComments("swagger.xml");
+            });
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq();
             });
             #endregion
 

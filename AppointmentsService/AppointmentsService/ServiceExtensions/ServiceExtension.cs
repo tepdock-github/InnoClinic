@@ -1,8 +1,11 @@
-﻿using AppointmentsService.Services.Implementation;
+﻿using AppointmentsService.Consumers.ProfilesConsumers;
+using AppointmentsService.Consumers.ServicesConsumers;
+using AppointmentsService.Services.Implementation;
 using AppointmentsService.Services.Interfaces;
 using Appoitments.Data;
 using Appoitments.Domain;
 using Appoitments.Domain.Interfaces;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -35,5 +38,33 @@ namespace AppointmentsService.ServiceExtensions
 
         public static void AddResultService(this IServiceCollection services) =>
             services.AddScoped<IResultService, ResultService>();
+
+        public static void ConfigureMassTransit(this IServiceCollection services)
+        {
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<DoctorProfileManipulationConsumer>();
+                x.AddConsumer<PatientProfileConsumer>();
+                x.AddConsumer<ServiceManipulationConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ReceiveEndpoint("IDoctorProfileManipulation", e =>
+                    {
+                        e.ConfigureConsumer<DoctorProfileManipulationConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint("IPatientProfileManipulation", e =>
+                    {
+                        e.ConfigureConsumer<PatientProfileConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint("IServiceManipulation", e =>
+                    {
+                        e.ConfigureConsumer<ServiceManipulationConsumer>(context);
+                    });
+                });
+            });
+        }
     }
 }

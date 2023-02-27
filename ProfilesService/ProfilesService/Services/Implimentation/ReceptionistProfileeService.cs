@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using MassTransit;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Domain.Entities;
 using ProfilesService.Domain.Interfaces;
 using ProfilesService.Services.Interfaces;
+using SharedModelsInnoClinic;
 
 namespace ProfilesService.Services.Implimentation
 {
@@ -10,11 +12,14 @@ namespace ProfilesService.Services.Implimentation
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ReceptionistProfileeService(IRepositoryManager repositoryManager, IMapper mapper)
+        public ReceptionistProfileeService(IRepositoryManager repositoryManager, IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<ReceptionistProfileDto> CreateReceptionistProfile(ReceptionistProfileManipulationDto receptionistProfile)
@@ -61,6 +66,16 @@ namespace ProfilesService.Services.Implimentation
 
             _mapper.Map(receptionistProfileDto, profile);
             await _repositoryManager.SaveAsync();
+
+            await _publishEndpoint.Publish<IReceptionistProfileManipulation>(new
+            {
+                Id = id,
+                receptionistProfileDto.FirstName, 
+                receptionistProfileDto.LastName,
+                receptionistProfileDto.MiddleName,
+                receptionistProfileDto.OfficeId,
+                receptionistProfileDto.AccountId
+            });
         }
     }
 }

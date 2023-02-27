@@ -4,6 +4,8 @@ using Appoitments.Domain.DataTransferObjects;
 using Appoitments.Domain.Entities;
 using Appoitments.Domain.Interfaces;
 using AutoMapper;
+using MassTransit;
+using SharedModelsInnoClinic;
 
 namespace AppointmentsService.Services.Implementation
 {
@@ -11,11 +13,14 @@ namespace AppointmentsService.Services.Implementation
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public AppoitmentService(IRepositoryManager repositoryManager, IMapper mapper)
+        public AppoitmentService(IRepositoryManager repositoryManager, IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _repositoryManager = repositoryManager;;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<AppoitmentDto> CreateAppoitment(AppoitmentManipulationDto appoitmentDto)
@@ -81,17 +86,17 @@ namespace AppointmentsService.Services.Implementation
             _mapper.Map(appoitmentDto, appoitment);
             await _repositoryManager.SaveAsync();
 
-            //await _publishEndpoint.Publish<IAppoitmentManipulation>(new
-            //{
-            //    appoitmentDto.PatientId,
-            //    appoitmentDto.PatientFirstName,
-            //    appoitmentDto.PatientLastName,
-            //    appoitmentDto.DoctorId,
-            //    appoitmentDto.DoctorFirstName,
-            //    appoitmentDto.DoctorLastName,
-            //    appoitmentDto.ServiceId,
-            //    appoitmentDto.ServiceName
-            //});
+            await _publishEndpoint.Publish<IAppoitmentManipulation>(new
+            {
+                appoitmentDto.PatientId,
+                appoitmentDto.PatientFirstName,
+                appoitmentDto.PatientLastName,
+                appoitmentDto.DoctorId,
+                appoitmentDto.DoctorFirstName,
+                appoitmentDto.DoctorLastName,
+                appoitmentDto.ServiceId,
+                appoitmentDto.ServiceName
+            });
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ServicesService.ServiceExtensions.Exceptions;
+﻿using CustomExceptionMiddleware.Exceptions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
-namespace ServicesService.ServiceExtensions
+namespace CustomExceptionMiddleware
 {
     public class ExceptionMiddleware
     {
@@ -22,29 +23,27 @@ namespace ServicesService.ServiceExtensions
             }
             catch (Exception ex)
             {
-                if (ex is NotFoundException)
+                int statusCode;
+                switch (ex)
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    context.Response.ContentType = "application/json";
-
-                    await WriteErrorMessage(ex, context);
+                    case NotFoundException:
+                        statusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case BadRequestException:
+                        statusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    default:
+                        statusCode = (int)HttpStatusCode.InternalServerError;
+                        break;
                 }
-                else if (ex is BadRequestException)
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    context.Response.ContentType = "application/json";
 
-                    await WriteErrorMessage(ex, context);
-                }
-                else
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/json";
+                context.Response.StatusCode = statusCode;
+                context.Response.ContentType = "application/json";
 
-                    await WriteErrorMessage(ex, context);
-                }
+                await WriteErrorMessage(ex, context);
             }
         }
+
 
         async Task WriteErrorMessage(Exception ex, HttpContext context)
         {

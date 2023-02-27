@@ -4,16 +4,16 @@ using SharedModelsInnoClinic;
 
 namespace AppointmentsService.Consumers.ProfilesConsumers
 {
-    public class DoctorProfileManipulationConsumer : IConsumer<IDoctorProfileManipulation>
+    public class PatientProfileConsumer : IConsumer<IPatientProfileManipulation>
     {
         private readonly IRepositoryManager _repositoryManager;
 
-        public DoctorProfileManipulationConsumer(IRepositoryManager repositoryManager)
+        public PatientProfileConsumer(IRepositoryManager repositoryManager)
         {
             _repositoryManager = repositoryManager;
         }
 
-        public async Task Consume(ConsumeContext<IDoctorProfileManipulation> context)
+        public async Task Consume(ConsumeContext<IPatientProfileManipulation> context)
         {
             var message = context.Message;
 
@@ -21,15 +21,14 @@ namespace AppointmentsService.Consumers.ProfilesConsumers
             string firstName = message.FirstName;
             string lastName = message.LastName;
 
-            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsByDoctor(id, trackChanges: true);
+            var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsByPatient(id, trackChanges: true);
             appoitments.ToList().ForEach(a =>
             {
-                a.DoctorFirstName = firstName;
-                a.DoctorLastName = lastName;
+                a.PatientFirstName = firstName;
+                a.PatientLastName = lastName;     
             });
 
             await _repositoryManager.SaveAsync();
-
         }
     }
 }
