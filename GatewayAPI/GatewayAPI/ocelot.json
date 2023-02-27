@@ -1,0 +1,323 @@
+﻿{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7111"
+  },
+  "Routes": [
+    //Appoitments Microservice
+
+    //Appoitments
+    {
+      "UpstreamPathTemplate": "/gateway/appoitments",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/appoitments",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appoitments/doctor-history/{doctorId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/appoitments/doctor-history/{doctorId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appoitments/patient-history/{patientId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/appoitments/patient-history/{patientId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appoitments/doctor-schedule/{doctorId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/appoitments/doctor-schedule/{doctorId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appoitments/patient-schedule/{patientId}",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "DownstreamPathTemplate": "/api/appoitments/patient-schedule/{patientId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/appoitments/{id}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/appoitments/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+
+    //Results
+    {
+      "UpstreamPathTemplate": "/gateway/results/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],
+      "DownstreamPathTemplate": "/api/results/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/results",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/results",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/results/doctor/{doctorId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/results/doctor/{doctorId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/results/patient/{patientId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/results/patient/{patientId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+
+
+    //Profile Microservice
+
+    //Doctor Profile
+    {
+      "UpstreamPathTemplate": "/gateway/doctors",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/doctors",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/doctors/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/doctors/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ]
+    },
+
+    //Patient Profile
+    {
+      "UpstreamPathTemplate": "/gateway/patients",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/patients",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/patients/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/patients/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ]
+    },
+
+    //Receptionists Profile
+    {
+      "UpstreamPathTemplate": "/gateway/receptionists",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/receptionists",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/receptionists/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/receptionists/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ]
+    },
+
+
+    //Services Microservice
+
+    //Category
+    {
+      "UpstreamPathTemplate": "/gateway/categories",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/categories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/categories/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ]
+    },
+
+    //Service
+    {
+      "UpstreamPathTemplate": "/gateway/services",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/services",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/services/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "DownstreamPathTemplate": "/api/services/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ]
+    },
+
+    //Specialization
+    {
+      "UpstreamPathTemplate": "/gateway/specializations",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/specializations",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/specializations/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "DownstreamPathTemplate": "/api/specializations/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ]
+    },
+
+
+    //Offices Microservice
+
+    //Office
+    {
+      "UpstreamPathTemplate": "/gateway/offices",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/offices",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5261
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/offices/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "DownstreamPathTemplate": "/api/offices/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5261
+        }
+      ]
+    }
+  ]
+}

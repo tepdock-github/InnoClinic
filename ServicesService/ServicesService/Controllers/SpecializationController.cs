@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServicesService.Domain.DataTransferObjects;
-using ServicesService.Domain.Entities;
 using ServicesService.Filters;
 using ServicesService.ServicesInterfaces;
 
@@ -12,42 +10,50 @@ namespace ServicesService.Controklers
     public class SpecializationController : ControllerBase
     {
         private readonly ISpecializationServices _servicesManager;
-        private readonly IMapper _mapper;
 
-        public SpecializationController(ISpecializationServices servicesManager,
-            IMapper mapper)
+        public SpecializationController(ISpecializationServices servicesManager)
         {
             _servicesManager = servicesManager;
-            _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all specializations
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllSpecializations()
-        {
-            var specializations = await _servicesManager.GetAllSpecializations();
+        public async Task<IActionResult> GetAllSpecializations() =>
+            Ok(await _servicesManager.GetAllSpecializations());
 
-            return Ok(_mapper.Map<IEnumerable<SpecializationDto>>(specializations));
-        }
-
+        /// <summary>
+        /// Get specialization by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetSpecializationById")]
-        public async Task<IActionResult> GetSpecialization(int id)
-        {
-            var specialization = await _servicesManager.GetSpecializationById(id);
+        public async Task<IActionResult> GetSpecialization(int id) =>
+            Ok(await _servicesManager.GetSpecializationById(id));
 
-            return Ok(_mapper.Map<SpecializationDto>(specialization));
-        }
-
+        /// <summary>
+        /// Add new specialization
+        /// </summary>
+        /// <param name="specializationDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> CreateSpecialization([FromBody] SpecializationManipulationDto specializationDto)
         {
-            var specialization = _mapper.Map<Specialization>(specializationDto);
+            var specToReturn = await _servicesManager.CreateSpecialization(specializationDto);
 
-            var specToReturn = await _servicesManager.CreateSpecialization(specialization);
             return CreatedAtRoute("GetSpecializationById", new { id = specToReturn.Id }, specToReturn);
         }
 
-        [HttpPut]
+        /// <summary>
+        /// Edit chosen by id specialization
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="specializationDto"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> EditSpecialization(int id,
             [FromBody] SpecializationManipulationDto specializationDto)

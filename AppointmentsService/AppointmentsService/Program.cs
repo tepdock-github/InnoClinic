@@ -1,4 +1,7 @@
+using AppointmentsService.Consumers.ProfilesConsumers;
+using AppointmentsService.Filters;
 using AppointmentsService.ServiceExtensions;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentService 
@@ -16,9 +19,14 @@ namespace AppointmentService
 
             builder.Services.ConfigureSqlContext(builder.Configuration);
             builder.Services.ConfigureRepositoryManager();
+
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddControllers();
+            builder.Services.AddAppoitmentService();
+            builder.Services.AddResultService();
+
+            builder.Services.AddScoped<ValidateModelFilter>();
             builder.Services.Configure<ApiBehaviorOptions>(opt =>
             {
                 opt.SuppressModelStateInvalidFilter = true;
@@ -28,6 +36,19 @@ namespace AppointmentService
             builder.Services.AddSwaggerGen(s =>
             {
                 s.IncludeXmlComments("swagger.xml");
+            });
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumer<DoctorProfileManipulationConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ReceiveEndpoint("doctor-profile-event", e =>
+                    {
+                        e.ConfigureConsumer<DoctorProfileManipulationConsumer>(context);
+                    });
+                });
             });
 
             #endregion
@@ -43,7 +64,7 @@ namespace AppointmentService
             {
                 app.UseHsts();
             }
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

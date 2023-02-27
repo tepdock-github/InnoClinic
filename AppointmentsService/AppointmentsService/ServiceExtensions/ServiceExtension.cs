@@ -1,4 +1,6 @@
-﻿using Appoitments.Data;
+﻿using AppointmentsService.Services.Implementation;
+using AppointmentsService.Services.Interfaces;
+using Appoitments.Data;
 using Appoitments.Domain;
 using Appoitments.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -27,5 +29,11 @@ namespace AppointmentsService.ServiceExtensions
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void AddAppoitmentService(this IServiceCollection services) =>
+            services.AddScoped<IAppoitmentService, AppoitmentService>();
+
+        public static void AddResultService(this IServiceCollection services) =>
+            services.AddScoped<IResultService, ResultService>();
     }
 }

@@ -1,47 +1,65 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
+using ServicesService.ServiceExtensions.Exceptions;
 using System.Net;
 using System.Text.Json;
 
 namespace ServicesService.ServiceExtensions
 {
-    public static class ExceptionMiddleware
+    public class ExceptionMiddleware
     {
-        public static void ConfigureExceptionHandler(this IApplicationBuilder app)
+        private readonly RequestDelegate _next;
+
+        public ExceptionMiddleware(RequestDelegate next)
         {
-            app.UseExceptionHandler(appError =>
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            try
             {
-                appError.Run(async context =>
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                if (ex is NotFoundException)
                 {
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     context.Response.ContentType = "application/json";
-                    var exceptionDetails = context.Features.Get<IExceptionHandlerFeature>();
-                    var ex = exceptionDetails?.Error;
 
-                    if (ex != null)
-                    {
-                        var title = "An error occured: " + ex.Message;
-                        var details = ex.ToString();
+                    await WriteErrorMessage(ex, context);
+                }
+                else if (ex is BadRequestException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    context.Response.ContentType = "application/json";
 
-                        var problem = new ProblemDetails
-                        {
-                            Status = context.Response.StatusCode,
-                            Title = title,
-                            Detail = details
-                        };
+                    await WriteErrorMessage(ex, context);
+                }
+                else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "application/json";
 
-                        var traceId = Activity.Current?.Id ?? context?.TraceIdentifier;
-                        if (traceId != null)
-                        {
-                            problem.Extensions["traceId"] = traceId;
-                        }
+                    await WriteErrorMessage(ex, context);
+                }
+            }
+        }
 
-                        //Serialize the problem details object to the Response as JSON (using System.Text.Json)
-                        var stream = context.Response.Body;
-                        await JsonSerializer.SerializeAsync(stream, problem);
-                    }
-                });
-            });
+        async Task WriteErrorMessage(Exception ex, HttpContext context)
+        {
+            var message = ex.Message;
+            var details = ex.ToString();
+
+            var problem = new ProblemDetails
+            {
+                Status = context.Response.StatusCode,
+                Title = message,
+                Detail = details
+            };
+
+            var stream = context.Response.Body;
+            await JsonSerializer.SerializeAsync(stream, problem);
         }
     }
 }

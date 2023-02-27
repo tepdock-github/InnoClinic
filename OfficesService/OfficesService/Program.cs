@@ -4,8 +4,9 @@ using Microsoft.Extensions.Options;
 using OfficesService.Data.Repositories;
 using OfficesService.Domain;
 using OfficesService.Domain.Interfaces;
-using OfficesService.ImageServices;
+using OfficesService.Filters;
 using OfficesService.ServiceExtensions;
+using OfficesService.Services.Implementation;
 
 namespace OfficesService
 {
@@ -21,8 +22,10 @@ namespace OfficesService
 
             builder.Services.AddSingleton<IOfficeDatabaseSettings>(provider => 
                 provider.GetRequiredService<IOptions<OfficeDatabaseSettings>>().Value);
-            builder.Services.AddScoped<OfficeRepository>();
+            builder.Services.ConfigureRepository();
+            builder.Services.AddScoped<ValidateModelFilter>();
             builder.Services.AddSingleton<ImageService>();
+            builder.Services.ConfigureOfficeService();
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddControllers();
             builder.Services.AddAuthorization();
@@ -50,7 +53,7 @@ namespace OfficesService
             {
                 app.UseHsts();
             }
-
+            app.ConfigureExceptionHandler();
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

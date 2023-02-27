@@ -18,16 +18,12 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPatientsProfiles([FromQuery] PatientParameters patientParameters)
-        {
-            return Ok(await _patientProfile.GetPatientProfiles(patientParameters));
-        }
+        public async Task<IActionResult> GetAllPatientsProfiles([FromQuery] PatientParameters patientParameters)=>
+            Ok(await _patientProfile.GetPatientProfiles(patientParameters));
 
         [HttpGet("{id}", Name = "GetPatientProfileById")]
-        public async Task<IActionResult> GetPatientProfileById(int id)
-        {
-            return Ok(await _patientProfile.GetPatientProfile(id));
-        }
+        public async Task<IActionResult> GetPatientProfileById(int id) =>
+            Ok(await _patientProfile.GetPatientProfile(id));
 
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]

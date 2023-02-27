@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Extensions;
 using ProfilesService.Filters;
@@ -40,6 +41,11 @@ namespace ProfilesService
             {
                 s.IncludeXmlComments("swagger.xml");
             });
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq();
+            });
             #endregion
 
             var app = builder.Build();
@@ -53,7 +59,8 @@ namespace ProfilesService
             {
                 app.UseHsts();
             }
-            app.ConfigureExceptionHandler();
+            app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

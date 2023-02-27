@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using MassTransit;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Domain.Entities;
 using ProfilesService.Domain.Interfaces;
 using ProfilesService.Domain.RequestFeatures;
+using ProfilesService.Extensions.Exceptions;
 using ProfilesService.Services.Interfaces;
+using SharedModels;
 
 namespace ProfilesService.Services.Implimentation
 {
@@ -11,11 +14,14 @@ namespace ProfilesService.Services.Implimentation
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public PatientProfileService(IRepositoryManager repositoryManager, IMapper mapper)
+        public PatientProfileService(IRepositoryManager repositoryManager, IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<PatientProfileDto> CreatePatientProfile(PatientProfileManipulationDto patientProfileDto)
@@ -32,7 +38,7 @@ namespace ProfilesService.Services.Implimentation
         {
             var profile = await _repositoryManager.PatientProfile.GetPatientProfile(id, trackChanges: false);
             if (profile == null)
-                throw new BadHttpRequestException("patient with id: " + id + " wasnt found", 404);
+                throw new NotFoundException("patient with id: " + id + " wasnt found");
 
             _repositoryManager.PatientProfile.DeletePatientProfile(profile);
             await _repositoryManager.SaveAsync();
@@ -42,7 +48,7 @@ namespace ProfilesService.Services.Implimentation
         {
             var profile = await _repositoryManager.PatientProfile.GetPatientProfile(id, trackChanges: false);
             if (profile == null)
-                throw new BadHttpRequestException("patient with id: " + id + " wasnt found", 404);
+                throw new NotFoundException("patient with id: " + id + " wasnt found");
 
             return _mapper.Map<PatientProfileDto>(profile);
         }
@@ -58,10 +64,20 @@ namespace ProfilesService.Services.Implimentation
         {
             var profile = await _repositoryManager.PatientProfile.GetPatientProfile(id, trackChanges: true);
             if (profile == null)
-                throw new BadHttpRequestException("patient with id: " + id + " wasnt found", 404);
+                throw new NotFoundException("patient with id: " + id + " wasnt found");
 
             _mapper.Map(patientProfileDto, profile);
             await _repositoryManager.SaveAsync();
+
+            await _publishEndpoint.Publish<IPatientProfileManipulation>(new
+            {
+                Id = id,
+                patientProfileDto.FirstName,
+                patientProfileDto.LastName,
+                patientProfileDto.MiddleName,
+                patientProfileDto.IsLinkedToAccount,
+                patientProfileDto.AccountId
+            });
         }
     }
 }

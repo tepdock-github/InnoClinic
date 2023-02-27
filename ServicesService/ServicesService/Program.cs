@@ -11,7 +11,6 @@ namespace ServicesService
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             #region Services
             var connectionString = builder.Configuration.GetConnectionString("sqlConnection");
             builder.Services.AddAutoMapper(typeof(Program));
@@ -19,6 +18,7 @@ namespace ServicesService
             builder.Services.ConfigureServiceServices();
             builder.Services.ConfigureSpecializationServices();
             builder.Services.ConfigureCategoryServices();
+
             builder.Services.AddControllers();
 
             builder.Services.AddAuthorization();
@@ -42,16 +42,16 @@ namespace ServicesService
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            #region Middlewares/pipeline
             if (app.Environment.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseHsts();
             }
-            app.ConfigureExceptionHandler();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -65,6 +65,7 @@ namespace ServicesService
             app.UseSwaggerUI();
 
             app.Run();
+            #endregion
         }
     }
 }

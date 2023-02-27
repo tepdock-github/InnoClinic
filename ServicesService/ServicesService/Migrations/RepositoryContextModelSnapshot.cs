@@ -21,6 +21,26 @@ namespace ServicesService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ServicesService.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TimeSlotSize")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceCategories");
+                });
+
             modelBuilder.Entity("ServicesService.Domain.Entities.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -54,26 +74,6 @@ namespace ServicesService.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("ServicesService.Domain.Entities.ServiceCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeSlotSize")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceCategories");
-                });
-
             modelBuilder.Entity("ServicesService.Domain.Entities.Specialization", b =>
                 {
                     b.Property<int>("Id")
@@ -96,7 +96,7 @@ namespace ServicesService.Migrations
 
             modelBuilder.Entity("ServicesService.Domain.Entities.Service", b =>
                 {
-                    b.HasOne("ServicesService.Domain.Entities.ServiceCategory", "ServiceCategory")
+                    b.HasOne("ServicesService.Domain.Entities.Category", "ServiceCategory")
                         .WithMany("Services")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -113,7 +113,7 @@ namespace ServicesService.Migrations
                     b.Navigation("Specialization");
                 });
 
-            modelBuilder.Entity("ServicesService.Domain.Entities.ServiceCategory", b =>
+            modelBuilder.Entity("ServicesService.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Services");
                 });
