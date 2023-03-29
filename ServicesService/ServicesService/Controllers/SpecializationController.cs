@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Filters;
 using ServicesService.ServicesInterfaces;
+using System.Data;
 
 namespace ServicesService.Controklers
 {
@@ -40,6 +42,7 @@ namespace ServicesService.Controklers
         /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> CreateSpecialization([FromBody] SpecializationManipulationDto specializationDto)
         {
             var specToReturn = await _servicesManager.CreateSpecialization(specializationDto);
@@ -55,6 +58,7 @@ namespace ServicesService.Controklers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> EditSpecialization(int id,
             [FromBody] SpecializationManipulationDto specializationDto)
         {

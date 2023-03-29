@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Domain.RequestFeatures;
 using ProfilesService.Filters;
@@ -27,6 +28,7 @@ namespace ProfilesService.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> CreateDoctorProfile([FromBody] DoctorProfileManipulationDto doctorProfileDto)
         {
             var profile = await _doctorProfile.CreateDoctorProfile(doctorProfileDto);
@@ -36,6 +38,7 @@ namespace ProfilesService.Controllers
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> UpdateDoctorProfile(int id, [FromBody] DoctorProfileManipulationDto doctorProfileDto)
         {
             await _doctorProfile.UpdaeDoctorProfile(id, doctorProfileDto);
@@ -44,6 +47,7 @@ namespace ProfilesService.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> DeleteDoctorProfile(int id)
         {
             await _doctorProfile.DeleteDoctorProfile(id);

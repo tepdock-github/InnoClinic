@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Filters;
 using ServicesService.ServicesInterfaces;
@@ -40,6 +41,7 @@ namespace ServicesService.Controklers
         /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> CreaeteService([FromBody] ServicesManipulationDto serviceDto)
         {
             var serviceToReturn = await _servicesManager.CreateService(serviceDto);
@@ -55,6 +57,7 @@ namespace ServicesService.Controklers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> EditService(int id, [FromBody] ServicesManipulationDto service)
         {
             await _servicesManager.EditService(id, service);

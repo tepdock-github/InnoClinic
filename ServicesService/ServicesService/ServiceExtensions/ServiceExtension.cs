@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer4;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ServicesService.Data;
 using ServicesService.Domain;
@@ -19,6 +20,44 @@ namespace ServicesService.ServiceExtensions
                     Version = "v1",
                     Title = "Service's service"
                 });
+
+                s.AddSecurityDefinition("oath2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                       Password = new OpenApiOAuthFlow
+                       {
+                           AuthorizationUrl = new Uri("http://localhost:5010/connect/authorize"),
+                           TokenUrl = new Uri("http://localhost:5010/connect/token"),
+                           Scopes = new Dictionary<string, string>
+                           {
+                               {"gatewayAPI", "Gateway API"},
+                               { IdentityServerConstants.StandardScopes.OpenId, "OpenID Connect" },
+                               { IdentityServerConstants.StandardScopes.Profile, "User profile" },
+                               { IdentityServerConstants.StandardScopes.Email, "User email" },
+                               { IdentityServerConstants.StandardScopes.OfflineAccess, "Offline access" }
+                           }
+                       }
+                    }
+                });
+
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "oath2"
+                            }
+                        },
+                        new [] { "gatewayAPI", IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,
+                            IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OfflineAccess }
+                    }
+                });
+
             });
         }
 

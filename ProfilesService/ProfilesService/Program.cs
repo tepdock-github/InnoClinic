@@ -36,6 +36,31 @@ namespace ProfilesService
                 opt.SuppressModelStateInvalidFilter = true;
             });
 
+            builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://auth-api:80";
+                    options.RequireHttpsMetadata = false;
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:7111", "http://gateway:80")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
+
             builder.Services.ConfigureSwagger();
             builder.Services.AddSwaggerGen(s =>
             {
@@ -57,9 +82,11 @@ namespace ProfilesService
             }
             else
             {
-                app.UseHsts();
+                //app.UseHsts();
             }
             app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 

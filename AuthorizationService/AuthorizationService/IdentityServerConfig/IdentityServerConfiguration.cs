@@ -22,7 +22,7 @@ namespace AuthorizationService.IdentityServerConfig
                     AccessTokenLifetime = 1200, // 20 minutes
                     AllowRememberConsent = true,
                     RequireConsent = true,
-                    RedirectUris = { "https://localhost:5000/connect/userinfo" }
+                    RedirectUris = { "http://services-api:80/gateway/services" }
                 }
             };
 

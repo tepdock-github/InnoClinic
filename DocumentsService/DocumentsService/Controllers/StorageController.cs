@@ -1,4 +1,5 @@
 ﻿using DocumentsService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentsService.Controllers
@@ -19,10 +20,12 @@ namespace DocumentsService.Controllers
             Ok(await _blob.GetAllBlobsAsync());
 
         [HttpPost("upload")]
+        [Authorize]
         public async Task<IActionResult> Upload(IFormFile file) =>
             Ok(await _blob.UploadFileAsync(file));
 
         [HttpGet("{filename}")]
+        [Authorize(Roles = "Doctor, Receptionist")]
         public async Task<IActionResult> Download(string filename)
         {
             var file = await _blob.DownloadDtoAsync(filename);
@@ -31,6 +34,7 @@ namespace DocumentsService.Controllers
         }
 
         [HttpDelete("filename")]
+        [Authorize(Roles = "Doctor, Receptionist")]
         public async Task<IActionResult> Delete(string filename)
         {
             await _blob.DeleteFileDto(filename);
