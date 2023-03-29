@@ -30,6 +30,9 @@ namespace Appoitments.Data.Repositories
         public async Task<IEnumerable<Appoitment>> GetAppoitmentsByPatient(int patientId, bool trackChanges) =>
             await FindByCondition(a => a.PatientId.Equals(patientId), trackChanges).ToListAsync();
 
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsByDoctor(int doctorId, bool trackChanges) =>
+            await FindByCondition(a => a.DoctorId.Equals(doctorId), trackChanges).ToListAsync();
+
         public async Task<IEnumerable<Appoitment>> GetAppoitmentsScheduleByDocrot(int doctorId, bool trackChanges) =>
             await FindByCondition(a => a.DoctorId.Equals(doctorId) && a.isApproved == true, trackChanges)
             .ToListAsync();
@@ -37,5 +40,8 @@ namespace Appoitments.Data.Repositories
         public async Task<Appoitment?> GetAppoitmentId(int id, bool trackChanges) =>
             await FindByCondition(a => a.Id.Equals(id), trackChanges)
             .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsByServiceId(int serviceId, bool trackChanges) =>
+            await FindByCondition(a => a.ServiceId.Equals(serviceId), trackChanges).ToListAsync();
     }
 }

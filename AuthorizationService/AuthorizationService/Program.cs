@@ -4,8 +4,10 @@ using Authorization.Domain.Interfaces;
 using Authorization.Domain.Models;
 using AuthorizationService;
 using AuthorizationService.IdentityServerConfig;
+using CustomExceptionMiddleware;
+using EmailService;
+using EmailService.Services;
 using FluentValidation.AspNetCore;
-using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -37,9 +39,16 @@ namespace AuthorizationAPI
                 .AddAspNetIdentity<Account>()
                 .AddInMemoryClients(IdentityServerConfiguration.GetClients())
                 .AddInMemoryIdentityResources(IdentityServerConfiguration.GetIdentityResources())
-                .AddInMemoryApiResources(new List<ApiResource>())
+                .AddInMemoryApiResources(IdentityServerConfiguration.GetApiResources())
                 .AddProfileService<CustomProfile>()
+                .AddInMemoryApiScopes(IdentityServerConfiguration.GetApiScopes())
                 .AddDeveloperSigningCredential();
+
+            var emailConfig = builder.Configuration
+                .GetSection("EmailConfig")
+                .Get<EmailConfiguration>();
+            builder.Services.AddSingleton(emailConfig);
+            builder.Services.AddScoped<IEmailService, EmailService.Services.EmailService>();
 
             builder.Services.AddControllers()
                 .AddFluentValidation(s => s.RegisterValidatorsFromAssemblyContaining<Program>());
@@ -62,17 +71,14 @@ namespace AuthorizationAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseIdentityServer();
 
             app.MapControllers();
             app.UseSwagger();

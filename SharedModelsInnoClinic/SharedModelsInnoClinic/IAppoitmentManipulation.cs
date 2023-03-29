@@ -1,4 +1,4 @@
-﻿namespace SharedModels.Interfaces
+﻿namespace SharedModelsInnoClinic
 {
     public interface IAppoitmentManipulation
     {

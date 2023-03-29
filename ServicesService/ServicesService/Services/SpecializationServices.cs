@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using CustomExceptionMiddleware.Exceptions;
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
-using ServicesService.ServiceExtensions.Exceptions;
 using ServicesService.ServicesInterfaces;
 
 namespace ServicesService.Services

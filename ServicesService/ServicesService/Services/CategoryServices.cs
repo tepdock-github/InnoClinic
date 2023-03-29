@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
+using CustomExceptionMiddleware.Exceptions;
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
-using ServicesService.ServiceExtensions.Exceptions;
 using ServicesService.ServicesInterfaces;
-using System.Web.Http;
 
 namespace ServicesService.Services
 {

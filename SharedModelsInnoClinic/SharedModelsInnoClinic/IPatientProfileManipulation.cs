@@ -1,4 +1,4 @@
-﻿namespace SharedModels
+﻿namespace SharedModelsInnoClinic
 {
     public interface IPatientProfileManipulation
     {

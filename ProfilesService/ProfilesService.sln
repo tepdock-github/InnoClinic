@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfilesService.Domain", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileService.Data", "ProfileService.Data\ProfileService.Data.csproj", "{58FA56D4-CEB6-41F3-A710-20BB1F241931}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedModels", "SharedModels\SharedModels.csproj", "{CD91C013-7687-49B2-A22F-734AA47D628A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{58FA56D4-CEB6-41F3-A710-20BB1F241931}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58FA56D4-CEB6-41F3-A710-20BB1F241931}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58FA56D4-CEB6-41F3-A710-20BB1F241931}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD91C013-7687-49B2-A22F-734AA47D628A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD91C013-7687-49B2-A22F-734AA47D628A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD91C013-7687-49B2-A22F-734AA47D628A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD91C013-7687-49B2-A22F-734AA47D628A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
