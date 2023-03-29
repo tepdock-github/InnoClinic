@@ -1,0 +1,91 @@
+services:
+  gateway:
+    container_name: gateway
+    build: ./GatewayAPI
+    ports: 
+     - "7111:80"
+    
+  mssql-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql-db
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Adminxyz22
+
+  mongo-db:
+    image: mongo
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  azurite-db:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite-db
+    ports:
+      - 10000:10000
+      - 10001:10001
+      - 10002:10002
+ 
+  services-api:
+    build: ./ServicesService
+    container_name: services-api
+    ports:
+      - "5100:80"
+    depends_on:
+      - "mssql-db"
+      - "rabbitmq"
+    
+  appoitments-api:
+    build: ./AppointmentsService
+    container_name: appoitments-api
+    ports:
+      - "5292:80"
+    depends_on:
+      - "mssql-db"
+      - "rabbitmq"
+    
+  auth-api:
+    build: ./AuthorizationService
+    container_name: auth-api
+    ports:
+      - "5010:80"
+    depends_on:
+      - "mssql-db"
+      - "rabbitmq"
+    
+  profiles-api:
+    build: ./ProfilesService
+    container_name: profiles-api
+    ports:
+      - "5056:80"
+    depends_on:
+      - "mssql-db"
+      - "rabbitmq"
+
+  offices-api:
+    build: ./OfficesService
+    container_name: offices-api
+    ports:
+      - "5261:80"
+    depends_on:
+      - "mongo-db"
+      - "rabbitmq"
+    
+  storage-api:
+    build: ./DocumentsService
+    container_name: storage-api
+    ports:
+      - "5097:80"
+    depends_on:
+      - "azurite-db"
+      - "rabbitmq"
+ 

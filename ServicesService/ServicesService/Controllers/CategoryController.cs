@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServicesService.Domain.DataTransferObjects;
 using ServicesService.Filters;
 using ServicesService.ServicesInterfaces;
+using System.Data;
 
 namespace ServicesService.Controklers
 {
@@ -41,6 +43,7 @@ namespace ServicesService.Controklers
         /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryManipulationDto categoryDto)
         {
             var categoryToReturn = await _servicesManager.CreateCategory(categoryDto);
@@ -54,6 +57,7 @@ namespace ServicesService.Controklers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             await _servicesManager.DeleteCategory(id);
@@ -70,6 +74,7 @@ namespace ServicesService.Controklers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> EditCategory(int id, [FromBody] CategoryManipulationDto categoryDto)
         {
             await _servicesManager.EditCategory(id, categoryDto);

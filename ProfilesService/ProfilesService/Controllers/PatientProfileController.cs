@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Domain.RequestFeatures;
 using ProfilesService.Filters;
 using ProfilesService.Services.Interfaces;
+using System.Data;
 
 namespace ProfilesService.Controllers
 {
@@ -18,15 +20,18 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> GetAllPatientsProfiles([FromQuery] PatientParameters patientParameters)=>
             Ok(await _patientProfile.GetPatientProfiles(patientParameters));
 
         [HttpGet("{id}", Name = "GetPatientProfileById")]
+        [Authorize]
         public async Task<IActionResult> GetPatientProfileById(int id) =>
             Ok(await _patientProfile.GetPatientProfile(id));
 
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist, Patient")]
         public async Task<IActionResult> CreatePatientProfile([FromBody] PatientProfileManipulationDto patientProfileDto)
         {
             var profile = await _patientProfile.CreatePatientProfile(patientProfileDto);
@@ -36,6 +41,7 @@ namespace ProfilesService.Controllers
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist, Patient")]
         public async Task<IActionResult> UpdatePatientProfile(int id, 
             [FromBody] PatientProfileManipulationDto patientProfileDto)
         {
@@ -45,6 +51,7 @@ namespace ProfilesService.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist, Patient")]
         public async Task<IActionResult> DeletePatientProfile(int id)
         {
             await _patientProfile.DeletePatientProfile(id);

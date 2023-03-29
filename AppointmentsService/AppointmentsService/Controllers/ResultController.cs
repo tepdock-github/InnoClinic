@@ -1,12 +1,14 @@
 ﻿using AppointmentsService.Filters;
 using AppointmentsService.Services.Interfaces;
 using Appoitments.Domain.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentsService.Controllers
 {
     [Route("/api/results")]
     [ApiController]
+    [Authorize]
     public class ResultController : ControllerBase
     {
         private readonly IResultService _resultService;
@@ -40,6 +42,7 @@ namespace AppointmentsService.Controllers
         /// <param name="doctorId"></param>
         /// <returns></returns>
         [HttpGet("doctor/{doctorId}")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetResultsByDoctors(int doctorId) =>
             Ok(await _resultService.GetResultsByDoctor(doctorId));
 
@@ -50,6 +53,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> CreateResult([FromBody] ResultManipulationDto result)
         {
 
@@ -64,6 +68,7 @@ namespace AppointmentsService.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> DeleteResult(int id)
         {
             await _resultService.DeleteResult(id);
@@ -79,6 +84,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> UpdateResult(int id, [FromBody] ResultManipulationDto resultDto)
         {
             await _resultService.UpdateResult(id, resultDto);

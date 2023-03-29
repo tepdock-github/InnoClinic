@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using DocumentsService.Consumers;
+using MassTransit;
+using Microsoft.OpenApi.Models;
 
 namespace DocumentsService.ServicesExtensions
 {
@@ -12,6 +14,22 @@ namespace DocumentsService.ServicesExtensions
                 {
                     Version = "v1",
                     Title = "Service's service"
+                });
+            });
+        }
+
+        public static void ConfigureMassTransit(this IServiceCollection services) 
+        {
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<ResultManipulationConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ReceiveEndpoint("IResultManipulation", e =>
+                    {
+                        e.ConfigureConsumer<ResultManipulationConsumer>(context);
+                    });
                 });
             });
         }

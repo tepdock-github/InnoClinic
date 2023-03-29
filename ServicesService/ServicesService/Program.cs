@@ -1,8 +1,8 @@
+using CustomExceptionMiddleware;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using ServicesService.Filters;
 using ServicesService.ServiceExtensions;
-using CustomExceptionMiddleware;
 
 namespace ServicesService
 {
@@ -23,6 +23,17 @@ namespace ServicesService
             builder.Services.AddControllers();
 
             builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:80";
+                    options.RequireHttpsMetadata = false;
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
 
             builder.Services.ConfigureSqlContext(builder.Configuration);
             builder.Services.ConfigureRepositoryManager();
@@ -44,6 +55,19 @@ namespace ServicesService
             {
                 x.UsingRabbitMq();
             });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:7111", "http://gateway:80")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
+
             #endregion
 
             var app = builder.Build();
@@ -55,20 +79,27 @@ namespace ServicesService
             }
             else
             {
-                app.UseHsts();
+               // app.UseHsts();
             }
             app.UseMiddleware<ExceptionMiddleware>();
+            app.UseCors("CorsPolicy");
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.MapControllers();
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.OAuthClientId("authMicroservice");
+                c.OAuthClientSecret("innoClinicSecret");
+                c.OAuthUsePkce();
+            });
 
             app.Run();
             #endregion

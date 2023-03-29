@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import AppoitmentsTable from '../../components/AppoitmentsTable/AppoitmentsTable';
 import { cardHeaderStyles } from './styles';
 
 const AppoitmentsList = () => {
@@ -39,12 +39,7 @@ const AppoitmentsList = () => {
     };
 
     const getContent = () => (
-        <Typography
-            align='center'
-            sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem' }}
-        >
-            No appoitments
-        </Typography>
+        <AppoitmentsTable/>
     );
 
     return (

@@ -5,6 +5,7 @@ using Appoitments.Domain.Entities;
 using Appoitments.Domain.Interfaces;
 using AutoMapper;
 using MassTransit;
+using SharedModelsInnoClinic;
 
 namespace AppointmentsService.Services.Implementation
 {
@@ -12,11 +13,14 @@ namespace AppointmentsService.Services.Implementation
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ResultService(IRepositoryManager repositoryManager, IMapper mapper)
+        public ResultService(IRepositoryManager repositoryManager, IMapper mapper,
+            IPublishEndpoint publishEndpoint)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<ResultDto> CreateResult(ResultManipulationDto resultDto)
@@ -29,6 +33,15 @@ namespace AppointmentsService.Services.Implementation
 
             _repositoryManager.ResultRepository.CreateResult(result);
             await _repositoryManager.SaveAsync();
+
+            await _publishEndpoint.Publish<IResultManipulation>(new
+            {
+                resultDto.Complaints,
+                resultDto.Conclusion,
+                resultDto.Recomendations,
+                resultDto.Diagnosis,
+                resultDto.AppoitmentId
+            });
 
             return _mapper.Map<ResultDto>(result);
         }
@@ -75,6 +88,15 @@ namespace AppointmentsService.Services.Implementation
             var result = await _repositoryManager.ResultRepository.GetResultById(id, trackChanges: false);
             if (result == null)
                 throw new NotFoundException("result with id: " + id + " wasnt found");
+
+            await _publishEndpoint.Publish<IResultManipulation>(new
+            {
+                resultDto.Complaints,
+                resultDto.Conclusion,
+                resultDto.Recomendations,
+                resultDto.Diagnosis,
+                resultDto.AppoitmentId
+            });
 
             _mapper.Map(resultDto, result);
             await _repositoryManager.SaveAsync();

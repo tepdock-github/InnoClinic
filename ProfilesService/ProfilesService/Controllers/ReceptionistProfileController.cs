@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Filters;
 using ProfilesService.Services.Interfaces;
+using System.Data;
 
 namespace ProfilesService.Controllers
 {
@@ -17,15 +19,18 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> GetAllReceptionistsProfiles() =>
             Ok(await _receptionistProfile.GetReceptionistProfiles());
 
         [HttpGet("{id}", Name = "GetReceptionistProfileById")]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> GetReceptionistProfileById(int id) =>
             Ok(await _receptionistProfile.GetReceptionistProfile(id));
 
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> CreateReceptionistProfile([FromBody] ReceptionistProfileManipulationDto 
             receptionistProfile)
         {
@@ -36,6 +41,7 @@ namespace ProfilesService.Controllers
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidateModelFilter))]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> UpdateReceptionistProfile(int id,
             [FromBody] ReceptionistProfileManipulationDto receptionistProfile)
         {
@@ -45,6 +51,7 @@ namespace ProfilesService.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> DeleteReceptionistProfile(int id)
         {
             await _receptionistProfile.DeleteReceptionistProfile(id);

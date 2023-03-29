@@ -1,12 +1,14 @@
 ﻿using AppointmentsService.Filters;
 using AppointmentsService.Services.Interfaces;
 using Appoitments.Domain.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentsService.Controllers
 {
     [Route("/api/appoitments")]
     [ApiController]
+    [Authorize]
     public class AppoitmentController : ControllerBase
     {
         private readonly IAppoitmentService _appoitmentService;
@@ -39,6 +41,7 @@ namespace AppointmentsService.Controllers
         /// <param name="doctorId"></param>
         /// <returns></returns>
         [HttpGet("doctor-history/{doctorId}")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetDoctorHistory(int doctorId) =>
             Ok(await _appoitmentService.GetDoctorHistory(doctorId));
 
@@ -48,6 +51,7 @@ namespace AppointmentsService.Controllers
         /// <param name="patientId"></param>
         /// <returns></returns>
         [HttpGet("patient-history/{patientId}")]
+        [Authorize(Roles = "Receptionist, Patient")]
         public async Task<IActionResult> GetPatientHistory(int patientId) =>
          Ok(await _appoitmentService.GetPatientHistory(patientId));
 
@@ -57,6 +61,7 @@ namespace AppointmentsService.Controllers
         /// <param name="doctorId"></param>
         /// <returns></returns>
         [HttpGet("doctor-schedule/{doctorId}")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetDoctorSchedule(int doctorId) =>
          Ok(await _appoitmentService.GetDoctorSchedule(doctorId));
 
@@ -66,6 +71,7 @@ namespace AppointmentsService.Controllers
         /// <param name="patientId"></param>
         /// <returns></returns>
         [HttpGet("patient-schedule/{patientId}")]
+        [Authorize(Roles = "Receptionist, Patient")]
         public async Task<IActionResult> GetPatientAppoitments(int patientId) =>
             Ok(await _appoitmentService.GetPatientAppoitments(patientId));
 

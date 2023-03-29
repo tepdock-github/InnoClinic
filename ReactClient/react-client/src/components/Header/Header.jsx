@@ -22,7 +22,7 @@ const Header = ({ title }) => {
         <Box sx={headerStyles.wrapper}>
             <Box sx={headerStyles.topRow}>
                 <NotificarionBell iconColor={"white"} />
-                <BackgroundLetterAvatars firstName={"N"} lastName={"H"} />
+                <BackgroundLetterAvatars firstName={"A"} lastName={"H"} />
             </Box>
             <Box sx={headerStyles.middleRow}>
                 <Typography
