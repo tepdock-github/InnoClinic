@@ -10,6 +10,7 @@ namespace AuthorizationService.IdentityServerConfig
             {
                 new Client
                 {
+                    ClientName = "authMicroservice",
                     ClientId= "authMicroservice",
                     ClientSecrets = new [] {new Secret("innoClinicSecret".Sha512())},
                     AllowedGrantTypes = { GrantType.ClientCredentials, GrantType.ResourceOwnerPassword, GrantType.Implicit },
@@ -22,7 +23,7 @@ namespace AuthorizationService.IdentityServerConfig
                     AccessTokenLifetime = 1200, // 20 minutes
                     AllowRememberConsent = true,
                     RequireConsent = true,
-                    RedirectUris = { "http://services-api:80/gateway/services" }
+                    RedirectUris = { "http://auth-api:80/.well-known/openid-configuration" }
                 }
             };
 

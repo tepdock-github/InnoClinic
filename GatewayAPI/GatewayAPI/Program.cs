@@ -14,18 +14,10 @@ namespace GatewayAPI
             builder.Services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://auth-api:80";
+                    options.Authority = "http://auth-api";
                     options.RequireHttpsMetadata = false;
-
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateAudience = true,
-                        ValidAudience = "gatewayAPI"
-                    };
+                    options.Audience = "gatewayAPI";
                 });
-
-            builder.Logging.AddConsole();
-            builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
             builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
             builder.Services.AddOcelot(builder.Configuration);
@@ -37,6 +29,8 @@ namespace GatewayAPI
             #region Middlewares/pipeline
 
             app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseOcelot();
 
 

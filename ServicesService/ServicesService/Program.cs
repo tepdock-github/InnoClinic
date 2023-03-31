@@ -26,13 +26,9 @@ namespace ServicesService
             builder.Services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:80";
+                    options.Authority = "http://auth-api";
                     options.RequireHttpsMetadata = false;
-
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
+                    options.Audience = "gatewayAPI";
                 });
 
             builder.Services.ConfigureSqlContext(builder.Configuration);

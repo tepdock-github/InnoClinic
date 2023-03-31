@@ -28,7 +28,15 @@ namespace OfficesService
             builder.Services.ConfigureOfficeService();
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddControllers();
+
             builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://auth-api";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "gatewayAPI";
+                });
 
             builder.Services.Configure<ApiBehaviorOptions>(opt =>
             {
@@ -59,6 +67,7 @@ namespace OfficesService
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

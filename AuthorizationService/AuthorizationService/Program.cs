@@ -35,7 +35,10 @@ namespace AuthorizationAPI
                 .AddEntityFrameworkStores<RepositoryContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.AddIdentityServer()
+            builder.Services.AddIdentityServer(x =>
+            {
+                x.IssuerUri = "auth-api";
+            })
                 .AddAspNetIdentity<Account>()
                 .AddInMemoryClients(IdentityServerConfiguration.GetClients())
                 .AddInMemoryIdentityResources(IdentityServerConfiguration.GetIdentityResources())
