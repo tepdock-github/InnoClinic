@@ -24,6 +24,17 @@ namespace GatewayAPI
                     };
                 });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
             builder.Logging.AddConsole();
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
@@ -35,6 +46,8 @@ namespace GatewayAPI
             var app = builder.Build();
 
             #region Middlewares/pipeline
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseOcelot();

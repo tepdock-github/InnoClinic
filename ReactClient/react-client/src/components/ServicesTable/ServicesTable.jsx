@@ -16,7 +16,7 @@ const ServiceTable = ({onError}) => {
 
     useEffect(() => {
         const getServices = async () => {
-            const response = await fetch('https://localhost:7196/api/services');
+            const response = await fetch('http://localhost:7111/gateway/services');
             setServices(await response.json());
         }
         getServices();

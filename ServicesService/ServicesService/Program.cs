@@ -26,7 +26,7 @@ namespace ServicesService
             builder.Services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:80";
+                    options.Authority = "http://auth-api:80";
                     options.RequireHttpsMetadata = false;
 
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
