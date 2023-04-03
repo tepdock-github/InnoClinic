@@ -7,31 +7,7 @@ import Typography from '@mui/material/Typography';
 import { cardHeaderStyles } from './styles';
 import Filter from '../../components/common/Filter/Filter';
 import Button from '@mui/material/Button';
-
-const specializations = [
-    {
-        id: 0,
-        title: 'aboba'
-    },
-    {
-        id: 1,
-        title: 'obabo'
-    }
-]
-const offices = [
-    {
-        id: 0,
-        title: 'Gukova street 29'
-    },
-    {
-        id: 1,
-        title: 'Lebno 345'
-    },
-    {
-        id: 2,
-        title: '1tyt'
-    }
-]
+import DoctorsTable from "../../components/DoctorsTable/DoctorsTable";
 
 const Doctors = () => {
     const getHeader = () => {
@@ -44,8 +20,8 @@ const Doctors = () => {
                     onChange={(event) => handleChange(event.target.value)}
                     searchBarWidth='630px'
                 />
-                <Filter items={specializations} label={"specialization"}/>
-                <Filter items={offices} label={"office"}/>
+                {/* <Filter items={specializations} label={"specialization"}/>
+                <Filter items={offices} label={"office"}/> */}
                 <Button>
                     Apply
                 </Button>
@@ -54,11 +30,7 @@ const Doctors = () => {
     }
 
     const getContent = () => (
-        <Typography
-            align='center'
-            sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem' }}>
-            No Doctors yet
-        </Typography>
+        <DoctorsTable/>
     )
 
     return (
