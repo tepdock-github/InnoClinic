@@ -15,11 +15,10 @@ const DataTable = ({
             columns={columns}
             loading={loading}
             sx={sx}
-            checkboxSelection
             pagination
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[2, 5, 10]}
+            rowsPerPageOptions={[5]}
         />
     );
 };
