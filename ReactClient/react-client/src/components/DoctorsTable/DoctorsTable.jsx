@@ -1,34 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import DataTable from '../common/DataTable/DataTable'
+import React, { useMemo, useState, useEffect } from 'react';
+import MaterialReactTable from 'material-react-table';
+import { Box, IconButton } from '@mui/material';
+import { Email } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
-const columns = [
-    {field: 'firstName', headerName: 'First name', width: 150},
-    {field: 'lastName', headerName: 'Last name', width: 150},
-    {field: 'specializationName', headerName: 'Specialization name', width: 150}
-];
+const DoctorsTable = () => {
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: 'firstName',
+                header: 'First name',
+            },
+            {
+                accessorKey: 'lastName',
+                header: 'Last name'
+            },
+            {
+                accessorKey: 'specializationName',
+                header: 'Specialization name'
+            },
+            {
+                accessorKey: 'status',
+                header: 'Status'
+            }
+        ], []
+    );
+    const [data, setData] = useState([]);
 
-const serviceTableStyle = {
-    height: '450px'
-};
-
-const DoctorsTable = ({onError}) => {
-    const [doctors, setDoctors] = useState([]);
 
     useEffect(() => {
-        const getDoctors = async () => {
-            const response = await fetch('http://localhost:7111/gateway/doctors');
-            setDoctors(await response.json());
+        const fetchData = async () => {
+            const respDoctors = await fetch('http://localhost:7111/gateway/doctors');
+            const resultDoctors = await respDoctors.json();
+            setData([...resultDoctors]);
         }
-        getDoctors();
+        fetchData();
     }, []);
 
     return (
-        <DataTable 
-            rows={doctors}
-            columns={columns}
-            loading={!doctors.length}
-            sx={serviceTableStyle}
-        />
+        <>
+            <MaterialReactTable
+                columns={columns}
+                data={data}
+                enableRowActions
+                renderRowActions={({ row }) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+                        <IconButton
+                            color="primary"
+                            onClick={() =>
+                                window.open(
+                                    `mailto:kolodpoland@gmail.com?subject=Hello ${row.original.firstName}!`,
+                                )
+                            }
+                        >
+                            <Email />
+                        </IconButton>
+                        <Link to={`/doctors/${row.original.id}`}>
+                            <Button variant='text' color='primary' size='small'>
+                                View Details
+                            </Button>
+                        </Link>
+                    </Box>
+                )}
+            />
+        </>
     );
 };
 

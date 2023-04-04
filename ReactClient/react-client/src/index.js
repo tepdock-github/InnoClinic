@@ -8,6 +8,7 @@ import ServicesList from './pages/Services/ServicesList';
 import AppoitmentsList from './pages/Appoitments/AppoitmentsList';
 import Doctors from './pages/Doctors/DoctorsList';
 import ResultsList from './pages/Results/ResultsList';
+import DoctorDetailsModal from './components/DoctorsTable/DoctorDetailModal';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
             <Route path='/services' element={<ServicesList/>}/>
             <Route path='/appoitments' element={<AppoitmentsList/>}/> 
             <Route path='/doctors' element={<Doctors/>}/>
+            <Route path='/doctors/:id' element={<DoctorDetailsModal/>}/>
             <Route path='/medical-results' element={<ResultsList/>}/>
         </Route>
     </Routes>
