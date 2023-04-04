@@ -41,7 +41,7 @@ namespace GatewayAPI
             var app = builder.Build();
 
             #region Middlewares/pipeline
-
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
