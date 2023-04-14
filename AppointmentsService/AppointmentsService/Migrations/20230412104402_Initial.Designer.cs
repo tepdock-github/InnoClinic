@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppointmentsService.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230202123450_Initial")]
+    [Migration("20230412104402_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -37,14 +37,22 @@ namespace AppointmentsService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DoctorEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DoctorFirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DoctorLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -52,8 +60,8 @@ namespace AppointmentsService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PatientLastName")
                         .IsRequired()
@@ -88,11 +96,13 @@ namespace AppointmentsService.Migrations
                         {
                             Id = 1,
                             Date = "20 jan 2022",
+                            DoctorEmail = "",
                             DoctorFirstName = "Doctor1_testData",
-                            DoctorId = 1,
+                            DoctorId = new Guid("f410b3c0-e1f3-45a9-98d0-302f55087162"),
                             DoctorLastName = "Doctor1_testData",
+                            PatientEmail = "",
                             PatientFirstName = "Patient1_testData",
-                            PatientId = 1,
+                            PatientId = new Guid("c55f9140-144c-4424-b84a-ea0b1131597b"),
                             PatientLastName = "Patient1_testData",
                             ResultId = 1,
                             ServiceId = 1,
@@ -105,11 +115,13 @@ namespace AppointmentsService.Migrations
                         {
                             Id = 2,
                             Date = "20 jan 2024",
+                            DoctorEmail = "",
                             DoctorFirstName = "Doctor2_testData",
-                            DoctorId = 2,
+                            DoctorId = new Guid("97911453-a21f-4f87-a02b-1640292f432c"),
                             DoctorLastName = "Doctor2_testData",
+                            PatientEmail = "",
                             PatientFirstName = "Patient1_testData",
-                            PatientId = 1,
+                            PatientId = new Guid("cbc65c96-f0cc-484b-b711-756feb6ff001"),
                             PatientLastName = "Patient1_testData",
                             ServiceId = 1,
                             ServiceName = "Service1_testData",
@@ -121,11 +133,13 @@ namespace AppointmentsService.Migrations
                         {
                             Id = 3,
                             Date = "21 feb 2023",
+                            DoctorEmail = "",
                             DoctorFirstName = "Doctor1_testData",
-                            DoctorId = 1,
+                            DoctorId = new Guid("5a0b16e3-8d2e-4491-b7cc-749049cd65a4"),
                             DoctorLastName = "Doctor1_testData",
+                            PatientEmail = "",
                             PatientFirstName = "Patient2_testData",
-                            PatientId = 2,
+                            PatientId = new Guid("097199fb-bcb3-4fef-b606-acfc0e018dd3"),
                             PatientLastName = "Patient2_testData",
                             ServiceId = 1,
                             ServiceName = "Service1_testData",

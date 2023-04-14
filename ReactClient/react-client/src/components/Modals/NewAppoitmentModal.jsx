@@ -8,107 +8,65 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-const specializations = [
-    {
-        id: 0,
-        title: 'aboba'
-    },
-    {
-        id: 1,
-        title: 'obabo'
-    }
-]
-
-const services = [
-    {
-        id: 0,
-        title: 'service0'
-    },
-    {
-        id: 1,
-        title: 'service1'
-    }
-]
-
-const doctors = [
-    {
-        id: 0,
-        title: 'doctor'
-    },
-    {
-        id: 1,
-        title: 'rotcod'
-    }
-]
-
-const offices = [
-    {
-        id: 0,
-        title: 'Gukova street 29'
-    },
-    {
-        id: 1,
-        title: 'Lebno 345'
-    },
-    {
-        id: 2,
-        title: '1tyt'
-    }
-]
-
-const defaultInputValues = {
-    email: '',
-    password: ''
-}
-
 const NewAppoitmentModal = ({ open, onClose }) => {
-    const [values, setValues] = useState(defaultInputValues);
+
+    const [specializations, setSpecializations] = useState([]);
+    const [services, setServices] = useState([]);
+    const [doctors, setDoctors] = useState([]);
+    const [offices, setOffices] = useState([]);
 
     const modalStyles = {
         inputFields: {
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '20px',
-            marginBottom: '15px',
-            '.MuiFormControl-root': {
-                marginBottom: '20px',
-            },
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: '20px',
+          marginBottom: '15px',
+          '.MuiFormControl-root': {
+            marginBottom: '20px',
+          },
         },
-    };
-
-    const validationSchema = Yup.object().shape({
-        email: Yup.string()
-            .required('Email is required')
-            .email('Email is invalid'),
-        password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(12, 'password must be at most 12 characters'),
-    });
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(validationSchema)
-    })
-
-    const handleChange = (value) => {
-        setValues(value)
-    };
+      };
 
     useEffect(() => {
-        if (open) setValues(defaultInputValues);
-    }, [open])
+        const fetchAllData = async () => {
+            try {
+                const [
+                    specializationsResponse,
+                    servicesResponse,
+                    doctorsResponse,
+                    officesResponse
+                ] = await Promise.all([
+                    fetch('http://localhost:7111/gateway/specializations'),
+                    fetch('http://localhost:7111/gateway/services'),
+                    fetch('http://localhost:7111/gateway/doctors'),
+                    fetch('http://localhost:7111/gateway/offices')
+                ]);
+
+                const specializationsData = await specializationsResponse.json();
+                const servicesData = await servicesResponse.json();
+                const doctorsData = await doctorsResponse.json();
+                const officesData = await officesResponse.json();
+
+                setSpecializations(specializationsData);
+                
+                setServices(servicesData);
+                setDoctors(doctorsData);
+                setOffices(officesData);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        if (open) {
+            fetchAllData();
+        }
+    }, [open]);
 
     const getContent = () => (
         <>
         <Box sx={modalStyles.inputFields}>
-            <Filter items={specializations} label={"specialization"}/>
-            <Filter items={services} label={'service'}/>
             <Filter items={doctors} label={'doctor'}/>
-            <Filter items={offices} label={"office"}/>
             <BasicDatePicker/>
             <BasicTimePicker/>
         </Box>
@@ -125,7 +83,6 @@ const NewAppoitmentModal = ({ open, onClose }) => {
             title="Book an Appoitment"
             subTitle="Choose from below and submit"
             content={getContent()}
-            validate={handleSubmit()}
         >
 
         </BasicModal>

@@ -13,10 +13,20 @@ import { headerStyles } from './styles';
 
 const Header = ({ title }) => {
     const [openSignUp, setOpenSignUp] = useState(false); 
-    const SignUp = () => setOpenSignUp(true);
-
     const [openSignIn, setOpenSignIn] = useState(false);
-    const SignIn = () => setOpenSignIn(true);
+    const handleOpenSignUp = () => {
+        setOpenSignUp(true);
+    }
+    const handleCloseSignUp = () => {
+        setOpenSignUp(false);
+    }
+
+    const handleOpenSignIn = () => {
+        setOpenSignIn(true);
+    }
+    const handleCloseSignIn = () => {
+        setOpenSignIn(false);
+    }
 
     return (
         <Box sx={headerStyles.wrapper}>
@@ -34,19 +44,19 @@ const Header = ({ title }) => {
                     <Button
                         sx={headerStyles.logotButton}
                         variant="contained"
-                        onClick={SignUp}
+                        onClick={handleOpenSignUp}
                         >
                             Sign Up
                     </Button>
-                    <SignUpModal open={openSignUp} onClose={()=>setOpenSignUp(false)} />
+                    <SignUpModal isOpen={openSignUp} onClose={()=>handleCloseSignUp(false)} />
                     <Button
                         sx={headerStyles.logotButton}
                         variant="contained"
-                        onClick={SignIn}
+                        onClick={handleOpenSignIn}
                         >
                             Sign In
                     </Button>
-                    <SignInModal open={openSignIn} onClose={()=>setOpenSignIn(false)}/>
+                    <SignInModal isOpen={openSignIn} onClose={()=>handleCloseSignIn(false)}/>
                     <Tooltip title="help">
                         <IconButton
                             sx={headerStyles.helpIcon}

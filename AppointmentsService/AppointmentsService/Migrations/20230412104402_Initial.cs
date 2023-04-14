@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -18,12 +19,14 @@ namespace AppointmentsService.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PatientFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PatientLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoctorId = table.Column<int>(type: "int", nullable: false),
+                    PatientEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DoctorFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DoctorLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -62,12 +65,12 @@ namespace AppointmentsService.Migrations
 
             migrationBuilder.InsertData(
                 table: "Appoitments",
-                columns: new[] { "Id", "Date", "DoctorFirstName", "DoctorId", "DoctorLastName", "PatientFirstName", "PatientId", "PatientLastName", "ResultId", "ServiceId", "ServiceName", "Time", "isApproved", "isComplete" },
+                columns: new[] { "Id", "Date", "DoctorEmail", "DoctorFirstName", "DoctorId", "DoctorLastName", "PatientEmail", "PatientFirstName", "PatientId", "PatientLastName", "ResultId", "ServiceId", "ServiceName", "Time", "isApproved", "isComplete" },
                 values: new object[,]
                 {
-                    { 1, "20 jan 2022", "Doctor1_testData", 1, "Doctor1_testData", "Patient1_testData", 1, "Patient1_testData", 1, 1, "Service1_testData", "10 am", true, true },
-                    { 2, "20 jan 2024", "Doctor2_testData", 2, "Doctor2_testData", "Patient1_testData", 1, "Patient1_testData", null, 1, "Service1_testData", "10 am", false, false },
-                    { 3, "21 feb 2023", "Doctor1_testData", 1, "Doctor1_testData", "Patient2_testData", 2, "Patient2_testData", null, 1, "Service1_testData", "10 am", true, false }
+                    { 1, "20 jan 2022", "", "Doctor1_testData", new Guid("f410b3c0-e1f3-45a9-98d0-302f55087162"), "Doctor1_testData", "", "Patient1_testData", new Guid("c55f9140-144c-4424-b84a-ea0b1131597b"), "Patient1_testData", 1, 1, "Service1_testData", "10 am", true, true },
+                    { 2, "20 jan 2024", "", "Doctor2_testData", new Guid("f410b3c0-e1f3-45a9-98d0-302f55087162"), "Doctor2_testData", "", "Patient1_testData", new Guid("cbc65c96-f0cc-484b-b711-756feb6ff001"), "Patient1_testData", null, 1, "Service1_testData", "10 am", false, false },
+                    { 3, "21 feb 2023", "", "Doctor1_testData", new Guid("5a0b16e3-8d2e-4491-b7cc-749049cd65a4"), "Doctor1_testData", "", "Patient2_testData", new Guid("c55f9140-144c-4424-b84a-ea0b1131597b"), "Patient2_testData", null, 1, "Service1_testData", "10 am", true, false }
                 });
 
             migrationBuilder.InsertData(

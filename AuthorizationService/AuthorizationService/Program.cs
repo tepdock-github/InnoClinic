@@ -55,6 +55,18 @@ namespace AuthorizationAPI
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:7111")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
+
             builder.Services.ConfigureSwagger();
             builder.Services.AddSwaggerGen(s =>
             {
@@ -72,7 +84,8 @@ namespace AuthorizationAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<ExceptionMiddleware>();
-            app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseRouting();

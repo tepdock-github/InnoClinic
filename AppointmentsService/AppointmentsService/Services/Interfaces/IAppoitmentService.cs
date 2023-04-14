@@ -6,10 +6,10 @@ namespace AppointmentsService.Services.Interfaces
     {
         Task<IEnumerable<AppoitmentDto>> GetAppoitments();
         Task<AppoitmentDto?> GetAppoitmentById(int id);
-        Task<IEnumerable<AppoitmentDto>> GetDoctorHistory(int doctorId);
-        Task<IEnumerable<AppoitmentDto>> GetPatientHistory(int patientId);
-        Task<IEnumerable<AppoitmentDto>> GetDoctorSchedule(int doctorId);
-        Task<IEnumerable<AppoitmentDto>> GetPatientAppoitments(int patientId);
+        Task<IEnumerable<AppoitmentDto>> GetDoctorHistory(Guid doctorId);
+        Task<IEnumerable<AppoitmentDto>> GetPatientHistory(Guid patientId);
+        Task<IEnumerable<AppoitmentDto>> GetDoctorSchedule(Guid doctorId);
+        Task<IEnumerable<AppoitmentDto>> GetPatientAppoitments(Guid patientId);
         Task<AppoitmentDto> CreateAppoitment(AppoitmentManipulationDto appoitmentDto);
         Task UpdateAppoitment(int id, AppoitmentManipulationDto appoitmentDto);
     }

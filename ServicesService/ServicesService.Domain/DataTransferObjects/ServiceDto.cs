@@ -10,8 +10,9 @@ namespace ServicesService.Domain.DataTransferObjects
         public required bool IsActive { get; set; }
 
         public int CategoryId { get; set; }
-        public Category ServiceCategory { get; set; }
+        public string ServiceCategory { get; set; }
 
         public int SpecializationId { get; set; }
+        public string SpecializationName { get; set;}
     }
 }

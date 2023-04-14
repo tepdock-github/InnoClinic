@@ -74,7 +74,15 @@ namespace ServicesService.Services
             if (service == null)
                 throw new NotFoundException("Service with id: " + id + "wasn't found");
 
-            return _mapper.Map<ServiceDto>(service);
+            var serviceDto = _mapper.Map<ServiceDto>(service);
+
+            var category = await _repositoryManager.CategoryRepository.GetCategoryByIdAsync(serviceDto.CategoryId, trackChanges: false);
+            serviceDto.ServiceCategory = category.CategoryName;
+
+            var specialization = await _repositoryManager.SpecializationRepository.GetSpecializationAsync(serviceDto.SpecializationId, trackChanges: false);
+            serviceDto.SpecializationName = specialization.SpecializationName;
+
+            return serviceDto;
         }
 
         public async Task<IEnumerable<ServiceDto>> GetServices()

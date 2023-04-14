@@ -49,28 +49,28 @@ namespace AppointmentsService.Services.Implementation
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetDoctorHistory(int doctorId)
+        public async Task<IEnumerable<AppoitmentDto>> GetDoctorHistory(Guid doctorId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByDoctor(doctorId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetDoctorSchedule(int doctorId)
+        public async Task<IEnumerable<AppoitmentDto>> GetDoctorSchedule(Guid doctorId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsScheduleByDocrot(doctorId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetPatientAppoitments(int patientId)
+        public async Task<IEnumerable<AppoitmentDto>> GetPatientAppoitments(Guid patientId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsByPatient(patientId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetPatientHistory(int patientId)
+        public async Task<IEnumerable<AppoitmentDto>> GetPatientHistory(Guid patientId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByPatient(patientId, trackChanges: false);
 

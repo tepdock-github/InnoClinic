@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const Grouped = ({items, label }) => {
+const Grouped = ({ items, label }) => {
   const options = items.map((option) => {
-    const firstLetter = option.title[0].toUpperCase();
+    const firstLetter = option.title ? option.title[0].toUpperCase() : '';
     return {
       firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
       ...option,

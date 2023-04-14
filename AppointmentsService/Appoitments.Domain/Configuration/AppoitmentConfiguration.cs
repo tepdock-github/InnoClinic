@@ -21,10 +21,10 @@ namespace Appoitments.Domain.Configuration
                     new Appoitment
                     {
                         Id = 1,
-                        PatientId = 1,
+                        PatientId = Guid.NewGuid(),
                         PatientFirstName = "Patient1_testData",
                         PatientLastName = "Patient1_testData",
-                        DoctorId = 1,
+                        DoctorId = Guid.NewGuid(),
                         DoctorFirstName = "Doctor1_testData",
                         DoctorLastName = "Doctor1_testData",
                         ServiceId = 1,
@@ -39,10 +39,10 @@ namespace Appoitments.Domain.Configuration
                     new Appoitment
                     {
                         Id = 2,
-                        PatientId = 1,
+                        PatientId = Guid.NewGuid(),
                         PatientFirstName = "Patient1_testData",
                         PatientLastName = "Patient1_testData",
-                        DoctorId = 2,
+                        DoctorId = Guid.NewGuid(),
                         DoctorFirstName = "Doctor2_testData",
                         DoctorLastName = "Doctor2_testData",
                         ServiceId = 1,
@@ -55,10 +55,10 @@ namespace Appoitments.Domain.Configuration
                     new Appoitment
                     {
                         Id = 3,
-                        PatientId = 2,
+                        PatientId = Guid.NewGuid(),
                         PatientFirstName = "Patient2_testData",
                         PatientLastName = "Patient2_testData",
-                        DoctorId = 1,
+                        DoctorId = Guid.NewGuid(),
                         DoctorFirstName = "Doctor1_testData",
                         DoctorLastName = "Doctor1_testData",
                         ServiceId = 1,
