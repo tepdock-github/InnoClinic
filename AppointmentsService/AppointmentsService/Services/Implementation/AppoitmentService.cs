@@ -33,6 +33,16 @@ namespace AppointmentsService.Services.Implementation
             return _mapper.Map<AppoitmentDto>(appoitment);
         }
 
+        public async Task DeleteAppoitment(int id)
+        {
+            var appoitment = await _repositoryManager.AppoitmentRepository.GetAppoitmentId(id, trackChanges: false);
+            if (appoitment == null)
+                throw new NotFoundException("appoitment with id:" + id + " wasnt found");
+
+            _repositoryManager.AppoitmentRepository.DeleteAppoitment(appoitment);
+            await _repositoryManager.SaveAsync();
+        }
+
         public async Task<AppoitmentDto?> GetAppoitmentById(int id)
         {
             var appoitment = await _repositoryManager.AppoitmentRepository.GetAppoitmentId(id, trackChanges: false);
@@ -49,28 +59,28 @@ namespace AppointmentsService.Services.Implementation
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetDoctorHistory(Guid doctorId)
+        public async Task<IEnumerable<AppoitmentDto>> GetDoctorHistory(string doctorId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByDoctor(doctorId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetDoctorSchedule(Guid doctorId)
+        public async Task<IEnumerable<AppoitmentDto>> GetDoctorSchedule(string doctorId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsScheduleByDocrot(doctorId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetPatientAppoitments(Guid patientId)
+        public async Task<IEnumerable<AppoitmentDto>> GetPatientAppoitments(string patientId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsByPatient(patientId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<AppoitmentDto>>(appoitments);
         }
 
-        public async Task<IEnumerable<AppoitmentDto>> GetPatientHistory(Guid patientId)
+        public async Task<IEnumerable<AppoitmentDto>> GetPatientHistory(string patientId)
         {
             var appoitments = await _repositoryManager.AppoitmentRepository.GetAppoitmentsHistoryByPatient(patientId, trackChanges: false);
 

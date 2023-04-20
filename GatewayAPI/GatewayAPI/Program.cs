@@ -14,14 +14,9 @@ namespace GatewayAPI
             builder.Services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://auth-api:80";
+                    options.Authority = "http://auth-api";
                     options.RequireHttpsMetadata = false;
-
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateAudience = true,
-                        ValidAudience = "gatewayAPI"
-                    };
+                    options.Audience = "gatewayAPI";
                 });
 
             builder.Services.AddCors(options =>
@@ -50,6 +45,7 @@ namespace GatewayAPI
             app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseOcelot();
 
 

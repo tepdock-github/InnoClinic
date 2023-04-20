@@ -3,11 +3,11 @@
     public class Appoitment
     {
         public required int Id { get; set; }
-        public required Guid PatientId { get; set; }
+        public required string PatientId { get; set; }
         public required string PatientFirstName { get; set; }
         public required string PatientLastName { get; set; }
         public string PatientEmail { get; set; } = string.Empty;
-        public required Guid DoctorId { get; set; }
+        public required string DoctorId { get; set; }
         public required string DoctorFirstName { get; set; }
         public required string DoctorLastName { get; set; }
         public string DoctorEmail { get; set; } = string.Empty;

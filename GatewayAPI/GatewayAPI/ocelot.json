@@ -98,7 +98,7 @@
     },
     {
       "UpstreamPathTemplate": "/gateway/appoitments/{id}",
-      "UpstreamHttpMethod": [ "Put", "Post" ],
+      "UpstreamHttpMethod": [ "Get", "Put", "Post", "Delete" ],
       "DownstreamPathTemplate": "/api/appoitments/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -266,6 +266,18 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/gateway/services/active",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/services/active",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "services-api",
+          "Port": 80
+        }
+      ]
+    },
+    {
       "UpstreamPathTemplate": "/gateway/services",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamPathTemplate": "/api/services",
@@ -319,6 +331,18 @@
       "UpstreamPathTemplate": "/gateway/specializations",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/specializations",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "services-api",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/specializations/active",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/specializations/active",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -424,6 +448,24 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/gateway/doctors/account/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/doctors/account/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profiles-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
       "UpstreamPathTemplate": "/gateway/doctors/{id}",
       "UpstreamHttpMethod": [ "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/doctors/{id}",
@@ -465,6 +507,24 @@
       "UpstreamPathTemplate": "/gateway/patients/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/patients/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profiles-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/patients/account/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/patients/account/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -524,6 +584,24 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/gateway/receptionists/account/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/receptionists/account/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "profiles-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
       "UpstreamPathTemplate": "/gateway/receptionists/{id}",
       "UpstreamHttpMethod": [ "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/receptionists/{id}",
@@ -570,8 +648,26 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/gateway/storage/upload",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/storage/upload",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "storage-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
       "UpstreamPathTemplate": "/gateway/storage/{filename}",
-      "UpstreamHttpMethod": [ "Delete", "Post" ],
+      "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamPathTemplate": "/api/storage/{filename}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

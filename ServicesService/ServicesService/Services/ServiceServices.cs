@@ -68,6 +68,13 @@ namespace ServicesService.Services
             });
         }
 
+        public async Task<IEnumerable<ServiceDto>> GetActiveServices()
+        {
+            var services = await _repositoryManager.ServiceRepository.GetActiveServicesAsync(trackChanges: false);
+
+            return _mapper.Map<IEnumerable<ServiceDto>>(services);
+        }
+
         public async Task<ServiceDto> GetServiceById(int id)
         {
             var service = await _repositoryManager.ServiceRepository.GetServiceByIdAsync(id, trackChanges: false);

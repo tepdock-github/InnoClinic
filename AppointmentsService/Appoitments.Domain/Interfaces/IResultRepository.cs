@@ -6,8 +6,8 @@ namespace Appoitments.Domain.Interfaces
     {
         void CreateResult(Result result);
         void DeleteResult(Result result);
-        Task<IEnumerable<Result>> GetAllResultByPatient(int patientId, bool trackChanges);
-        Task<IEnumerable<Result>> GetAllResultByDoctor(int doctorId, bool trackChanges);
+        Task<IEnumerable<Result>> GetAllResultByPatient(string patientId, bool trackChanges);
+        Task<IEnumerable<Result>> GetAllResultByDoctor(string doctorId, bool trackChanges);
         Task<Result?> GetResultById(int id, bool trackChanges);
     }
 }

@@ -38,16 +38,12 @@ namespace ProfilesService
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
-                {
-                    options.Authority = "http://auth-api:80";
-                    options.RequireHttpsMetadata = false;
-
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
-                });
+               .AddJwtBearer("Bearer", options =>
+               {
+                   options.Authority = "http://auth-api";
+                   options.RequireHttpsMetadata = false;
+                   options.Audience = "gatewayAPI";
+               });
 
             builder.Services.AddCors(options =>
             {

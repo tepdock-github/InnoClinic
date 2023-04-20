@@ -4,9 +4,9 @@ namespace OfficesService.Domain.Interfaces
 {
     public interface IOfficeRepository
     {
-        public Task<List<Office>> GetOfficesAsync();
-        public Task<Office> GetOfficeAsync(string id);
-        public Task<Office> CreateOfficeAsync(Office office);
-        public Task UpdateOfficeAsync(string id, Office office);
+        public Task<IEnumerable<Office>> GetOfficesAsync(bool trackChanges);
+        public Task<IEnumerable<Office>> GetOfficesActiveAsync(bool trackChanges);
+        public Task<Office?> GetOfficeAsync(string id, bool trackChanges);
+        public void CreateOfficeAsync(Office office);
     }
 }

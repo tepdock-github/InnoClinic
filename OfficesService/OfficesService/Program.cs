@@ -1,9 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using OfficesService.Data.Repositories;
-using OfficesService.Domain;
-using OfficesService.Domain.Interfaces;
+using CustomExceptionMiddleware;
 using OfficesService.Filters;
 using OfficesService.ServiceExtensions;
 using OfficesService.Services.Implementation;
@@ -17,18 +13,35 @@ namespace OfficesService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.Configure<OfficeDatabaseSettings>(
-                builder.Configuration.GetSection(nameof(OfficeDatabaseSettings)));
+            var connectionString = builder.Configuration.GetConnectionString("sqlConnection");
+            builder.Services.ConfigureSqlContext(builder.Configuration);
+            builder.Services.ConfigureRepositoryManager();
 
-            builder.Services.AddSingleton<IOfficeDatabaseSettings>(provider => 
-                provider.GetRequiredService<IOptions<OfficeDatabaseSettings>>().Value);
-            builder.Services.ConfigureRepository();
             builder.Services.AddScoped<ValidateModelFilter>();
             builder.Services.AddSingleton<ImageService>();
             builder.Services.ConfigureOfficeService();
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddControllers();
             builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication("Bearer")
+               .AddJwtBearer("Bearer", options =>
+               {
+                   options.Authority = "http://auth-api";
+                   options.RequireHttpsMetadata = false;
+                   options.Audience = "gatewayAPI";
+               });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:7111", "http://gateway:80")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
 
             builder.Services.Configure<ApiBehaviorOptions>(opt =>
             {
@@ -53,7 +66,9 @@ namespace OfficesService
             {
                 app.UseHsts();
             }
-            app.ConfigureExceptionHandler();
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseCors("CorsPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

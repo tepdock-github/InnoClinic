@@ -42,8 +42,9 @@ namespace AppointmentsService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DoctorLastName")
                         .IsRequired()
@@ -57,8 +58,9 @@ namespace AppointmentsService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PatientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientLastName")
                         .IsRequired()
@@ -95,11 +97,11 @@ namespace AppointmentsService.Migrations
                             Date = "20 jan 2022",
                             DoctorEmail = "",
                             DoctorFirstName = "Doctor1_testData",
-                            DoctorId = new Guid("f410b3c0-e1f3-45a9-98d0-302f55087162"),
+                            DoctorId = "afdece73-1172-479c-93fe-365a79d43194",
                             DoctorLastName = "Doctor1_testData",
                             PatientEmail = "",
                             PatientFirstName = "Patient1_testData",
-                            PatientId = new Guid("c55f9140-144c-4424-b84a-ea0b1131597b"),
+                            PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
                             PatientLastName = "Patient1_testData",
                             ResultId = 1,
                             ServiceId = 1,
@@ -114,11 +116,11 @@ namespace AppointmentsService.Migrations
                             Date = "20 jan 2024",
                             DoctorEmail = "",
                             DoctorFirstName = "Doctor2_testData",
-                            DoctorId = new Guid("97911453-a21f-4f87-a02b-1640292f432c"),
+                            DoctorId = "49bc3e66-0e27-455d-88f1-5d6ba42e0674",
                             DoctorLastName = "Doctor2_testData",
                             PatientEmail = "",
                             PatientFirstName = "Patient1_testData",
-                            PatientId = new Guid("cbc65c96-f0cc-484b-b711-756feb6ff001"),
+                            PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
                             PatientLastName = "Patient1_testData",
                             ServiceId = 1,
                             ServiceName = "Service1_testData",
@@ -132,11 +134,11 @@ namespace AppointmentsService.Migrations
                             Date = "21 feb 2023",
                             DoctorEmail = "",
                             DoctorFirstName = "Doctor1_testData",
-                            DoctorId = new Guid("5a0b16e3-8d2e-4491-b7cc-749049cd65a4"),
+                            DoctorId = "652d556c-4613-423c-97b6-e5a7d9318610",
                             DoctorLastName = "Doctor1_testData",
                             PatientEmail = "",
                             PatientFirstName = "Patient2_testData",
-                            PatientId = new Guid("097199fb-bcb3-4fef-b606-acfc0e018dd3"),
+                            PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
                             PatientLastName = "Patient2_testData",
                             ServiceId = 1,
                             ServiceName = "Service1_testData",

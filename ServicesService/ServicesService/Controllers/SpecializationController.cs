@@ -26,6 +26,10 @@ namespace ServicesService.Controklers
         public async Task<IActionResult> GetAllSpecializations() =>
             Ok(await _servicesManager.GetAllSpecializations());
 
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveSpecializations() =>
+            Ok(await _servicesManager.GetActiveSpecializations());
+
         /// <summary>
         /// Get specialization by id
         /// </summary>

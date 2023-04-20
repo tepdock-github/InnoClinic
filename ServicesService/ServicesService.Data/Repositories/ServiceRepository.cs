@@ -14,6 +14,9 @@ namespace ServicesService.Data.Repositories
 
         public void CreateService(Service service) => Create(service);
 
+        public async Task<IEnumerable<Service>> GetActiveServicesAsync(bool trackChanges) =>
+            await FindByCondition(s => s.IsActive == true, trackChanges).ToListAsync();
+
         public async Task<IEnumerable<Service>> GetAllServicesAsync(bool trackChanges) =>
             await FindAll(trackChanges).ToListAsync();
 

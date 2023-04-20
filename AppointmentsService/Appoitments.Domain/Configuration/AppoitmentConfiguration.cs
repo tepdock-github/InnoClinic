@@ -21,10 +21,10 @@ namespace Appoitments.Domain.Configuration
                     new Appoitment
                     {
                         Id = 1,
-                        PatientId = Guid.NewGuid(),
+                        PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
                         PatientFirstName = "Patient1_testData",
                         PatientLastName = "Patient1_testData",
-                        DoctorId = Guid.NewGuid(),
+                        DoctorId = Guid.NewGuid().ToString(),
                         DoctorFirstName = "Doctor1_testData",
                         DoctorLastName = "Doctor1_testData",
                         ServiceId = 1,
@@ -39,10 +39,10 @@ namespace Appoitments.Domain.Configuration
                     new Appoitment
                     {
                         Id = 2,
-                        PatientId = Guid.NewGuid(),
+                        PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
                         PatientFirstName = "Patient1_testData",
                         PatientLastName = "Patient1_testData",
-                        DoctorId = Guid.NewGuid(),
+                        DoctorId = Guid.NewGuid().ToString(),
                         DoctorFirstName = "Doctor2_testData",
                         DoctorLastName = "Doctor2_testData",
                         ServiceId = 1,
@@ -55,10 +55,10 @@ namespace Appoitments.Domain.Configuration
                     new Appoitment
                     {
                         Id = 3,
-                        PatientId = Guid.NewGuid(),
+                        PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
                         PatientFirstName = "Patient2_testData",
                         PatientLastName = "Patient2_testData",
-                        DoctorId = Guid.NewGuid(),
+                        DoctorId = Guid.NewGuid().ToString(),
                         DoctorFirstName = "Doctor1_testData",
                         DoctorLastName = "Doctor1_testData",
                         ServiceId = 1,

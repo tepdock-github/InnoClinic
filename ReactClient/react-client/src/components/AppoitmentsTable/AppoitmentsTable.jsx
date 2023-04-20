@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
+import SignInModal from '../Modals/SignInModal';
 import { Box, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const AppoitmentsTable = ({onError}) => {
+const AppoitmentsTable = () => {
     const columns = useMemo(
         () => [
             {
@@ -35,34 +35,73 @@ const AppoitmentsTable = ({onError}) => {
     );
 
     const [data, setData] = useState([]);
+    const [statusCode, setStatusCode] = useState([]);
+    const [openSignIn, setOpenSignIn] = useState(false);
+
+    const handleOpenSignIn = () => {
+        setOpenSignIn(true);
+    }
+    const handleCloseSignIn = () => {
+        setOpenSignIn(false);
+    }
+
+    var accessToken = localStorage.getItem('accessToken');
+    var userId = localStorage.getItem('userId');
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${accessToken}`);
+    headers.append('Content-Type', 'application/json');
 
     useEffect(() => {
         const getAppoitments = async () => {
-            var accessToken = localStorage.getItem('accessToken');
-            var userId = localStorage.getItem('userId');
 
-            if(accessToken){
-                const header = {
-                    Authorization: `Bearer ${accessToken}`
+            if (accessToken) {
+
+                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/patient-schedule/${userId}`, {
+                    headers: headers
+                });
+
+                if (respAppoitments.status === 200) {
+                    setData(await respAppoitments.json());
+                    setStatusCode(200);
                 }
+                else setStatusCode(401);
 
-                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/${userId}`, {
-                headers: header
-            });
-            setData(await respAppoitments.json());
             }
         }
         getAppoitments();
     }, []);
 
+    const handleDeleteAppointment = async (id) => {
+        await fetch(`http://localhost:7111/gateway/appoitments/${id}`, {
+            method: 'DELETE',
+            headers: headers
+        })
+        console.log('Deleting appointment:');
+    };
+
     return (
         <>
-        <MaterialReactTable
-            columns={columns}
-            data={data}
-            >
-            
-        </MaterialReactTable>
+            {statusCode === 200 &&
+                <MaterialReactTable
+                    columns={columns}
+                    data={data}
+                    enableRowActions
+                    renderRowActions={({ row }) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+                            <IconButton
+                                color='primary'
+                                onClick={() => {
+                                    console.log(row.original.id);
+                                    handleDeleteAppointment(row.original.id)
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
+                    )}
+                />}
+            {statusCode === 401 &&
+                <SignInModal isOpen={() => handleOpenSignIn()} onClose={() => handleCloseSignIn(false)} />}
         </>
     )
 };

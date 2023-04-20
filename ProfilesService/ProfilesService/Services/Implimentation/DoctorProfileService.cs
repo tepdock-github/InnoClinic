@@ -53,6 +53,15 @@ namespace ProfilesService.Services.Implimentation
             return _mapper.Map<DoctorProfileDto>(profile);
         }
 
+        public async Task<DoctorProfileDto> GetDoctorProfileByAccount(string id)
+        {
+            var profile = await _repositoryManager.DoctorProfile.GetDoctorProfileByAccountId(id, trackChanges: false);
+            if (profile == null)
+                throw new NotFoundException("doctor with account id: " + id + " wasnt found");
+
+            return _mapper.Map<DoctorProfileDto>(profile);
+        }
+
         public async Task<IEnumerable<DoctorProfileDto>> GetDoctorProfiles(DoctorParameters doctorParameters)
         {
             var profiles = await _repositoryManager.DoctorProfile.GetDoctorsProfiles(doctorParameters, trackChanges: false);

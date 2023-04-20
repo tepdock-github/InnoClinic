@@ -28,11 +28,14 @@ namespace ProfileService.Data.Repository
             await FindByCondition(d => d.Id.Equals(doctorId), trackChanges)
                     .SingleOrDefaultAsync();
 
+        public async Task<DoctorsProfile?> GetDoctorProfileByAccountId(string accountId, bool trackChanges) =>
+            await FindByCondition(d => d.AccountId.Equals(accountId), trackChanges)
+                    .SingleOrDefaultAsync();
+
         public async Task<IEnumerable<DoctorsProfile>> GetDoctorsProfiles(DoctorParameters doctorParameters,
             bool trackChanges) =>
             await FindAll(trackChanges)
             .Search(doctorParameters.SearchTerm)
-            .Filter(doctorParameters.Specialization, doctorParameters.Office)
             .ToListAsync();
     }
 }

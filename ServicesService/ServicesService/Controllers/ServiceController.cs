@@ -25,6 +25,10 @@ namespace ServicesService.Controklers
         public async Task<IActionResult> GetAllServices() =>
             Ok(await _servicesManager.GetServices());
 
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveServices() =>
+            Ok(await _servicesManager.GetActiveServices());
+
         /// <summary>
         /// Get Service by id
         /// </summary>

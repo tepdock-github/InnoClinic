@@ -22,8 +22,8 @@ namespace ProfilesService.Domain.Configuration
                     Status = "Remote",
                     SpecializationId = 3,
                     SpecializationName = "Hello",
-                    AccountId = 1,
-                    OfficeId= 2
+                    AccountId = "",
+                    OfficeId= Guid.NewGuid().ToString(),
                 },
                 new DoctorsProfile
                 {
@@ -36,8 +36,8 @@ namespace ProfilesService.Domain.Configuration
                     Status = "At office",
                     SpecializationId = 4,
                     SpecializationName = "spec4",
-                    AccountId = 4,
-                    OfficeId = 2
+                    AccountId = "",
+                    OfficeId = Guid.NewGuid().ToString()
                 },
                 new DoctorsProfile
                 {
@@ -50,8 +50,8 @@ namespace ProfilesService.Domain.Configuration
                     Status = "At office",
                     SpecializationId = 4,
                     SpecializationName = "spec4",
-                    AccountId = 3,
-                    OfficeId = 3
+                    AccountId = "",
+                    OfficeId = Guid.NewGuid().ToString()
                 }
             ); 
         }

@@ -33,7 +33,7 @@ namespace AppointmentsService.Controllers
         /// <param name="patientId"></param>
         /// <returns></returns>
         [HttpGet("patient/{patientId}")]
-        public async Task<IActionResult> GetResultsByPatients(int patientId) =>
+        public async Task<IActionResult> GetResultsByPatients(string patientId) =>
             Ok(await _resultService.GetResultsByPatient(patientId));
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpGet("doctor/{doctorId}")]
         [Authorize(Roles = "Receptionist, Doctor")]
-        public async Task<IActionResult> GetResultsByDoctors(int doctorId) =>
+        public async Task<IActionResult> GetResultsByDoctors(string doctorId) =>
             Ok(await _resultService.GetResultsByDoctor(doctorId));
 
         /// <summary>

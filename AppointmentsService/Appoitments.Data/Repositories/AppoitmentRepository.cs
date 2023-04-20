@@ -19,21 +19,21 @@ namespace Appoitments.Data.Repositories
         public async Task<IEnumerable<Appoitment>> GetAllAppoitments(bool trackChanges) =>
             await FindAll(trackChanges).ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByDoctor(Guid doctorId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByDoctor(string doctorId, bool trackChanges) =>
             await FindByCondition(a => a.DoctorId.Equals(doctorId) && a.isComplete == true, trackChanges)
             .ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByPatient(Guid patientId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsHistoryByPatient(string patientId, bool trackChanges) =>
             await FindByCondition(a => a.PatientId.Equals(patientId) && a.isComplete == true, trackChanges)
             .ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitmentsByPatient(Guid patientId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsByPatient(string patientId, bool trackChanges) =>
             await FindByCondition(a => a.PatientId.Equals(patientId), trackChanges).ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitmentsByDoctor(Guid doctorId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsByDoctor(string doctorId, bool trackChanges) =>
             await FindByCondition(a => a.DoctorId.Equals(doctorId), trackChanges).ToListAsync();
 
-        public async Task<IEnumerable<Appoitment>> GetAppoitmentsScheduleByDocrot(Guid doctorId, bool trackChanges) =>
+        public async Task<IEnumerable<Appoitment>> GetAppoitmentsScheduleByDocrot(string doctorId, bool trackChanges) =>
             await FindByCondition(a => a.DoctorId.Equals(doctorId) && a.isApproved == true, trackChanges)
             .ToListAsync();
 

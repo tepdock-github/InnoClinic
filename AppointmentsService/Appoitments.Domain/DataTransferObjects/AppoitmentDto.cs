@@ -14,6 +14,7 @@ namespace Appoitments.Domain.DataTransferObjects
         public required string Time { get; set; }
         public required bool isApproved { get; set; }
         public required bool isComplete { get; set; }
+        public int? ResultId { get; set; }
         public Result? Result { get; set; }
     }
 }

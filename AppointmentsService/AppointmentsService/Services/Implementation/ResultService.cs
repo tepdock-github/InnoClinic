@@ -65,14 +65,14 @@ namespace AppointmentsService.Services.Implementation
             return _mapper.Map<ResultDto>(result);
         }
 
-        public async Task<IEnumerable<ResultDto>> GetResultsByDoctor(int doctorId)
+        public async Task<IEnumerable<ResultDto>> GetResultsByDoctor(string doctorId)
         {
             var results = await _repositoryManager.ResultRepository.GetAllResultByDoctor(doctorId, trackChanges: false);
 
             return _mapper.Map<IEnumerable<ResultDto>>(results);
         }
 
-        public async Task<IEnumerable<ResultDto>> GetResultsByPatient(int patientId)
+        public async Task<IEnumerable<ResultDto>> GetResultsByPatient(string patientId)
         {
             var results = await _repositoryManager.ResultRepository.GetAllResultByPatient(patientId, trackChanges: false);
 

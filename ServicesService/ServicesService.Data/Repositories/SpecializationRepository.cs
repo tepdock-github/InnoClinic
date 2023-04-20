@@ -2,11 +2,6 @@
 using ServicesService.Domain;
 using ServicesService.Domain.Entities;
 using ServicesService.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServicesService.Data.Repositories
 {
@@ -17,6 +12,9 @@ namespace ServicesService.Data.Repositories
         }
 
         public void CreateSpecialization(Specialization specialization) => Create(specialization);
+
+        public async Task<IEnumerable<Specialization>> GetActiveSpecializationsAsync(bool trackChanges) =>
+            await FindByCondition(s => s.IsActive == true, trackChanges).ToListAsync();
 
         public async Task<IEnumerable<Specialization>> GetAllSpecializationsAsync(bool trackChanges) =>
             await FindAll(trackChanges).ToListAsync();

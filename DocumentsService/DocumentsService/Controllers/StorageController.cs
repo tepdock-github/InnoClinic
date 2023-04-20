@@ -25,7 +25,7 @@ namespace DocumentsService.Controllers
             Ok(await _blob.UploadFileAsync(file));
 
         [HttpGet("{filename}")]
-        [Authorize(Roles = "Doctor, Receptionist")]
+        [Authorize]
         public async Task<IActionResult> Download(string filename)
         {
             var file = await _blob.DownloadDtoAsync(filename);

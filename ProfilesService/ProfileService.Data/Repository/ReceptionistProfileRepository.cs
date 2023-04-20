@@ -2,18 +2,13 @@
 using ProfilesService.Domain;
 using ProfilesService.Domain.Entities;
 using ProfilesService.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProfileService.Data.Repository
 {
     public class ReceptionistProfileRepository : RepositoryBase<ReceptionistProfile>,
         IReceptionistProfileRepository
     {
-        public ReceptionistProfileRepository(RepositoryContext repositoryContext) 
+        public ReceptionistProfileRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }
@@ -24,6 +19,10 @@ namespace ProfileService.Data.Repository
 
         public async Task<ReceptionistProfile?> GetReceptionistProfile(int receptionistId, bool trackChanges) =>
             await FindByCondition(r => r.Id.Equals(receptionistId), trackChanges)
+                .SingleOrDefaultAsync();
+
+        public async Task<ReceptionistProfile?> GetReceptionistProfileByAccountId(string accountId, bool trackChanges) =>
+            await FindByCondition(r => r.AccountId.Equals(accountId), trackChanges)
                 .SingleOrDefaultAsync();
 
         public async Task<IEnumerable<ReceptionistProfile>> GetReceptionistProfiles(bool trackChanges) =>

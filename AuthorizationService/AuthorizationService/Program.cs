@@ -35,8 +35,11 @@ namespace AuthorizationAPI
                 .AddEntityFrameworkStores<RepositoryContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.AddIdentityServer()
-                .AddAspNetIdentity<Account>()
+            builder.Services.AddIdentityServer(x =>
+            {
+                x.IssuerUri = "auth-api";
+            })
+               .AddAspNetIdentity<Account>()
                 .AddInMemoryClients(IdentityServerConfiguration.GetClients())
                 .AddInMemoryIdentityResources(IdentityServerConfiguration.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityServerConfiguration.GetApiResources())
@@ -60,7 +63,7 @@ namespace AuthorizationAPI
                 options.AddPolicy("CorsPolicy",
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://localhost:7111")
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:7111", "http://localhost:5000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

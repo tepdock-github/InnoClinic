@@ -26,6 +26,10 @@ namespace ProfilesService.Controllers
         public async Task<IActionResult> GetDoctorById(int id) =>
             Ok(await _doctorProfile.GetDoctorProfile(id));
 
+        [HttpGet("account/{id}")]
+        public async Task<IActionResult> GetDoctorByAccountId(string id) =>
+            Ok(await _doctorProfile.GetDoctorProfileByAccount(id));
+
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
         [Authorize(Roles = "Receptionist, Doctor")]

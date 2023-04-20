@@ -28,6 +28,11 @@ namespace ProfilesService.Controllers
         public async Task<IActionResult> GetReceptionistProfileById(int id) =>
             Ok(await _receptionistProfile.GetReceptionistProfile(id));
 
+        [HttpGet("account/{id}")]
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> GetReceptionistProfileByAccount(string id) =>
+            Ok(await _receptionistProfile.GetReceptionistProfileByAccount(id));
+
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
         [Authorize(Roles = "Receptionist")]

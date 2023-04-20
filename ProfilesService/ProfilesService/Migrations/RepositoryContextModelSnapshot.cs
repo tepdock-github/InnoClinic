@@ -16,7 +16,7 @@ namespace ProfilesService.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -29,8 +29,9 @@ namespace ProfilesService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CareerStartYear")
                         .IsRequired()
@@ -51,8 +52,9 @@ namespace ProfilesService.Migrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OfficeId")
-                        .HasColumnType("int");
+                    b.Property<string>("OfficeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
@@ -73,13 +75,13 @@ namespace ProfilesService.Migrations
                         new
                         {
                             Id = 997,
-                            AccountId = 1,
+                            AccountId = "",
                             CareerStartYear = "1",
                             DateOfBirth = "1",
                             FirstName = "Hello",
                             LastName = "Hello",
                             MiddleName = "Hello",
-                            OfficeId = 2,
+                            OfficeId = "023018cf-e0ff-4f20-8192-700520ab36ff",
                             SpecializationId = 3,
                             SpecializationName = "Hello",
                             Status = "Remote"
@@ -87,13 +89,13 @@ namespace ProfilesService.Migrations
                         new
                         {
                             Id = 998,
-                            AccountId = 4,
+                            AccountId = "",
                             CareerStartYear = "1",
                             DateOfBirth = "1",
                             FirstName = "Bye",
                             LastName = "Bye",
                             MiddleName = "Hello",
-                            OfficeId = 2,
+                            OfficeId = "ad2cdf15-84e6-4ab2-a8c5-a57cda291346",
                             SpecializationId = 4,
                             SpecializationName = "spec4",
                             Status = "At office"
@@ -101,13 +103,13 @@ namespace ProfilesService.Migrations
                         new
                         {
                             Id = 1000,
-                            AccountId = 3,
+                            AccountId = "",
                             CareerStartYear = "1",
                             DateOfBirth = "1",
                             FirstName = "HelloBye",
                             LastName = "Bye",
                             MiddleName = "Hello",
-                            OfficeId = 3,
+                            OfficeId = "52a7821a-02e5-4e61-8549-4bb266f167fe",
                             SpecializationId = 4,
                             SpecializationName = "spec4",
                             Status = "At office"
@@ -122,8 +124,9 @@ namespace ProfilesService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DateOfBirth")
                         .IsRequired()
@@ -156,8 +159,9 @@ namespace ProfilesService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -171,8 +175,9 @@ namespace ProfilesService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OfficeId")
-                        .HasColumnType("int");
+                    b.Property<string>("OfficeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

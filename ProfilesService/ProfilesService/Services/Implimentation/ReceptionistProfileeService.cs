@@ -51,6 +51,15 @@ namespace ProfilesService.Services.Implimentation
             return _mapper.Map<ReceptionistProfileDto>(profile);
         }
 
+        public async Task<ReceptionistProfileDto> GetReceptionistProfileByAccount(string id)
+        {
+            var profile = await _repositoryManager.ReceptionistProfile.GetReceptionistProfileByAccountId(id, trackChanges: false);
+            if (profile == null)
+                throw new BadHttpRequestException("receptionist with account id: " + id + " wasnt found", 404);
+
+            return _mapper.Map<ReceptionistProfileDto>(profile);
+        }
+
         public async Task<IEnumerable<ReceptionistProfileDto>> GetReceptionistProfiles()
         {
             var profiles = await _repositoryManager.ReceptionistProfile.GetReceptionistProfiles(trackChanges: false);
