@@ -33,11 +33,20 @@ import NewResultForm from './components/Modals/NewResultForm';
 import ResultCard from './components/ResultsTable/ResultCard';
 import NewScheduleForm from './components/Modals/NewScheduleForm';
 
+import Error401 from './utils/401Error';
+import Error403 from './utils/403Error';
+import Error500 from './utils/500Error';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
     <Routes>
         <Route path='/' element={<App/>}>
+            
+            <Route path='/401-error' element={<Error401/>}/>
+            <Route path='/403-error' element={<Error403/>}/>
+            <Route path='/500-error' element={<Error500/>}/>
+
             <Route path='/accounts' element={<Accounts/>}/>
             <Route path='/offices' element={<OfficesList/>}/>
             <Route path='/schedules' element={<NewScheduleForm/>}/>

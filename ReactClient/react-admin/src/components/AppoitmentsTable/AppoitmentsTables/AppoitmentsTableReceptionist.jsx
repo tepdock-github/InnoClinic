@@ -3,7 +3,7 @@ import MaterialReactTable from 'material-react-table';
 import { Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Edit } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AppoitmentsTableReceptionist = () => {
     const columns = useMemo(
@@ -43,6 +43,7 @@ const AppoitmentsTableReceptionist = () => {
         ], []
     );
 
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
 
     var accessToken = localStorage.getItem('accessToken');
@@ -59,6 +60,13 @@ const AppoitmentsTableReceptionist = () => {
             if (response.status === 200) {
                 setData(await response.json());
             }
+            else if (response.status === 401) {
+                navigate('/401-error');
+            }
+            else if (response.status === 403) {
+                navigate('/403-error')
+            }
+            else navigate('/500-error')
         }
         fetchData();
     }, []);
