@@ -27,7 +27,6 @@ import EditReceptionist from './components/Modals/EditReceptionist';
 import Accounts from './pages/Accounts/AccountsList';
 import ProfilePatientForm from './components/Modals/ProfileFormPatient';
 import ReceptionistList from './pages/Receptionis.jsx/Receptionist.List';
-import ReceptionistDetailsModal from './components/Profile/ReceptionistProfile';
 import EditAppoitmentForm from './components/Modals/EditAppoitmentForm';
 import NewResultForm from './components/Modals/NewResultForm';
 import ResultCard from './components/ResultsTable/ResultCard';
@@ -46,6 +45,8 @@ root.render(
             <Route path='/401-error' element={<Error401/>}/>
             <Route path='/403-error' element={<Error403/>}/>
             <Route path='/500-error' element={<Error500/>}/>
+
+            <Route path='/profile' element={<ProfileCard/>}/>
 
             <Route path='/accounts' element={<Accounts/>}/>
             <Route path='/offices' element={<OfficesList/>}/>
@@ -67,14 +68,12 @@ root.render(
             <Route path='/doctors/:id' element={<DoctorDetailsModal/>}/>
             <Route path='/results' element={<ResultsList/>}/>
             <Route path='/appoitment/result/:id' element={<ResultCard/>}/>
-            <Route path='/profile' element={<ProfileCard/>}/>
             <Route path='/profile/edit/doctor' element={<ProfileForm/>}/>
             <Route path='/edit/patients/:id' element={<ProfilePatientForm/>}/>
             <Route path='/profile/edit/receptionist' element={<EditReceptionist/>}/>
             <Route path='/profile/doctor/create' element={<DoctorProfileCreateForm/>}/>
             <Route path='/profile/receptionist/create' element={<CreateReceptionistProfile/>}/>
             <Route path='/receptionist' element={<ReceptionistList/>}/>
-            <Route path='/receptionist/:id' element={<ReceptionistDetailsModal/>}/>
         </Route>
     </Routes>
     </BrowserRouter>

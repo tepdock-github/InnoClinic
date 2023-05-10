@@ -9,10 +9,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import GridWrapper from '../common/GridWrapper/GridWrapper';
 import BackgroundLetterAvatars from '../common/Avatar/Avatar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DoctorDetailsModal = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [doctor, setDoctor] = useState([]);
     const [office, setOffices] = useState([]);
 
@@ -20,14 +21,23 @@ const DoctorDetailsModal = () => {
         const fetchDoctor = async () => {
             try {
                 const responseDoctor = await fetch(`http://localhost:7111/gateway/doctors/${id}`);
-                if (!responseDoctor.ok) {
-                    throw new Error(responseDoctor.statusText);
+                if (responseDoctor.status === 401) {
+                    navigate('/401-error');
                 }
+                else if (responseDoctor.status === 403) {
+                    navigate('/403-error')
+                }
+                else navigate('/500-error')
                 setDoctor(await responseDoctor.json());
+
                 const responseOffice = await fetch(`http://localhost:7111/gateway/offices/${doctor.officeId}`);
-                if (!responseOffice.ok) {
-                    throw new Error(responseOffice.statusText);
+                if (responseOffice.status === 401) {
+                    navigate('/401-error');
                 }
+                else if (responseOffice.status === 403) {
+                    navigate('/403-error')
+                }
+                else navigate('/500-error')
                 setOffices(await responseOffice.json());
             } catch (error) {
                 console.error(error);

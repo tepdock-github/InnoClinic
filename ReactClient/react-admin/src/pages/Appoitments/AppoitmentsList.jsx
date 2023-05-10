@@ -26,7 +26,7 @@ const AppoitmentsList = () => {
                             size='large'
                             sx={cardHeaderStyles.CreateAppoitmentButton}
                         >
-                            Book Appoitment
+                            Создать запись
                         </Button>
                     </Link>
                     <IconButton
@@ -36,7 +36,7 @@ const AppoitmentsList = () => {
                 </Box>
                 <Link to={'/history/appoitments'}>
                     <Button>
-                        History
+                        История
                     </Button>
                 </Link>
             </Box>

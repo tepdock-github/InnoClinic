@@ -18,7 +18,7 @@ const AppoitmentsHistoryList = () => {
                             size='large'
                             sx={cardHeaderStyles.CreateAppoitmentButton}
                         >
-                            Go back
+                            Назад
                         </Button>
                     </Link>
                 </Box>
