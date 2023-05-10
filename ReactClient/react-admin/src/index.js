@@ -48,6 +48,9 @@ root.render(
 
             <Route path='/profile' element={<ProfileCard/>}/>
 
+            <Route path='/results' element={<ResultsList/>}/>
+            <Route path='/appoitment/result/:id' element={<ResultCard/>}/>
+
             <Route path='/accounts' element={<Accounts/>}/>
             <Route path='/offices' element={<OfficesList/>}/>
             <Route path='/schedules' element={<NewScheduleForm/>}/>
@@ -66,8 +69,6 @@ root.render(
             <Route path='/history/appoitments' element={<AppoitmentsHistoryList/>}/> 
             <Route path='/doctors' element={<Doctors/>}/>
             <Route path='/doctors/:id' element={<DoctorDetailsModal/>}/>
-            <Route path='/results' element={<ResultsList/>}/>
-            <Route path='/appoitment/result/:id' element={<ResultCard/>}/>
             <Route path='/profile/edit/doctor' element={<ProfileForm/>}/>
             <Route path='/edit/patients/:id' element={<ProfilePatientForm/>}/>
             <Route path='/profile/edit/receptionist' element={<EditReceptionist/>}/>
