@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
 import SignInModal from '../Modals/SignInModal';
+import { Link } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 
 const ResultsTable = () => {
@@ -31,6 +32,7 @@ const ResultsTable = () => {
     const [data, setData] = useState([]);
     const [statusCode, setStatusCode] = useState([]);
     const [openSignIn, setOpenSignIn] = useState(false);
+
     const handleOpenSignIn = () => {
         setOpenSignIn(true);
     }
@@ -39,23 +41,25 @@ const ResultsTable = () => {
     }
 
     var accessToken = localStorage.getItem('accessToken');
-    var userId = localStorage.getItem('userId');
     const headers = new Headers();
     headers.append('Authorization', `Bearer ${accessToken}`);
     headers.append('Content-Type', 'application/json');
 
     useEffect(() => {
         const fetchData = async () => {
-            const respResults = await fetch(`http://localhost:7111/gateway/results/patient/${userId}`, {
+            const respResults = await fetch(`http://localhost:7111/gateway/results`, {
                 method: 'GET',
                 headers: headers
             })
-            
+
             if (respResults.status === 200) {
                 setData(await respResults.json());
                 setStatusCode(200);
             }
-            else setStatusCode(401);
+            else {
+                setStatusCode(401);
+                handleOpenSignIn();
+            }
         }
         fetchData();
     }, []);
@@ -75,15 +79,15 @@ const ResultsTable = () => {
             document.body.appendChild(anchor);
             anchor.click();
             document.body.removeChild(anchor);
-          } else {
+        } else {
             console.error('Failed to download file:', response.status, response.statusText);
-          }
+        }
         console.log('Get appointment:');
     };
 
     return (
         <>
-        {statusCode === 200 &&
+            {statusCode === 200 &&
                 <MaterialReactTable
                     columns={columns}
                     data={data}
@@ -93,17 +97,22 @@ const ResultsTable = () => {
                             <Button
                                 color='primary'
                                 onClick={() => {
-                                    console.log(row.original.id);
-                                    handleDownloadResult(row.original.id)
+                                    console.log(row.original.appoitmentId);
+                                    handleDownloadResult(row.original.appoitmentId)
                                 }}
                             >
-                                Download
+                                Скачать
                             </Button>
+                            <Link to={`/appoitment/result/${row.original.appoitmentId}`}>
+                                <Button variant='text' color='primary' size='small'>
+                                    Детали
+                                </Button>
+                            </Link>
                         </Box>
                     )}
                 />}
             {statusCode === 401 &&
-                <SignInModal isOpen={() => handleOpenSignIn(true)} onClose={() => handleCloseSignIn(false)} />}
+                <SignInModal isOpen={openSignIn} onClose={() => handleCloseSignIn(false)} />}
         </>
     )
 };

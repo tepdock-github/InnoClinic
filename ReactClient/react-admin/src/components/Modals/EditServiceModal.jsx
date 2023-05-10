@@ -22,7 +22,6 @@ const EditServiceModal = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     var accessToken = localStorage.getItem('accessToken');
-    var userId = localStorage.getItem('userId');
     const headers = new Headers();
     headers.append('Authorization', `Bearer ${accessToken}`);
     headers.append('Content-Type', 'application/json');

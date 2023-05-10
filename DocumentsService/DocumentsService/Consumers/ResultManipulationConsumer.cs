@@ -1,10 +1,7 @@
-﻿using DocumentsService.Services;
+﻿using DocumentsService.PdfGenerator;
+using DocumentsService.Services;
 using MassTransit;
-using PdfSharp.Drawing;
-using PdfSharp.Drawing.Layout;
-using PdfSharp.Pdf;
 using SharedModelsInnoClinic;
-using System.Text;
 
 namespace DocumentsService.Consumers
 {
@@ -21,33 +18,29 @@ namespace DocumentsService.Consumers
         {
             var message = context.Message;
 
-            var document = new PdfDocument();
-            var page = document.AddPage();
+            var colums = new List<string> 
+            {
+                "Complaints",
+                "Conclusion"
+            };
 
-            var gfx = XGraphics.FromPdfPage(page);
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-            var font = new XFont("Times New Roman", 12, XFontStyle.Regular, options);
-            var rect = new XRect(0, 0, page.Width, page.Height);
-
-            var tf = new XTextFormatter(gfx);
-            tf.DrawString("Appoitment ID: " + message.AppoitmentId.ToString(), font, XBrushes.Black, rect, XStringFormats.TopLeft);
-            var rect1 = new XRect(0, 20, page.Width, page.Height);
-            tf.DrawString("Complaints: " + message.Complaints, font, XBrushes.Black, rect1, XStringFormats.TopLeft);
-            var rect2 = new XRect(0, 40, page.Width, page.Height);
-            tf.DrawString("Diagnosis: " + message.Diagnosis, font, XBrushes.Black, rect2, XStringFormats.TopLeft);
-            var rect3 = new XRect(0, 60, page.Width, page.Height);
-            tf.DrawString("Conclusion: " + message.Conclusion, font, XBrushes.Black, rect3, XStringFormats.TopLeft);
-            var rect4 = new XRect(0, 80, page.Width, page.Height);
-            tf.DrawString("Recomendations: " + message.Recomendations, font, XBrushes.Black, rect4, XStringFormats.TopLeft);
-
-            var stream = new MemoryStream();
-            document.Save(stream, false);
-
-            document.Close();
+            var rows = new List<List<string>>
+            {
+                new List<string> { message.Complaints, message.Conclusion }
+            };
 
             var blobName = "Appoitment" + message.AppoitmentId.ToString() + ".pdf";
+            var stream = Pdf.Create()
+                .AddHeaderTextBox("Conclusion: " + message.Id, true)
+                .AddSpace()
+                .AddTable(colums, rows)
+                .AddSpace()
+                .AddTextBox("Recomendations: " + message.Recomendations)
+                .AddSpace()
+                .AddTextBox("Diagnosis: " + message.Diagnosis)
+                .AddFooters()
+                .ToMemoryStream();
+            
             await _blobService.UploadFileAsync(new FormFile(stream, 0, stream.Length, blobName, blobName));
         }
     }

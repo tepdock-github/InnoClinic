@@ -1,4 +1,5 @@
 ﻿using DocumentService.Domain.DataTransferObjects;
+using PdfSharpCore.Pdf;
 
 namespace DocumentsService.Services
 {

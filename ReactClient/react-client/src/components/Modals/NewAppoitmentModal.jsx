@@ -22,6 +22,7 @@ const validationSchema = Yup.object().shape({
         const timeParts = value.split(':');
         const hours = parseInt(timeParts[0], 10);
         const minutes = parseInt(timeParts[1], 10);
+        console.log(timeParts);
         if (hours < 6 || hours > 22 || minutes < 0 || minutes > 59) {
             return false;
         }

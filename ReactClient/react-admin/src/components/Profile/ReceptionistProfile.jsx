@@ -44,7 +44,7 @@ const ReceptionistDetailsModal = () => {
     return (
         <GridWrapper>
             <Card sx={{ maxWidth: 500 }}>
-                <CardMedia>
+                <CardMedia sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 75 }}>
                     <BackgroundLetterAvatars
                         firstName={recep.firstName}
                         lastName={recep.lastName}

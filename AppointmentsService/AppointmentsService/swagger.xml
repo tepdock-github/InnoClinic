@@ -94,6 +94,7 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+            
         </member>
         <member name="M:AppointmentsService.Controllers.ResultController.UpdateResult(System.Int32,Appoitments.Domain.DataTransferObjects.ResultManipulationDto)">
             <summary>
@@ -113,6 +114,54 @@
             <inheritdoc />
         </member>
         <member name="M:AppointmentsService.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddSchedules">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedules.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedules.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedules.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddfieldAppoitmentId">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddfieldAppoitmentId.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddfieldAppoitmentId.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddfieldAppoitmentId.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddedFieldForRealForReal">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddedFieldForRealForReal.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddedFieldForRealForReal.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddedFieldForRealForReal.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddSchedule">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedule.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedule.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedule.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

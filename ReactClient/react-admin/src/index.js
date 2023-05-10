@@ -10,7 +10,6 @@ import AppoitmentsHistoryList from './pages/Appoitments/AppoitmentsHistory';
 import NewAppoitmentForm from './components/Modals/NewAppoitmentModal';
 import Doctors from './pages/Doctors/DoctorsList';
 import ResultsList from './pages/Results/ResultsList';
-import ResultCard from './components/ResultsTable/ResultCard';
 import DoctorDetailsModal from './components/DoctorsTable/DoctorDetailModal';
 import ServiceDetailModel from './components/ServicesTable/ServiceDetailModel';
 import ProfileCard from './components/Profile/ProfileCard';
@@ -30,6 +29,9 @@ import ProfilePatientForm from './components/Modals/ProfileFormPatient';
 import ReceptionistList from './pages/Receptionis.jsx/Receptionist.List';
 import ReceptionistDetailsModal from './components/Profile/ReceptionistProfile';
 import EditAppoitmentForm from './components/Modals/EditAppoitmentForm';
+import NewResultForm from './components/Modals/NewResultForm';
+import ResultCard from './components/ResultsTable/ResultCard';
+import NewScheduleForm from './components/Modals/NewScheduleForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -38,6 +40,7 @@ root.render(
         <Route path='/' element={<App/>}>
             <Route path='/accounts' element={<Accounts/>}/>
             <Route path='/offices' element={<OfficesList/>}/>
+            <Route path='/schedules' element={<NewScheduleForm/>}/>
             <Route path='/create/office' element={<NewOfficeModal/>}/>
             <Route path='/services' element={<ServicesList/>}/>
             <Route path='/create/service' element={<NewServiceModal/>}/>
@@ -48,12 +51,13 @@ root.render(
             <Route path='/specializations' element={<SpecializationList/>}/>
             <Route path='/appoitments' element={<AppoitmentsList/>}/>
             <Route path='/appoitment/:id' element={<EditAppoitmentForm/>}/> 
+            <Route path='/appoitment/create-result/:id' element={<NewResultForm/>}/>
             <Route path='/create/appoitments' element={<NewAppoitmentForm/>}/>
             <Route path='/history/appoitments' element={<AppoitmentsHistoryList/>}/> 
             <Route path='/doctors' element={<Doctors/>}/>
             <Route path='/doctors/:id' element={<DoctorDetailsModal/>}/>
             <Route path='/results' element={<ResultsList/>}/>
-            <Route path='/results/:id' element={<ResultCard/>}/>
+            <Route path='/appoitment/result/:id' element={<ResultCard/>}/>
             <Route path='/profile' element={<ProfileCard/>}/>
             <Route path='/profile/edit/doctor' element={<ProfileForm/>}/>
             <Route path='/edit/patients/:id' element={<ProfilePatientForm/>}/>

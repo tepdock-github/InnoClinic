@@ -114,8 +114,135 @@
         ]
       }
     },
+    //Schedules
+    {
+      "UpstreamPathTemplate": "/gateway/schedules",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/schedules",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/schedules/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/schedules/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/schedules/doctor/{doctorId}/date/{date}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/schedules/doctor/{doctorId}/date/{date}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/schedules/free/doctor/{doctorId}/date/{date}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/schedules/free/doctor/{doctorId}/date/{date}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/schedules/appoitment/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/schedules/appoitment/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
 
     //Results
+    {
+      "UpstreamPathTemplate": "/gateway/results",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/results",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/results/appoitment/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/results/appoitment/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
     {
       "UpstreamPathTemplate": "/gateway/results/{id}",
       "UpstreamHttpMethod": [ "Get", "Delete", "Put" ],

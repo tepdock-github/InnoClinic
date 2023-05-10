@@ -69,6 +69,9 @@ namespace AppointmentsService.Migrations
                     b.Property<int?>("ResultId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
@@ -89,63 +92,6 @@ namespace AppointmentsService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appoitments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = "20 jan 2022",
-                            DoctorEmail = "",
-                            DoctorFirstName = "Doctor1_testData",
-                            DoctorId = "afdece73-1172-479c-93fe-365a79d43194",
-                            DoctorLastName = "Doctor1_testData",
-                            PatientEmail = "",
-                            PatientFirstName = "Patient1_testData",
-                            PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
-                            PatientLastName = "Patient1_testData",
-                            ResultId = 1,
-                            ServiceId = 1,
-                            ServiceName = "Service1_testData",
-                            Time = "10 am",
-                            isApproved = true,
-                            isComplete = true
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = "20 jan 2024",
-                            DoctorEmail = "",
-                            DoctorFirstName = "Doctor2_testData",
-                            DoctorId = "49bc3e66-0e27-455d-88f1-5d6ba42e0674",
-                            DoctorLastName = "Doctor2_testData",
-                            PatientEmail = "",
-                            PatientFirstName = "Patient1_testData",
-                            PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
-                            PatientLastName = "Patient1_testData",
-                            ServiceId = 1,
-                            ServiceName = "Service1_testData",
-                            Time = "10 am",
-                            isApproved = false,
-                            isComplete = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = "21 feb 2023",
-                            DoctorEmail = "",
-                            DoctorFirstName = "Doctor1_testData",
-                            DoctorId = "652d556c-4613-423c-97b6-e5a7d9318610",
-                            DoctorLastName = "Doctor1_testData",
-                            PatientEmail = "",
-                            PatientFirstName = "Patient2_testData",
-                            PatientId = "8787a766-7517-4040-9fe3-8416b9326a66",
-                            PatientLastName = "Patient2_testData",
-                            ServiceId = 1,
-                            ServiceName = "Service1_testData",
-                            Time = "10 am",
-                            isApproved = true,
-                            isComplete = false
-                        });
                 });
 
             modelBuilder.Entity("Appoitments.Domain.Entities.Result", b =>
@@ -190,6 +136,45 @@ namespace AppointmentsService.Migrations
                             Conclusion = "conclusion",
                             Recomendations = "pills"
                         });
+                });
+
+            modelBuilder.Entity("Appoitments.Domain.Entities.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppoitmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isBooked")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("Appoitments.Domain.Entities.Result", b =>

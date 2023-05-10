@@ -78,7 +78,7 @@ namespace ProfilesService.Services.Implimentation
 
             await _publishEndpoint.Publish<IReceptionistProfileManipulation>(new
             {
-                Id = id,
+                Id = id.ToString(),
                 receptionistProfileDto.FirstName, 
                 receptionistProfileDto.LastName,
                 receptionistProfileDto.MiddleName,

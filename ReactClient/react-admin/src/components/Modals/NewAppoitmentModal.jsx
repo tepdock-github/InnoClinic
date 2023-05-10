@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import BasicTimePicker from '../common/DateTimePickers/TimePicker/BasicTimePicker';
 import BasicDatePicker from '../common/DateTimePickers/DatePicker/BasicDatePicker';
 import { Formik, Form } from 'formik';
 import { Link } from 'react-router-dom';
@@ -11,22 +10,8 @@ const validationSchema = Yup.object().shape({
     doctorId: Yup.string().required('Please chose doctor'),
     serviceId: Yup.string().required('Please chose service'),
     date: Yup.date().min(new Date()).required(),
-    time: Yup.string().test('is-time', 'Time must be in HH:mm format', function (value) {
-        if (!value) {
-            return false;
-        }
-        const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-        if (!timeRegex.test(value)) {
-            return false;
-        }
-        const timeParts = value.split(':');
-        const hours = parseInt(timeParts[0], 10);
-        const minutes = parseInt(timeParts[1], 10);
-        if (hours < 6 || hours > 22 || minutes < 0 || minutes > 59) {
-            return false;
-        }
-        return true;
-    }).required('Please enter a valid time in HH:mm format')
+    scheduleId: Yup.number().required(),
+    time: Yup.string().required()
 });
 
 const NewAppoitmentForm = () => {
@@ -41,6 +26,7 @@ const NewAppoitmentForm = () => {
         serviceName: '',
         specializationName: '',
         date: '',
+        scheduleId: 0,
         time: '',
         isApproved: false,
         isComplete: false
@@ -49,10 +35,10 @@ const NewAppoitmentForm = () => {
     const [services, setServices] = useState([]);
     const [doctors, setDoctors] = useState([]);
     const [profile, setProfile] = useState([]);
+    const [timeSlots, setTimeSlots] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     var accessToken = localStorage.getItem('accessToken');
-    var userId = localStorage.getItem('userId');
     const headers = new Headers();
     headers.append('Authorization', `Bearer ${accessToken}`);
     headers.append('Content-Type', 'application/json');
@@ -67,7 +53,7 @@ const NewAppoitmentForm = () => {
                     fetch(`http://localhost:7111/gateway/patients`, { headers })
                 ]);
 
-                if(profileResp.status === 404){
+                if (profileResp.status === 404) {
                     alert('Заполните или создайте профиль');
                     setIsSubmitting(true);
                 }
@@ -76,7 +62,7 @@ const NewAppoitmentForm = () => {
                 const serviceData = await serviceResp.json();
                 const profileData = await profileResp.json();
 
-                
+
                 setDoctors(doctorsData);
                 setServices(serviceData);
                 setProfile(profileData);
@@ -88,18 +74,32 @@ const NewAppoitmentForm = () => {
         fetchData();
     }, []);
 
-    const handleFormSubmit = async (values, actions) => {
-        setIsSubmitting(true);
+    const fetchTimeSlots = async (date, doctorId) => {
         try {
-            console.log(JSON.stringify(values));
-            const response = await fetch(`http://localhost:7111/gateway/appoitments`, {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(values),
-            })
-        } catch (error) {
+            const response = await fetch(`http://localhost:7111/gateway/schedules/free/doctor/${doctorId}/date/${date}`, {
+                headers: headers
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setTimeSlots(data);
+            } else {
+                console.error('Error fetching time slots:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching time slots:', error);
         }
+    }
+
+    const handleFormSubmit = async (values) => {
+        setIsSubmitting(true);
+        console.log(JSON.stringify(values));
+        await fetch(`http://localhost:7111/gateway/appoitments`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(values),
+        })
         setIsSubmitting(false);
     }
 
@@ -131,12 +131,14 @@ const NewAppoitmentForm = () => {
                                                     formikProps.setFieldValue('doctorLastName', selectedDoctor.lastName);
                                                     formikProps.setFieldValue('specializationName', selectedDoctor.specializationName);
                                                 }
+                                                const selectedDate = formikProps.values.date;
+                                                fetchTimeSlots(selectedDate, selectedDoctorId);
                                             }}
                                             onBlur={formikProps.handleBlur}
                                             error={formikProps.touched.doctorId && !!formikProps.errors.doctorId}
                                         >
                                             <MenuItem value=''>
-                                                <em>Choose doctor</em>
+                                                <em>Выберите доктора</em>
                                             </MenuItem>
                                             {doctors.map((doctor) => (
                                                 <MenuItem key={doctor.id} value={`${doctor.id}`}>
@@ -151,11 +153,11 @@ const NewAppoitmentForm = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FormControl fullWidth variant='outlined'>
-                                        <InputLabel htmlFor='patientId'>Имя patient</InputLabel>
+                                        <InputLabel htmlFor='patientId'>Имя пациента</InputLabel>
                                         <Select
                                             id='patientId'
                                             name='patientId'
-                                            label='Имя доктора'
+                                            label='Имя пациента'
                                             value={formikProps.values.patientId}
                                             onChange={(e) => {
                                                 formikProps.handleChange(e);
@@ -170,7 +172,7 @@ const NewAppoitmentForm = () => {
                                             error={formikProps.touched.patientId && !!formikProps.errors.patientId}
                                         >
                                             <MenuItem value=''>
-                                                <em>Choose patient</em>
+                                                <em>Выберите пациента</em>
                                             </MenuItem>
                                             {profile.map((doctor) => (
                                                 <MenuItem key={doctor.id} value={`${doctor.id}`}>
@@ -220,35 +222,58 @@ const NewAppoitmentForm = () => {
 
                                 <Grid item xs={12}>
                                     <BasicDatePicker
-                                        label='Date'
+                                        label='Дата'
                                         value={formikProps.values.date}
                                         onChange={(date) => {
                                             formikProps.setFieldValue('date', date);
+                                            const selectedDoctorId = formikProps.values.doctorId;
+                                            fetchTimeSlots(date, selectedDoctorId);
                                         }}
+                                        error={formikProps.touched.date && !!formikProps.errors.date}
                                     />
                                     {formikProps.errors.date && (
                                         <Typography color='error'>{formikProps.errors.date}</Typography>
                                     )}
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <BasicTimePicker
-                                        label='Time'
-                                        value={formikProps.values.time}
-                                        onChange={(time) => {
-                                            formikProps.setFieldValue('time', time);
-                                        }}
-                                    />
-                                    {formikProps.errors.time && (
+                                    <FormControl fullWidth variant='outlined'>
+                                        <InputLabel htmlFor='scheduleId'>Время</InputLabel>
+                                        <Select
+                                            id='scheduleId'
+                                            name='scheduleId'
+                                            label='Время'
+                                            value={formikProps.values.scheduleId}
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                const selectedSchedule = timeSlots.find(schedule => schedule.id === parseInt(e.target.value));
+                                                if(selectedSchedule) {
+                                                    formikProps.setFieldValue('time', selectedSchedule.time)
+                                                } 
+                                            }}
+                                            onBlur={formikProps.handleBlur}
+                                            error={formikProps.touched.scheduleId && !!formikProps.errors.scheduleId}
+                                        >
+                                            <MenuItem value=''>
+                                                <em>Выберите время</em>
+                                            </MenuItem>
+                                            {timeSlots.map((schedule) => (
+                                                <MenuItem key={schedule.id} value={schedule.id}>
+                                                    {schedule.time}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    {formikProps.errors.time && formikProps.touched.time && (
                                         <Typography color='error'>{formikProps.errors.time}</Typography>
                                     )}
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button type='submit' disabled={formikProps.isSubmitting} variant='contained' color='primary'>
-                                        Submit
+                                        Создать
                                     </Button>
                                     <Link to={'/appoitments'}>
                                         <Button type='button'>
-                                            Go back
+                                            Назад
                                         </Button>
                                     </Link>
                                 </Grid>

@@ -90,7 +90,7 @@ const AppoitmentsHistoryTables = () => {
                         <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
                             <Link to={`/appoitment/result/${row.original.id}`}>
                             <Button variant='text' color='primary' size='small'>
-                                Create Result
+                                Посмотреть заключение
                             </Button>
                         </Link>
                         </Box>

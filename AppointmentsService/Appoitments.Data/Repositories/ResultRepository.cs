@@ -24,8 +24,15 @@ namespace Appoitments.Data.Repositories
             await FindByCondition(r => r.Appoitment.PatientId.Equals(patientId), trackChanges)
             .ToListAsync();
 
+        public async Task<Result?> GetResultByAppoitmentId(int id, bool trackChanges) =>
+            await FindByCondition(r => r.AppoitmentId.Equals(id), trackChanges)
+            .FirstOrDefaultAsync();
+
         public async Task<Result?> GetResultById(int id, bool trackChanges) =>
             await FindByCondition(r => r.Id.Equals(id), trackChanges)
             .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<Result>> GetResults(bool trackChanges) =>
+            await FindAll(trackChanges) .ToListAsync();
     }
 }

@@ -11,6 +11,7 @@
         public required int ServiceId { get; set; }
         public required string ServiceName { get; set; }
         public required string Date { get; set; }
+        public required int ScheduleId { get; set; }
         public required string Time { get; set; }
         public required bool isApproved { get; set; }
         public required bool isComplete { get; set; }

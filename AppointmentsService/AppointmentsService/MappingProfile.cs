@@ -13,6 +13,9 @@ namespace AppointmentsService
 
             CreateMap<Appoitment, AppoitmentDto>();
             CreateMap<AppoitmentManipulationDto, Appoitment>();
+
+            CreateMap<Schedule, ScheduleDto>();
+            CreateMap<ScheduleManipulationDto, Schedule>();
         }
     }
 }

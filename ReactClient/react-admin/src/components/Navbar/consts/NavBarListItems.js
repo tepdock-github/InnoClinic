@@ -7,6 +7,7 @@ import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 
 export const NavbarItems = [
     {
@@ -62,5 +63,11 @@ export const NavbarItems = [
         icon: <AddHomeWorkIcon/>,
         label: "Офисы",
         route: "offices"
+    },
+    {
+        id: 9,
+        icon: <WorkHistoryIcon/>,
+        label: "Создать расписание",
+        route: "schedules"
     }
 ]

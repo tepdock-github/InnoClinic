@@ -23,12 +23,15 @@ const DoctorDetailsModal = () => {
                 if (!responseDoctor.ok) {
                     throw new Error(responseDoctor.statusText);
                 }
-                setDoctor(await responseDoctor.json());
+                const doctor = await responseDoctor.json();
+                setDoctor(doctor);
+
                 const responseOffice = await fetch(`http://localhost:7111/gateway/offices/${doctor.officeId}`);
                 if (!responseOffice.ok) {
                     throw new Error(responseOffice.statusText);
                 }
-                setOffices(await responseOffice.json());
+                const office = await responseOffice.json();
+                setOffices(office);
             } catch (error) {
                 console.error(error);
             }
@@ -36,10 +39,11 @@ const DoctorDetailsModal = () => {
         fetchDoctor();
     }, []);
 
+
     return (
         <GridWrapper>
             <Card sx={{ maxWidth: 500 }}>
-                <CardMedia>
+                <CardMedia sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 75 }}>
                     <BackgroundLetterAvatars
                         firstName={doctor.firstName}
                         lastName={doctor.lastName}

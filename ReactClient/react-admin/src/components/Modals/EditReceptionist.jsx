@@ -58,13 +58,17 @@ const EditReceptionist = () => {
 
     const handleFormSubmit = async (values) => {
         setIsSubmitting(true);
-        console.log(JSON.stringify(values));
+        try {
+            console.log(JSON.stringify(values));
         console.log(role);
         await fetch(`http://localhost:7111/gateway/receptionists/${values.id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify(values),
         })
+        } catch (error) {
+            console.log(error);
+        }
         setIsSubmitting(false);
     }
 

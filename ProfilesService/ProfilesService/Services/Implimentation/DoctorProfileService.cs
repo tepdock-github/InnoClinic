@@ -80,7 +80,7 @@ namespace ProfilesService.Services.Implimentation
 
             await _publishEndpoint.Publish<IDoctorProfileManipulation>(new
             {
-                Id = id,
+                Id = id.ToString(),
                 doctorProfileDto.FirstName,
                 doctorProfileDto.LastName,
                 doctorProfileDto.MiddleName

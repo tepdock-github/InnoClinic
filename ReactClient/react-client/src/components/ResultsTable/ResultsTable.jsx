@@ -93,8 +93,8 @@ const ResultsTable = () => {
                             <Button
                                 color='primary'
                                 onClick={() => {
-                                    console.log(row.original.id);
-                                    handleDownloadResult(row.original.id)
+                                    console.log(row.original.appoitmentId);
+                                    handleDownloadResult(row.original.appoitmentId)
                                 }}
                             >
                                 Download

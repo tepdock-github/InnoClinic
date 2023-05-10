@@ -66,15 +66,14 @@ const AppoitmentsTable = () => {
         const getAppoitments = async () => {
             var respAppoitments;
 
-            if(role === 'Doctor'){
+            if (role === 'Doctor') {
                 respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/doctor-schedule/${userId}`, {
                     headers: headers
                 });
-                console.log(await respAppoitments.json());
             }
 
-            if(role === 'Receptionist'){
-                    respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments`, {
+            if (role === 'Receptionist') {
+                respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments`, {
                     headers: headers
                 });
             }
@@ -82,7 +81,10 @@ const AppoitmentsTable = () => {
                 setData(await respAppoitments.json());
                 setStatusCode(200);
             }
-            else setStatusCode(401);
+            else {
+                setStatusCode(401);
+                handleOpenSignIn();
+            }
         }
         getAppoitments();
     }, []);
@@ -92,18 +94,31 @@ const AppoitmentsTable = () => {
             method: 'DELETE',
             headers: headers
         })
-        console.log('Deleting appointment:');
     };
 
-    return (
-        <>
-            {statusCode === 200 &&
-                <MaterialReactTable
-                    columns={columns}
-                    data={data}
-                    enableRowActions
-                    renderRowActions={({ row }) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+    const AppoitmentActions = ({row, userRole, handleDeleteAppointment}) =>{
+        if(userRole === 'Doctor') {
+            return (
+                <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+                            <IconButton
+                                color='error'
+                                onClick={() => {
+                                    console.log(row.original.id);
+                                    handleDeleteAppointment(row.original.id)
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                            <Link to={`/appoitment/create-result/${row.original.id}`}>
+                                <Button size='small'>
+                                    Заключение
+                                </Button>
+                            </Link>
+                        </Box>
+            )
+        } else if (userRole === 'Receptionist') {
+            return (
+                <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
                             <IconButton
                                 color='error'
                                 onClick={() => {
@@ -114,15 +129,32 @@ const AppoitmentsTable = () => {
                                 <DeleteIcon />
                             </IconButton>
                             <Link to={`/appoitment/${row.original.id}`}>
-                            <IconButton size='small'>
-                                <Edit/>
-                            </IconButton>
-                        </Link>
+                                <IconButton size='small'>
+                                    <Edit />
+                                </IconButton>
+                            </Link>
                         </Box>
+            )
+        }
+        else return null;
+    }
+    return (
+        <>
+            {statusCode === 200 &&
+                <MaterialReactTable
+                    columns={columns}
+                    data={data}
+                    enableRowActions
+                    renderRowActions={({ row }) => (
+                        <AppoitmentActions
+                            row={row}
+                            userRole={role}
+                            handleDeleteAppointment={handleDeleteAppointment}
+                        />
                     )}
                 />}
             {statusCode === 401 &&
-                <SignInModal isOpen={() => handleOpenSignIn()} onClose={() => handleCloseSignIn(false)} />}
+                <SignInModal isOpen={openSignIn} onClose={() => handleCloseSignIn(false)} />}
         </>
     )
 };

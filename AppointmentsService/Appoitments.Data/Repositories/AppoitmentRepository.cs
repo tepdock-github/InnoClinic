@@ -28,13 +28,13 @@ namespace Appoitments.Data.Repositories
             .ToListAsync();
 
         public async Task<IEnumerable<Appoitment>> GetAppoitmentsByPatient(string patientId, bool trackChanges) =>
-            await FindByCondition(a => a.PatientId.Equals(patientId), trackChanges).ToListAsync();
+            await FindByCondition(a => a.PatientId.Equals(patientId) && a.isComplete == false, trackChanges).ToListAsync();
 
         public async Task<IEnumerable<Appoitment>> GetAppoitmentsByDoctor(string doctorId, bool trackChanges) =>
             await FindByCondition(a => a.DoctorId.Equals(doctorId), trackChanges).ToListAsync();
 
         public async Task<IEnumerable<Appoitment>> GetAppoitmentsScheduleByDocrot(string doctorId, bool trackChanges) =>
-            await FindByCondition(a => a.DoctorId.Equals(doctorId) && a.isApproved == true, trackChanges)
+            await FindByCondition(a => a.DoctorId.Equals(doctorId) && a.isApproved == true && a.isComplete == false, trackChanges)
             .ToListAsync();
 
         public async Task<Appoitment?> GetAppoitmentId(int id, bool trackChanges) =>

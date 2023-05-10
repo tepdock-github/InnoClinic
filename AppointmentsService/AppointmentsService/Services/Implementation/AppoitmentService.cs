@@ -27,6 +27,21 @@ namespace AppointmentsService.Services.Implementation
         {
             var appoitment = _mapper.Map<Appoitment>(appoitmentDto);
 
+            var schedule = await _repositoryManager.ScheduleRepository.GetScheduleById(appoitment.ScheduleId, trackChanges: true);
+            if (schedule == null)
+                throw new NotFoundException("Schedule for appoitment with id: " + appoitment.ScheduleId + " wasn't found");
+            var scheduleDto = new ScheduleManipulationDto
+            {
+                DoctorId = schedule.DoctorId,
+                DoctorFirstName = schedule.DoctorFirstName,
+                DoctorLastName = schedule.DoctorLastName,
+                Date = schedule.Date,
+                Time = schedule.Time,
+                isBooked = true,
+                AppoitmentId = 0
+            };
+
+            _mapper.Map(scheduleDto, schedule);
             _repositoryManager.AppoitmentRepository.CreateAppoitment(appoitment);
             await _repositoryManager.SaveAsync();
 
@@ -39,6 +54,21 @@ namespace AppointmentsService.Services.Implementation
             if (appoitment == null)
                 throw new NotFoundException("appoitment with id:" + id + " wasnt found");
 
+            var schedule = await _repositoryManager.ScheduleRepository.GetScheduleById(appoitment.ScheduleId, trackChanges: true);
+            if (schedule == null)
+                throw new NotFoundException("Schedule for appoitment with id: " + appoitment.ScheduleId + " wasn't found");
+
+            var scheduleDto = new ScheduleManipulationDto {
+                DoctorId = schedule.DoctorId,
+                DoctorFirstName = schedule.DoctorFirstName,
+                DoctorLastName = schedule.DoctorLastName,
+                Date = schedule.Date,
+                Time = schedule.Time,
+                isBooked = false,
+                AppoitmentId = 0
+            };
+
+            _mapper.Map(scheduleDto, schedule);
             _repositoryManager.AppoitmentRepository.DeleteAppoitment(appoitment);
             await _repositoryManager.SaveAsync();
         }
@@ -93,6 +123,21 @@ namespace AppointmentsService.Services.Implementation
             if (appoitment == null)
                 throw new NotFoundException("appoitment with id:" + id + " wasnt found");
 
+            var schedule = await _repositoryManager.ScheduleRepository.GetScheduleById(appoitment.ScheduleId, trackChanges: true);
+            if (schedule == null)
+                throw new NotFoundException("Schedule for appoitment with id: " + appoitment.ScheduleId + " wasn't found");
+            var scheduleDto = new ScheduleManipulationDto
+            {
+                DoctorId = schedule.DoctorId,
+                DoctorFirstName = schedule.DoctorFirstName,
+                DoctorLastName = schedule.DoctorLastName,
+                Date = schedule.Date,
+                Time = schedule.Time,
+                isBooked = true,
+                AppoitmentId = 0
+            };
+
+            _mapper.Map(scheduleDto, schedule);
             _mapper.Map(appoitmentDto, appoitment);
             await _repositoryManager.SaveAsync();
 

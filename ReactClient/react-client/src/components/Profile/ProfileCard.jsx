@@ -57,7 +57,7 @@ const ProfileCard = () => {
         {statusCode === 200 && 
             <GridWrapper>
             <Card sx={{maxWidth: 500, minWidth:250}}>
-            <CardMedia>
+            <CardMedia sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 75 }}>
                     <BackgroundLetterAvatars
                         firstName={data.firstName}
                         lastName={data.lastName}
