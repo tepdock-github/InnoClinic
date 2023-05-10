@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProfilesService.Domain.DataTransferObjects;
 using ProfilesService.Filters;
 using ProfilesService.Services.Interfaces;
-using System.Data;
 
 namespace ProfilesService.Controllers
 {
@@ -19,17 +18,17 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetAllReceptionistsProfiles() =>
             Ok(await _receptionistProfile.GetReceptionistProfiles());
 
         [HttpGet("{id}", Name = "GetReceptionistProfileById")]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetReceptionistProfileById(int id) =>
             Ok(await _receptionistProfile.GetReceptionistProfile(id));
 
         [HttpGet("account/{id}")]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetReceptionistProfileByAccount(string id) =>
             Ok(await _receptionistProfile.GetReceptionistProfileByAccount(id));
 

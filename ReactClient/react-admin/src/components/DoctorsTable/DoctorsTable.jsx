@@ -10,33 +10,33 @@ const DoctorsTable = () => {
         () => [
             {
                 accessorKey: 'firstName',
-                header: 'First name',
+                header: 'Имя доктора',
             },
             {
                 accessorKey: 'lastName',
-                header: 'Last name'
+                header: 'Фамилия доктора'
             },
             {
                 accessorKey: 'specializationName',
-                header: 'Specialization name'
+                header: 'Специализация'
             },
             {
                 accessorKey: 'status',
-                header: 'Status'
+                header: 'Статус'
             }
         ], []
     );
-    const [data, setData] = useState([]);
 
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const respDoctors = await fetch('http://localhost:7111/gateway/doctors');
-            const resultDoctors = await respDoctors.json();
-            setData([...resultDoctors]);
+            const response = await fetch('http://localhost:7111/gateway/doctors');
+            setData(await response.json());
         }
         fetchData();
     }, []);
+
     return (
         <>
             <MaterialReactTable
@@ -57,7 +57,7 @@ const DoctorsTable = () => {
                         </IconButton>
                         <Link to={`/doctors/${row.original.id}`}>
                             <Button variant='text' color='primary' size='small'>
-                                View Details
+                                Подробнее
                             </Button>
                         </Link>
                     </Box>
