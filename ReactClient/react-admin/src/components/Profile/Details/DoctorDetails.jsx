@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,11 +6,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import GridWrapper from '../common/GridWrapper/GridWrapper';
-import BackgroundLetterAvatars from '../common/Avatar/Avatar';
-import { Link, useNavigate } from 'react-router-dom';
+import GridWrapper from '../../common/GridWrapper/GridWrapper';
+import BackgroundLetterAvatars from '../../common/Avatar/Avatar';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-const DoctorDetailsModal = () => {
+const DoctorDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [doctor, setDoctor] = useState([]);
@@ -23,28 +22,36 @@ const DoctorDetailsModal = () => {
                 const responseDoctor = await fetch(`http://localhost:7111/gateway/doctors/${id}`);
                 if (responseDoctor.status === 401) {
                     navigate('/401-error');
-                }
-                else if (responseDoctor.status === 403) {
+                } else if (responseDoctor.status === 403) {
                     navigate('/403-error')
-                }
-                else navigate('/500-error')
-                setDoctor(await responseDoctor.json());
+                } else if (responseDoctor.status === 500) {
+                    navigate('/500-error')
+                } else {
+                    const doctor = await responseDoctor.json();
+                    setDoctor(doctor);
 
-                const responseOffice = await fetch(`http://localhost:7111/gateway/offices/${doctor.officeId}`);
-                if (responseOffice.status === 401) {
-                    navigate('/401-error');
+                    if (doctor.officeId) {
+                        const responseOffice = await fetch(`http://localhost:7111/gateway/offices/${doctor.officeId}`);
+                        if (responseOffice.status === 401) {
+                            navigate('/401-error');
+                        } else if (responseOffice.status === 403) {
+                            navigate('/403-error')
+                        } else if (responseOffice.status === 500) {
+                            navigate('/500-error')
+                        } else {
+                            const offices = await responseOffice.json();
+                            setOffices(offices);
+                        }
+                    }
                 }
-                else if (responseOffice.status === 403) {
-                    navigate('/403-error')
-                }
-                else navigate('/500-error')
-                setOffices(await responseOffice.json());
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDoctor();
     }, []);
+
+
 
     return (
         <GridWrapper>
@@ -71,10 +78,10 @@ const DoctorDetailsModal = () => {
                 </CardContent>
                 <CardActions>
                     <Link to={'/doctors'}>
-                        <Button size='small' variant='outlined'>Go back</Button>
+                        <Button size='small' variant='outlined'>Назад</Button>
                     </Link>
                     <Link to={'/appoitments'}>
-                        <Button size='small' variant='outlined'>Make an Appoitment</Button>
+                        <Button size='small' variant='outlined'>Создать запись</Button>
                     </Link>
                 </CardActions>
             </Card>
@@ -82,4 +89,4 @@ const DoctorDetailsModal = () => {
     );
 };
 
-export default DoctorDetailsModal;
+export default DoctorDetails;

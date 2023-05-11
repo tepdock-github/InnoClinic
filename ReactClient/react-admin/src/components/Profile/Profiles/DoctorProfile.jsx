@@ -22,8 +22,7 @@ const DoctorProfile = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`http://localhost:7111/gateway/doctors/account/${userId}`, {
-                method: 'GET',
+            const response = await fetch(`http://localhost:7111/gateway/doctors/account/${userId}`, { 
                 headers: headers
             });
 

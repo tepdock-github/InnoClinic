@@ -8,9 +8,14 @@ import ServicesList from './pages/Services/ServicesList';
 import AppoitmentsList from './pages/Appoitments/AppoitmentsList';
 import AppoitmentsHistoryList from './pages/Appoitments/AppoitmentsHistory';
 import NewAppoitmentForm from './components/Modals/NewAppoitmentModal';
+
 import Doctors from './pages/Doctors/DoctorsList';
+import DoctorDetails from './components/Profile/Details/DoctorDetails';
+
+import ReceptionistList from './pages/Receptionis.jsx/Receptionist.List';
+import ReceptionistDetails from './components/Profile/Details/ReceptionistDetails'
+
 import ResultsList from './pages/Results/ResultsList';
-import DoctorDetailsModal from './components/DoctorsTable/DoctorDetailModal';
 import ServiceDetailModel from './components/ServicesTable/ServiceDetailModel';
 import ProfileCard from './components/Profile/ProfileCard';
 import ProfileForm from './components/Modals/ProfileForm';
@@ -26,7 +31,6 @@ import EditSpecializations from './components/Modals/EditSpecializations';
 import EditReceptionist from './components/Modals/EditReceptionist';
 import Accounts from './pages/Accounts/AccountsList';
 import ProfilePatientForm from './components/Modals/ProfileFormPatient';
-import ReceptionistList from './pages/Receptionis.jsx/Receptionist.List';
 import EditAppoitmentForm from './components/Modals/EditAppoitmentForm';
 import NewResultForm from './components/Modals/NewResultForm';
 import ResultCard from './components/ResultsTable/ResultCard';
@@ -51,6 +55,12 @@ root.render(
             <Route path='/results' element={<ResultsList/>}/>
             <Route path='/appoitment/result/:id' element={<ResultCard/>}/>
 
+            <Route path='/doctors' element={<Doctors/>}/>
+            <Route path='/doctors/:id' element={<DoctorDetails/>}/>
+
+            <Route path='/receptionist' element={<ReceptionistList/>}/>
+            <Route path='/receptionist/:id' element={<ReceptionistDetails/>}/>
+
             <Route path='/accounts' element={<Accounts/>}/>
             <Route path='/offices' element={<OfficesList/>}/>
             <Route path='/schedules' element={<NewScheduleForm/>}/>
@@ -67,14 +77,11 @@ root.render(
             <Route path='/appoitment/create-result/:id' element={<NewResultForm/>}/>
             <Route path='/create/appoitments' element={<NewAppoitmentForm/>}/>
             <Route path='/history/appoitments' element={<AppoitmentsHistoryList/>}/> 
-            <Route path='/doctors' element={<Doctors/>}/>
-            <Route path='/doctors/:id' element={<DoctorDetailsModal/>}/>
             <Route path='/profile/edit/doctor' element={<ProfileForm/>}/>
             <Route path='/edit/patients/:id' element={<ProfilePatientForm/>}/>
             <Route path='/profile/edit/receptionist' element={<EditReceptionist/>}/>
             <Route path='/profile/doctor/create' element={<DoctorProfileCreateForm/>}/>
             <Route path='/profile/receptionist/create' element={<CreateReceptionistProfile/>}/>
-            <Route path='/receptionist' element={<ReceptionistList/>}/>
         </Route>
     </Routes>
     </BrowserRouter>
