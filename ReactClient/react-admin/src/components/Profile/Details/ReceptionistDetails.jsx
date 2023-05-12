@@ -8,10 +8,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import GridWrapper from '../../common/GridWrapper/GridWrapper';
 import BackgroundLetterAvatars from '../../common/Avatar/Avatar';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 const ReceptionistDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [admin, setAdmin] = useState([]);
     const [office, setOffices] = useState([]);
 
@@ -25,13 +26,20 @@ const ReceptionistDetails = () => {
             const responseAdmin = await fetch(`http://localhost:7111/gateway/receptionists/${id}`, {
                 headers: headers
             });
-            const admin = await responseAdmin.json()
-            setAdmin(admin);
+            if (responseAdmin.status === 401) {
+                navigate('/401-error');
+            } else if (responseAdmin.status === 500) {
+                navigate('/500-error');
+            } else {
+                const admin = await responseAdmin.json()
+                setAdmin(admin);
 
-            if (admin.officeId) {
-                const responseOffice = await fetch(`http://localhost:7111/gateway/offices/${admin.officeId}`);
-                setOffices(await responseOffice.json());
+                if (admin.officeId) {
+                    const responseOffice = await fetch(`http://localhost:7111/gateway/offices/${admin.officeId}`);
+                    setOffices(await responseOffice.json());
+                }
             }
+
         };
         fetchData();
     }, []);

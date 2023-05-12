@@ -2,8 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
 import { Box, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AccountsPatientsTable = () => {
     const columns = useMemo(
@@ -26,6 +25,7 @@ const AccountsPatientsTable = () => {
             }
         ]
     )
+    const navigate = useNavigate();
     const [prP, setPAtient] = useState([]);
 
     var accessToken = localStorage.getItem('accessToken');
@@ -36,9 +36,16 @@ const AccountsPatientsTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             const respPat = await fetch('http://localhost:7111/gateway/patients', {headers});
-
-            const pat = await respPat.json();
-            setPAtient(pat);
+            if (respPat.status === 401) {
+                navigate('/401-error');
+            } else if (respPat.status === 403) {
+                navigate('/403-error');
+            } else if (respPat.status === 500) {
+                navigate('/500-error');
+            } else {
+                const pat = await respPat.json();
+                setPAtient(pat);
+            }
         }
         fetchData();
     }, [])

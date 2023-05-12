@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
 import { Box, IconButton } from '@mui/material';
 import { Edit } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 
 const ServiceTable = () => {
@@ -19,6 +19,7 @@ const ServiceTable = () => {
         ], []
     );
     const [services, setServices] = useState([]);
+    const navigate = useNavigate();
 
     var accessToken = localStorage.getItem('accessToken');
     const headers = new Headers();
@@ -28,7 +29,11 @@ const ServiceTable = () => {
     useEffect(() => {
         const getData = async () => {
             const responseService = await fetch('http://localhost:7111/gateway/services');
-            setServices(await responseService.json());
+            if (responseService.status === 500) {
+                navigate('/500-error')
+            } else {
+                setServices(await responseService.json());
+            }
         }
         getData();
     }, []);
@@ -39,11 +44,11 @@ const ServiceTable = () => {
                 columns={columns}
                 data={services}
                 enableRowActions
-                renderRowActions={({row}) => (
+                renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
                         <Link to={`/edit/services/${row.original.id}`}>
                             <IconButton color='primary' size='small'>
-                                <Edit/>
+                                <Edit />
                             </IconButton>
                         </Link>
                         <Link to={`/services/${row.original.id}`}>
