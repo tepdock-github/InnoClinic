@@ -31,6 +31,10 @@ namespace Appoitments.Data.Repositories
             await FindByCondition(s => s.AppoitmentId == appoitmentId, trackChanges)
             .FirstOrDefaultAsync();
 
+        public async Task<IEnumerable<Schedule>> GetScheduleByDoctor(string doctorId, bool trackChanges) =>
+            await FindByCondition(s => s.DoctorId.Equals(doctorId), trackChanges)
+            .ToListAsync();
+
         public async Task<Schedule?> GetScheduleById(int id, bool trackChanges) =>
             await FindByCondition(s => s.Id == id, trackChanges)
             .FirstOrDefaultAsync();

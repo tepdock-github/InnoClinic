@@ -23,6 +23,11 @@ namespace AppointmentsService.Controllers
         public async Task<IActionResult> GetSchedules() =>
             Ok(await _scheduleService.GetAllSchedulesAsync());
 
+        [HttpGet("doctor/{doctorId}")]
+        [Authorize(Roles = "Receptionist, Doctor")]
+        public async Task<IActionResult> GetDoctorSchedule(string doctorId) =>
+            Ok(await _scheduleService.GetAllSchedulesByDoctorAsync(doctorId));
+
         [HttpGet("doctor/{doctorId}/date/{date}")]
         [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetAllSchedulesByDoctorAndDate(string doctorId, string date) =>

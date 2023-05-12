@@ -34,6 +34,8 @@ import ProfilePatientForm from './components/Modals/ProfileFormPatient';
 import EditAppoitmentForm from './components/Modals/EditAppoitmentForm';
 import NewResultForm from './components/Modals/NewResultForm';
 import ResultCard from './components/ResultsTable/ResultCard';
+
+import ScheduleList from './pages/Schedules/SchedulesList';
 import NewScheduleForm from './components/Modals/NewScheduleForm';
 
 import Error401 from './utils/401Error';
@@ -61,9 +63,11 @@ root.render(
             <Route path='/receptionist' element={<ReceptionistList/>}/>
             <Route path='/receptionist/:id' element={<ReceptionistDetails/>}/>
 
+            <Route path='/schedules' element={<ScheduleList/>}/>
+            <Route path='/create/schedules' element={<NewScheduleForm/>}/>
+
             <Route path='/accounts' element={<Accounts/>}/>
             <Route path='/offices' element={<OfficesList/>}/>
-            <Route path='/schedules' element={<NewScheduleForm/>}/>
             <Route path='/create/office' element={<NewOfficeModal/>}/>
             <Route path='/services' element={<ServicesList/>}/>
             <Route path='/create/service' element={<NewServiceModal/>}/>

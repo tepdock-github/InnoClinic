@@ -134,6 +134,24 @@
       }
     },
     {
+      "UpstreamPathTemplate": "/gateway/schedules/doctor/{doctorId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/schedules/doctor/{doctorId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "appoitments-api",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "gatewayAPI.scope"
+        ]
+      }
+    },
+    {
       "UpstreamPathTemplate": "/gateway/schedules/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
       "DownstreamPathTemplate": "/api/schedules/{id}",

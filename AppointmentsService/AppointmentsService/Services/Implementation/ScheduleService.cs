@@ -52,6 +52,13 @@ namespace AppointmentsService.Services.Implementation
             return _mapper.Map<IEnumerable<ScheduleDto>>(schedules);
         }
 
+        public async Task<IEnumerable<ScheduleDto>> GetAllSchedulesByDoctorAsync(string doctorId)
+        {
+            var schedules = await _repositoryManager.ScheduleRepository.GetScheduleByDoctor(doctorId, trackChanges: false);
+
+            return _mapper.Map<IEnumerable<ScheduleDto>>(schedules);
+        }
+
         public async Task<IEnumerable<ScheduleDto>> GetFreeSchedulesByDoctorAndDate(string doctorId, string date)
         {
             var schedules = await _repositoryManager.ScheduleRepository.GetFreeSchedulesByDoctorAndDate(doctorId, date, trackChanges: false);

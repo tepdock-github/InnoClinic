@@ -77,7 +77,7 @@ const NewScheduleForm = () => {
                                             onChange={(e) => {
                                                 formikProps.handleChange(e);
                                                 const selectedDoctorId = e.target.value;
-                                                const selectedDoctor = doctors.find(doctor => doctor.id === parseInt(selectedDoctorId));
+                                                const selectedDoctor = doctors.find(doctor => doctor.accountId === selectedDoctorId);
                                                 if (selectedDoctor) {
                                                     formikProps.setFieldValue('doctorFirstName', selectedDoctor.firstName);
                                                     formikProps.setFieldValue('doctorLastName', selectedDoctor.lastName);
@@ -90,7 +90,7 @@ const NewScheduleForm = () => {
                                                 <em>Выберите доктора</em>
                                             </MenuItem>
                                             {doctors.map((doctor) => (
-                                                <MenuItem key={doctor.id} value={`${doctor.id}`}>
+                                                <MenuItem key={doctor.id} value={`${doctor.accountId}`}>
                                                     {`${doctor.firstName} ${doctor.lastName}`}
                                                 </MenuItem>
                                             ))}
@@ -126,6 +126,11 @@ const NewScheduleForm = () => {
                             <Button type='submit' color='primary' disabled={isSubmitting}>
                                 Создать
                             </Button>
+                            <Link to={'/schedules'}>
+                                <Button size='small' variant='outlined'>
+                                    Отмена
+                                </Button>
+                            </Link>
                         </Form>
                     )}
                 </Formik>
