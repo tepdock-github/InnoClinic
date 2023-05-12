@@ -4,9 +4,9 @@ import ReceptionistSpecializationTable from './SpecializationTables/Receptionist
 
 const SpecializationTable = () => {
     var role = localStorage.getItem('role');
-    
-    if(role === 'Receptionist') return <ReceptionistSpecializationTable/>
-    else return <DoctorSpecializationTable/>
+
+    if (role === 'Receptionist') return <ReceptionistSpecializationTable />
+    else return <DoctorSpecializationTable />
 }
 
 export default SpecializationTable;
