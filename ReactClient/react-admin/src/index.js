@@ -21,8 +21,11 @@ import ProfileCard from './components/Profile/ProfileCard';
 import ProfileForm from './components/Modals/ProfileForm';
 import DoctorProfileCreateForm from './components/Modals/ProfileCreateForm';
 import CreateReceptionistProfile from './components/Modals/CreateReceptionistProfile';
+
 import OfficesList from './pages/Offices/OfficesList';
 import NewOfficeModal from './components/Modals/NewOfficeModal';
+import EditOfficeModal from './components/Modals/EditOfficeModal';
+
 import NewServiceModal from './components/Modals/NewServiceModal';
 import EditServiceModal from './components/Modals/EditServiceModal';
 import SpecializationList from './pages/Specializations/SpecializationsList';
@@ -67,8 +70,11 @@ root.render(
             <Route path='/create/schedules' element={<NewScheduleForm/>}/>
 
             <Route path='/accounts' element={<Accounts/>}/>
+
             <Route path='/offices' element={<OfficesList/>}/>
             <Route path='/create/office' element={<NewOfficeModal/>}/>
+            <Route path='/edit/offices/:id' element={<EditOfficeModal/>}/>
+
             <Route path='/services' element={<ServicesList/>}/>
             <Route path='/create/service' element={<NewServiceModal/>}/>
             <Route path='/edit/services/:id' element={<EditServiceModal/>}/> 

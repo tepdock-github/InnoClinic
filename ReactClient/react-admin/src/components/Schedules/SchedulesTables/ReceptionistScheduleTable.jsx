@@ -58,21 +58,16 @@ const ReceptionistScheduleTable = () => {
         fetchData();
     }, []);
 
-    const handleDeleteSchedule = async (id) => {
-        await fetch(`http://localhost:7111/gateway/schedules/${id}`, {
-            method: 'DELETE',
-            headers: headers
-        })
-    };
-
-    const ScheduleAction = ({ row, handleDeleteSchedule }) => {
+    const ScheduleAction = ({ row }) => {
         return (
             <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
                 <IconButton
                     color='error'
-                    onClick={() => {
-                        console.log(row.original.id);
-                        handleDeleteSchedule(row.original.id)
+                    onClick={async () => {
+                        await fetch(`http://localhost:7111/gateway/schedules/${row.original.id}`, {
+                            method: 'DELETE',
+                            headers: headers
+                        })
                     }}
                 >
                     <DeleteIcon />
@@ -90,7 +85,6 @@ const ReceptionistScheduleTable = () => {
                 renderRowActions={({ row }) => (
                     <ScheduleAction
                         row={row}
-                        handleDeleteAppointment={handleDeleteSchedule}
                     />
                 )}
             />

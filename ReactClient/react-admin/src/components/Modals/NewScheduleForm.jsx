@@ -7,7 +7,7 @@ import GridWrapper from '../common/GridWrapper/GridWrapper';
 import { Button, TextField, Grid, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const validationSchema = Yup.object().shape({
-    doctorId: Yup.string().required(),
+    doctorId: Yup.number().required(),
     doctorFirstName: Yup.string().required(),
     doctorLastName: Yup.string().required(),
     date: Yup.string().required(),
@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
 
 const NewScheduleForm = () => {
     const initialValues = {
-        doctorId: '',
+        doctorId: 0,
         doctorFirstName: '',
         doctorLastName: '',
         date: '',
@@ -75,22 +75,23 @@ const NewScheduleForm = () => {
                                             label='Имя доктора'
                                             value={formikProps.values.doctorId}
                                             onChange={(e) => {
-                                                formikProps.handleChange(e);
                                                 const selectedDoctorId = e.target.value;
-                                                const selectedDoctor = doctors.find(doctor => doctor.accountId === selectedDoctorId);
+                                                const selectedDoctor = doctors.find(doctor => doctor.id === parseInt(selectedDoctorId));
                                                 if (selectedDoctor) {
                                                     formikProps.setFieldValue('doctorFirstName', selectedDoctor.firstName);
                                                     formikProps.setFieldValue('doctorLastName', selectedDoctor.lastName);
                                                 }
+                                                formikProps.handleChange(e); // Update the form values
                                             }}
                                             onBlur={formikProps.handleBlur}
                                             error={formikProps.touched.doctorId && !!formikProps.errors.doctorId}
                                         >
+
                                             <MenuItem value=''>
                                                 <em>Выберите доктора</em>
                                             </MenuItem>
                                             {doctors.map((doctor) => (
-                                                <MenuItem key={doctor.id} value={`${doctor.accountId}`}>
+                                                <MenuItem key={doctor.id} value={`${doctor.id}`}>
                                                     {`${doctor.firstName} ${doctor.lastName}`}
                                                 </MenuItem>
                                             ))}
