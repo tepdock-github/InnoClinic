@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthorizationService.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorizationService.Controllers
 {
@@ -6,5 +7,16 @@ namespace AuthorizationService.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly IAccountService _accountService;
+
+        public AccountsController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id) =>
+            Ok(await _accountService.GetDto(id));
+
     }
 }

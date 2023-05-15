@@ -907,6 +907,18 @@
           "gatewayAPI.scope"
         ]
       }
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/accounts/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-api",
+          "Port": 80
+        }
+      ]
     }
   ]
 }

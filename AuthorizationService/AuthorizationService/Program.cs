@@ -4,6 +4,7 @@ using Authorization.Domain.Interfaces;
 using Authorization.Domain.Models;
 using AuthorizationService;
 using AuthorizationService.IdentityServerConfig;
+using AuthorizationService.Services;
 using CustomExceptionMiddleware;
 using EmailService;
 using EmailService.Services;
@@ -28,6 +29,7 @@ namespace AuthorizationAPI
                 options.UseSqlServer(connectionString,
                 x => x.MigrationsAssembly("AuthorizationService")));
             builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             builder.Services.AddSingleton<IConfigureOptions<IdentityOptions>, AspIdentityConfig>();
 
