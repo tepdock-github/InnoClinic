@@ -10,15 +10,15 @@ const ReceptionistTable = () => {
         () => [
             {
                 accessorKey: 'firstName',
-                header: 'First name',
+                header: 'Имя',
             },
             {
                 accessorKey: 'middleName',
-                header: 'First name',
+                header: 'фамилия',
             },
             {
                 accessorKey: 'lastName',
-                header: 'Last name'
+                header: 'Отчество'
             }           
         ]
     )
@@ -47,7 +47,7 @@ const ReceptionistTable = () => {
                     <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
                         <Link to={`/receptionist/${row.original.id}`}>
                             <Button variant='text' color='primary' size='small'>
-                                View Details
+                                Подробнее
                             </Button>
                         </Link>
                     </Box>

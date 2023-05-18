@@ -35,6 +35,7 @@ import EditReceptionist from './components/Modals/EditReceptionist';
 import Accounts from './pages/Accounts/AccountsList';
 import ProfilePatientForm from './components/Modals/ProfileFormPatient';
 import EditAppoitmentForm from './components/Modals/EditAppoitmentForm';
+
 import NewResultForm from './components/Modals/NewResultForm';
 import ResultCard from './components/ResultsTable/ResultCard';
 

@@ -53,10 +53,12 @@ const AppoitmentsTable = () => {
 
     useEffect(() => {
         const getAppoitments = async () => {
-
-            if (accessToken) {
-
-                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/patient-schedule/${userId}`, {
+            const patientProfileResponse = await fetch(`http://localhost:7111/gateway/patients/account/${userId}`, {
+                headers: headers
+            });
+            const patientProfile = await patientProfileResponse.json();
+            if(patientProfile.id){
+                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/patient-schedule/${patientProfile.id}`, {
                     headers: headers
                 });
 
@@ -65,7 +67,6 @@ const AppoitmentsTable = () => {
                     setStatusCode(200);
                 }
                 else setStatusCode(401);
-
             }
         }
         getAppoitments();

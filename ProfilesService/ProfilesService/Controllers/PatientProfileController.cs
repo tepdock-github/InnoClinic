@@ -20,7 +20,7 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetAllPatientsProfiles([FromQuery] PatientParameters patientParameters)=>
             Ok(await _patientProfile.GetPatientProfiles(patientParameters));
 

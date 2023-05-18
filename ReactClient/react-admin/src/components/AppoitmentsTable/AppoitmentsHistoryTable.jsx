@@ -54,9 +54,12 @@ const AppoitmentsHistoryTables = () => {
     useEffect(() => {
         const getAppoitments = async () => {
 
-            if (accessToken) {
-
-                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/doctor-history/${userId}`, {
+            const doctorProfileResponse = await fetch(`http://localhost:7111/gateway/doctors/account/${userId}`, {
+                headers: headers
+            });
+            const doctorProfile = await doctorProfileResponse.json();
+            if (doctorProfile.id){
+                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/doctor-history/${doctorProfile.id}`, {
                     headers: headers
                 });
 

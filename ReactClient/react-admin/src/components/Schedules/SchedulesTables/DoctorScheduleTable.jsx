@@ -24,6 +24,7 @@ const DoctorScheduleTable = () => {
 
     const navigate = useNavigate();
     const [data, setData] = useState([]);
+    const [profile, setProfile] = useState([]);
 
     var accessToken = localStorage.getItem('accessToken');
     var userId = localStorage.getItem('userId');
@@ -33,23 +34,43 @@ const DoctorScheduleTable = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            var response = await fetch(`http://localhost:7111/gateway/schedules/doctor/${userId}`, {
+            console.log("Fetching profile data...");
+            var responseProfile = await fetch(`http://localhost:7111/gateway/doctors/account/${userId}`, {
                 headers: headers
             });
-
-            if (response.status === 200) {
-                setData(await response.json());
+    
+            if (responseProfile.status === 200) {
+                console.log("Profile data received successfully.");
+                const profileData = await responseProfile.json();
+                setProfile(profileData);
+    
+                if (profileData.id) {
+                    console.log("Fetching schedule data...");
+                    var response = await fetch(`http://localhost:7111/gateway/schedules/doctor/${profileData.id}`, {
+                        headers: headers
+                    });
+    
+                    if (response.status === 200) {
+                        console.log("Schedule data received successfully.");
+                        setData(await response.json());
+                    } else if (response.status === 401) {
+                        console.log("401 Error: Unauthorized");
+                        navigate('/401-error');
+                    } else if (response.status === 403) {
+                        console.log("403 Error: Forbidden");
+                        navigate('/403-error')
+                    } else {
+                        console.log("500 Error: Internal Server Error");
+                        navigate('/500-error');
+                    }
+                }
             }
-            else if (response.status === 401) {
-                navigate('/401-error');
-            }
-            else if (response.status === 403) {
-                navigate('/403-error')
-            }
-            else navigate('/500-error')
-        }
+        };
+    
         fetchData();
     }, []);
+    
+    
 
     const handleDeleteSchedule = async (id) => {
         await fetch(`http://localhost:7111/gateway/schedules/${id}`, {

@@ -10,19 +10,19 @@ const DoctorsTable = () => {
         () => [
             {
                 accessorKey: 'firstName',
-                header: 'First name',
+                header: 'Имя доктора',
             },
             {
                 accessorKey: 'lastName',
-                header: 'Last name'
+                header: 'Фамилия доктора'
             },
             {
                 accessorKey: 'specializationName',
-                header: 'Specialization name'
+                header: 'Специализация'
             },
             {
                 accessorKey: 'status',
-                header: 'Status'
+                header: 'Статус'
             }
         ], []
     );
@@ -57,7 +57,7 @@ const DoctorsTable = () => {
                         </IconButton>
                         <Link to={`/doctors/${row.original.id}`}>
                             <Button variant='text' color='primary' size='small'>
-                                View Details
+                                Подробнее
                             </Button>
                         </Link>
                     </Box>

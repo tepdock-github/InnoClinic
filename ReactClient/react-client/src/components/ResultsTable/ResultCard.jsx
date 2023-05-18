@@ -30,7 +30,7 @@ const ResultCard = () => {
 
     useEffect(() => {
         const fetchResult = async () => {
-            const response = await fetch(`http://localhost:7111/gateway/results/${id}`, {
+            const response = await fetch(`http://localhost:7111/gateway/results/appoitment/${id}`, {
                 headers: headers
             });
 

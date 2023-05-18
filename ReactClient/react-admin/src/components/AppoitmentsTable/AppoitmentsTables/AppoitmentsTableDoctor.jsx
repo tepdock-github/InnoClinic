@@ -45,20 +45,26 @@ const AppoitmentsTableDoctor = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            var response = await fetch(`http://localhost:7111/gateway/appoitments/doctor-schedule/${userId}`, {
+            const doctorProfileResponse = await fetch(`http://localhost:7111/gateway/doctors/account/${userId}`, {
                 headers: headers
             });
+            const doctorProfile = await doctorProfileResponse.json();
+            if (doctorProfile.id) {
+                var response = await fetch(`http://localhost:7111/gateway/appoitments/doctor-schedule/${doctorProfile.id}`, {
+                    headers: headers
+                });
 
-            if (response.status === 200) {
-                setData(await response.json());
+                if (response.status === 200) {
+                    setData(await response.json());
+                }
+                else if (response.status === 401) {
+                    navigate('/401-error');
+                }
+                else if (response.status === 403) {
+                    navigate('/403-error')
+                }
+                else navigate('/500-error')
             }
-            else if (response.status === 401) {
-                navigate('/401-error');
-            }
-            else if (response.status === 403) {
-                navigate('/403-error')
-            }
-            else navigate('/500-error')
         }
         fetchData();
     }, []);

@@ -30,7 +30,7 @@ root.render(
             <Route path='/doctors' element={<Doctors/>}/>
             <Route path='/doctors/:id' element={<DoctorDetailsModal/>}/>
             <Route path='/results' element={<ResultsList/>}/>
-            <Route path='/results/:id' element={<ResultCard/>}/>
+            <Route path='/appoitment/result/:id' element={<ResultCard/>}/>
             <Route path='/profile' element={<ProfileCard/>}/>
             <Route path='/profile/edit' element={<ProfileForm/>}/>
             <Route path='/profile/create' element={<ProfileCreateForm/>}/>

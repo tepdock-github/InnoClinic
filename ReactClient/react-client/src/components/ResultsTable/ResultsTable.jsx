@@ -46,16 +46,22 @@ const ResultsTable = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const respResults = await fetch(`http://localhost:7111/gateway/results/patient/${userId}`, {
-                method: 'GET',
+            const patientProfileResponse = await fetch(`http://localhost:7111/gateway/patients/account/${userId}`, {
                 headers: headers
-            })
-            
-            if (respResults.status === 200) {
-                setData(await respResults.json());
-                setStatusCode(200);
+            });
+            const patientProfile = await patientProfileResponse.json();
+            if (patientProfile.id) {
+                const respResults = await fetch(`http://localhost:7111/gateway/results/patient/${patientProfile.id}`, {
+                    method: 'GET',
+                    headers: headers
+                })
+
+                if (respResults.status === 200) {
+                    setData(await respResults.json());
+                    setStatusCode(200);
+                }
+                else setStatusCode(401);
             }
-            else setStatusCode(401);
         }
         fetchData();
     }, []);
@@ -68,22 +74,21 @@ const ResultsTable = () => {
         })
         if (response.ok) {
             const blob = await response.blob();
-            // Create a temporary anchor element to download the file
             const anchor = document.createElement('a');
             anchor.href = URL.createObjectURL(blob);
             anchor.download = file;
             document.body.appendChild(anchor);
             anchor.click();
             document.body.removeChild(anchor);
-          } else {
+        } else {
             console.error('Failed to download file:', response.status, response.statusText);
-          }
+        }
         console.log('Get appointment:');
     };
 
     return (
         <>
-        {statusCode === 200 &&
+            {statusCode === 200 &&
                 <MaterialReactTable
                     columns={columns}
                     data={data}
@@ -97,7 +102,7 @@ const ResultsTable = () => {
                                     handleDownloadResult(row.original.appoitmentId)
                                 }}
                             >
-                                Download
+                                Скачать
                             </Button>
                         </Box>
                     )}

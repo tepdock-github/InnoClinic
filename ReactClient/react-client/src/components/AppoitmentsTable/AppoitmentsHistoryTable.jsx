@@ -53,10 +53,12 @@ const AppoitmentsHistoryTables = () => {
 
     useEffect(() => {
         const getAppoitments = async () => {
-
-            if (accessToken) {
-
-                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/patient-history/${userId}`, {
+            const patientProfileResponse = await fetch(`http://localhost:7111/gateway/patients/account/${userId}`, {
+                headers: headers
+            });
+            const patientProfile = await patientProfileResponse.json();
+            if (patientProfile.id) {
+                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/patient-history/${patientProfile.id}`, {
                     headers: headers
                 });
 
@@ -78,7 +80,7 @@ const AppoitmentsHistoryTables = () => {
             handleCloseSignIn();
         }
     }, [statusCode]);
-    
+
     return (
         <>
             {statusCode === 200 &&
@@ -86,13 +88,13 @@ const AppoitmentsHistoryTables = () => {
                     columns={columns}
                     data={data}
                     enableRowActions
-                    renderRowActions={({row}) => (
+                    renderRowActions={({ row }) => (
                         <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                            <Link to={`/results/${row.original.resultId}`}>
-                            <Button variant='text' color='primary' size='small'>
-                                View Details
-                            </Button>
-                        </Link>
+                            <Link to={`/appoitment/result/${row.original.id}`}>
+                                <Button variant='text' color='primary' size='small'>
+                                    Посмотреть заключение
+                                </Button>
+                            </Link>
                         </Box>
                     )}
                 />}
