@@ -4,6 +4,7 @@
     {
         IAppoitmentRepository AppoitmentRepository { get; }
         IResultRepository ResultRepository { get; }
+        IScheduleRepository ScheduleRepository { get; }
         Task SaveAsync();
     }
 }

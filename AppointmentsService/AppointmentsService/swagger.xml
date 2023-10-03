@@ -17,28 +17,28 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetDoctorHistory(System.Int32)">
+        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetDoctorHistory(System.String)">
             <summary>
                 Get Doctor's History: all appoitments that was completed for the doctor
             </summary>
             <param name="doctorId"></param>
             <returns></returns>
         </member>
-        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetPatientHistory(System.Int32)">
+        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetPatientHistory(System.String)">
             <summary>
                 Get Patient's History: all appoitments that was completed for the patient
             </summary>
             <param name="patientId"></param>
             <returns></returns>
         </member>
-        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetDoctorSchedule(System.Int32)">
+        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetDoctorSchedule(System.String)">
             <summary>
                 Get Doctor's Schedule: all appoitments that was approved for doctor
             </summary>
             <param name="doctorId"></param>
             <returns></returns>
         </member>
-        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetPatientAppoitments(System.Int32)">
+        <member name="M:AppointmentsService.Controllers.AppoitmentController.GetPatientAppoitments(System.String)">
             <summary>
                 Get Patient's Schedule: all appoitments for patient
             </summary>
@@ -67,14 +67,14 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:AppointmentsService.Controllers.ResultController.GetResultsByPatients(System.Int32)">
+        <member name="M:AppointmentsService.Controllers.ResultController.GetResultsByPatients(System.String)">
             <summary>
                 Get all Patient's Results
             </summary>
             <param name="patientId"></param>
             <returns></returns>
         </member>
-        <member name="M:AppointmentsService.Controllers.ResultController.GetResultsByDoctors(System.Int32)">
+        <member name="M:AppointmentsService.Controllers.ResultController.GetResultsByDoctors(System.String)">
             <summary>
                 Get all Results made by the Doctor
             </summary>
@@ -94,6 +94,7 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+            
         </member>
         <member name="M:AppointmentsService.Controllers.ResultController.UpdateResult(System.Int32,Appoitments.Domain.DataTransferObjects.ResultManipulationDto)">
             <summary>
@@ -113,6 +114,54 @@
             <inheritdoc />
         </member>
         <member name="M:AppointmentsService.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddSchedules">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedules.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedules.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedules.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddfieldAppoitmentId">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddfieldAppoitmentId.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddfieldAppoitmentId.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddfieldAppoitmentId.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddedFieldForRealForReal">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddedFieldForRealForReal.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddedFieldForRealForReal.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddedFieldForRealForReal.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:AppointmentsService.Migrations.AddSchedule">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedule.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedule.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:AppointmentsService.Migrations.AddSchedule.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

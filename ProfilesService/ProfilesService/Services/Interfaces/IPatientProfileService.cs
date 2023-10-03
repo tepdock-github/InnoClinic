@@ -7,6 +7,7 @@ namespace ProfilesService.Services.Interfaces
     {
         Task<IEnumerable<PatientProfileDto>> GetPatientProfiles(PatientParameters patientParameters);
         Task<PatientProfileDto> GetPatientProfile(int id);
+        Task<PatientProfileDto> GetPatientProfileByAccount(string id);
         Task<PatientProfileDto> CreatePatientProfile(PatientProfileManipulationDto patientProfileDto);
         Task UpdatePatientProfile(int id, PatientProfileManipulationDto patientProfileDto);
         Task DeletePatientProfile(int id);

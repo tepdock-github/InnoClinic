@@ -68,13 +68,28 @@ namespace ServicesService.Services
             });
         }
 
+        public async Task<IEnumerable<ServiceDto>> GetActiveServices()
+        {
+            var services = await _repositoryManager.ServiceRepository.GetActiveServicesAsync(trackChanges: false);
+
+            return _mapper.Map<IEnumerable<ServiceDto>>(services);
+        }
+
         public async Task<ServiceDto> GetServiceById(int id)
         {
             var service = await _repositoryManager.ServiceRepository.GetServiceByIdAsync(id, trackChanges: false);
             if (service == null)
                 throw new NotFoundException("Service with id: " + id + "wasn't found");
 
-            return _mapper.Map<ServiceDto>(service);
+            var serviceDto = _mapper.Map<ServiceDto>(service);
+
+            var category = await _repositoryManager.CategoryRepository.GetCategoryByIdAsync(serviceDto.CategoryId, trackChanges: false);
+            serviceDto.ServiceCategory = category.CategoryName;
+
+            var specialization = await _repositoryManager.SpecializationRepository.GetSpecializationAsync(serviceDto.SpecializationId, trackChanges: false);
+            serviceDto.SpecializationName = specialization.SpecializationName;
+
+            return serviceDto;
         }
 
         public async Task<IEnumerable<ServiceDto>> GetServices()

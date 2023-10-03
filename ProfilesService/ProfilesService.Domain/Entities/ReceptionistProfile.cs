@@ -6,7 +6,7 @@
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public required string MiddleName { get; set; }
-        public int OfficeId { get; set; }
-        public int AccountId { get; set; }
+        public string OfficeId { get; set; }
+        public string AccountId { get; set; }
     }
 }

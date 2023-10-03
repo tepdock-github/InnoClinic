@@ -7,7 +7,5 @@ namespace OfficesService.Domain.DataTransferObjects
         public required string Address { get; set; }
         public string PhoneNumber { get; set; }
         public required bool IsActive { get; set; }
-
-        public List<IFormFile> PhotosList { get; set; }
     }
 }

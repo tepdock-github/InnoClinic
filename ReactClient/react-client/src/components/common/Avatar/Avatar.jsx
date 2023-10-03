@@ -32,6 +32,6 @@ function stringAvatar(name) {
 
 export default function BackgroundLetterAvatars({firstName, lastName}) {
   return (
-      <Avatar {...stringAvatar(firstName + " " + lastName)} />
+      <Avatar {...stringAvatar(firstName + " " + lastName)}/>
   );
 }

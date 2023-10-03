@@ -16,16 +16,23 @@ namespace Appoitments.Data.Repositories
 
         public void DeleteResult(Result result) => Delete(result);
 
-        public async Task<IEnumerable<Result>> GetAllResultByDoctor(int doctorId, bool trackChanges) =>
+        public async Task<IEnumerable<Result>> GetAllResultByDoctor(string doctorId, bool trackChanges) =>
             await FindByCondition(r => r.Appoitment.DoctorId.Equals(doctorId), trackChanges)
             .ToListAsync();
 
-        public async Task<IEnumerable<Result>> GetAllResultByPatient(int patientId, bool trackChanges) =>
+        public async Task<IEnumerable<Result>> GetAllResultByPatient(string patientId, bool trackChanges) =>
             await FindByCondition(r => r.Appoitment.PatientId.Equals(patientId), trackChanges)
             .ToListAsync();
+
+        public async Task<Result?> GetResultByAppoitmentId(int id, bool trackChanges) =>
+            await FindByCondition(r => r.AppoitmentId.Equals(id), trackChanges)
+            .FirstOrDefaultAsync();
 
         public async Task<Result?> GetResultById(int id, bool trackChanges) =>
             await FindByCondition(r => r.Id.Equals(id), trackChanges)
             .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<Result>> GetResults(bool trackChanges) =>
+            await FindAll(trackChanges) .ToListAsync();
     }
 }

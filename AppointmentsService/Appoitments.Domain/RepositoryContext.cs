@@ -11,6 +11,7 @@ namespace Appoitments.Domain
 
         public DbSet<Appoitment> Appoitments { get; set; }
         public DbSet<Result> Results { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,6 +19,7 @@ namespace Appoitments.Domain
 
             modelBuilder.ApplyConfiguration(new AppoitmentConfiguration());
             modelBuilder.ApplyConfiguration(new ResultConfiguration());
+            modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
         }
     }
 }

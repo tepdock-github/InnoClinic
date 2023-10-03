@@ -32,5 +32,17 @@
             <param name="officeDto"></param>
             <returns></returns>
         </member>
+        <member name="T:OfficesService.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:OfficesService.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OfficesService.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OfficesService.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

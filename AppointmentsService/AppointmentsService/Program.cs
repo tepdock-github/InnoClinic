@@ -21,8 +21,10 @@ namespace AppointmentService
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddControllers();
+
             builder.Services.AddAppoitmentService();
             builder.Services.AddResultService();
+            builder.Services.AddScheduleService();
 
             builder.Services.AddScoped<ValidateModelFilter>();
             builder.Services.Configure<ApiBehaviorOptions>(opt =>

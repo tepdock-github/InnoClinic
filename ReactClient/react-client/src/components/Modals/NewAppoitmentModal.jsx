@@ -1,135 +1,260 @@
 import React, { useEffect, useState } from 'react';
-import BasicModal from '../common/Modal/BasicModal';
-import Box from '@mui/material/Box';
-import BasicTimePicker from '../common/DateTimePickers/TimePicker/BasicTimePicker';
 import BasicDatePicker from '../common/DateTimePickers/DatePicker/BasicDatePicker';
-import Filter from '../../components/common/Filter/Filter';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Formik, Form } from 'formik';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+import GridWrapper from '../common/GridWrapper/GridWrapper';
+import { Button, Grid, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const specializations = [
-    {
-        id: 0,
-        title: 'aboba'
-    },
-    {
-        id: 1,
-        title: 'obabo'
+const validationSchema = Yup.object().shape({
+    doctorId: Yup.string().required('Please chose doctor'),
+    serviceId: Yup.string().required('Please chose service'),
+    date: Yup.date().min(new Date()).required(),
+    scheduleId: Yup.number().required(),
+    time: Yup.string().required()
+});
+
+const NewAppoitmentForm = () => {
+    const initialvalues = {
+        doctorId: '',
+        doctorFirstName: '',
+        doctorLastName: '',
+        patientId: '',
+        patientFirstName: '',
+        patientLastName: '',
+        serviceId: '',
+        serviceName: '',
+        specializationName: '',
+        date: '',
+        scheduleId: 0,
+        time: '',
+        isApproved: false,
+        isComplete: false
     }
-]
 
-const services = [
-    {
-        id: 0,
-        title: 'service0'
-    },
-    {
-        id: 1,
-        title: 'service1'
-    }
-]
+    const [services, setServices] = useState([]);
+    const [doctors, setDoctors] = useState([]);
+    const [profile, setProfile] = useState([]);
+    const [timeSlots, setTimeSlots] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-const doctors = [
-    {
-        id: 0,
-        title: 'doctor'
-    },
-    {
-        id: 1,
-        title: 'rotcod'
-    }
-]
-
-const offices = [
-    {
-        id: 0,
-        title: 'Gukova street 29'
-    },
-    {
-        id: 1,
-        title: 'Lebno 345'
-    },
-    {
-        id: 2,
-        title: '1tyt'
-    }
-]
-
-const defaultInputValues = {
-    email: '',
-    password: ''
-}
-
-const NewAppoitmentModal = ({ open, onClose }) => {
-    const [values, setValues] = useState(defaultInputValues);
-
-    const modalStyles = {
-        inputFields: {
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '20px',
-            marginBottom: '15px',
-            '.MuiFormControl-root': {
-                marginBottom: '20px',
-            },
-        },
-    };
-
-    const validationSchema = Yup.object().shape({
-        email: Yup.string()
-            .required('Email is required')
-            .email('Email is invalid'),
-        password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(12, 'password must be at most 12 characters'),
-    });
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(validationSchema)
-    })
-
-    const handleChange = (value) => {
-        setValues(value)
-    };
+    var accessToken = localStorage.getItem('accessToken');
+    var userId = localStorage.getItem('userId');
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${accessToken}`);
+    headers.append('Content-Type', 'application/json');
 
     useEffect(() => {
-        if (open) setValues(defaultInputValues);
-    }, [open])
+        const fetchData = async () => {
+            try {
 
-    const getContent = () => (
-        <>
-        <Box sx={modalStyles.inputFields}>
-            <Filter items={specializations} label={"specialization"}/>
-            <Filter items={services} label={'service'}/>
-            <Filter items={doctors} label={'doctor'}/>
-            <Filter items={offices} label={"office"}/>
-            <BasicDatePicker/>
-            <BasicTimePicker/>
-        </Box>
-        <Box>
-            
-        </Box>
-        </>
-    )
+                const [doctorsResp, serviceResp, profileResp] = await Promise.all([
+                    fetch('http://localhost:7111/gateway/doctors'),
+                    fetch('http://localhost:7111/gateway/services/active'),
+                    fetch(`http://localhost:7111/gateway/patients/account/${userId}`, { headers })
+                ]);
+
+                if(profileResp.status === 404){
+                    alert('Заполните или создайте профиль для записи к врачу');
+                    setIsSubmitting(true);
+                }
+                const doctorsData = await doctorsResp.json();
+                const serviceData = await serviceResp.json();
+                const profileData = await profileResp.json();
+
+                console.log(profileData);
+                initialvalues.patientId = profileData.id;
+                initialvalues.patientFirstName = profileData.firstName;
+                initialvalues.patientLastName = profileData.lastName;
+
+                setDoctors(doctorsData);
+                setServices(serviceData);
+                setProfile(profileData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const fetchTimeSlots = async (date, doctorId) => {
+        try {
+            const response = await fetch(`http://localhost:7111/gateway/schedules/free/doctor/${doctorId}/date/${date}`, {
+                headers: headers
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setTimeSlots(data);
+            } else {
+                console.error('Error fetching time slots:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching time slots:', error);
+        }
+    }
+
+    const handleFormSubmit = async (values) => {
+        setIsSubmitting(true);
+        console.log(JSON.stringify(values));
+        await fetch(`http://localhost:7111/gateway/appoitments`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(values),
+        })
+        setIsSubmitting(false);
+    }
 
     return (
-        <BasicModal
-            open={open}
-            onClose={onClose}
-            title="Book an Appoitment"
-            subTitle="Choose from below and submit"
-            content={getContent()}
-            validate={handleSubmit()}
-        >
+        <>
+            <GridWrapper>
+                <Formik
+                    initialValues={initialvalues}
+                    validationSchema={validationSchema}
+                    onSubmit={handleFormSubmit}
+                >
+                    {(formikProps) => (
+                        <Form>
+                            <Grid container spacing={2} justify="center" alignItems="center" >
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth variant='outlined'>
+                                        <InputLabel htmlFor='doctorId'>Имя доктора</InputLabel>
+                                        <Select
+                                            id='doctorId'
+                                            name='doctorId'
+                                            label='Имя доктора'
+                                            value={formikProps.values.doctorId}
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                const selectedDoctorId = e.target.value;
+                                                const selectedDoctor = doctors.find(doctor => doctor.id === parseInt(selectedDoctorId));
+                                                if (selectedDoctor) {
+                                                    formikProps.setFieldValue('doctorFirstName', selectedDoctor.firstName);
+                                                    formikProps.setFieldValue('doctorLastName', selectedDoctor.lastName);
+                                                    formikProps.setFieldValue('specializationName', selectedDoctor.specializationName);
+                                                }
+                                                const selectedDate = formikProps.values.date;
+                                                fetchTimeSlots(selectedDate, selectedDoctorId);
+                                            }}
+                                            onBlur={formikProps.handleBlur}
+                                            error={formikProps.touched.doctorId && !!formikProps.errors.doctorId}
+                                        >
+                                            <MenuItem value=''>
+                                                <em>Выберите доктора</em>
+                                            </MenuItem>
+                                            {doctors.map((doctor) => (
+                                                <MenuItem key={doctor.id} value={`${doctor.id}`}>
+                                                    {`${doctor.firstName} ${doctor.lastName}`}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    {formikProps.errors.doctorId && formikProps.touched.doctorId && (
+                                        <Typography color='error'>{formikProps.errors.doctorId}</Typography>
+                                    )}
+                                </Grid>
+                                
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth variant='outlined'>
+                                        <InputLabel htmlFor='serviceId'>Сервис</InputLabel>
+                                        <Select
+                                            id='serviceId'
+                                            name='serviceId'
+                                            label='Сервис'
+                                            value={formikProps.values.serviceId}
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                const selectedServiceId = e.target.value;
+                                                const selectedService = services.find(service => service.id === parseInt(selectedServiceId));
+                                                console.log(selectedService);
+                                                if (selectedService) {
+                                                    formikProps.setFieldValue('serviceName', selectedService.serviceName);
+                                                }
+                                            }}
+                                            onBlur={formikProps.handleBlur}
+                                            error={formikProps.touched.serviceId && !!formikProps.errors.serviceId}
+                                        >
+                                            <MenuItem value=''>
+                                                <em>Choose service</em>
+                                            </MenuItem>
+                                            {services.map((spec) => (
+                                                <MenuItem key={spec.id} value={spec.id}>
+                                                    {spec.serviceName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    {formikProps.errors.serviceId && formikProps.touched.serviceId && (
+                                        <Typography color='error'>{formikProps.errors.serviceId}</Typography>
+                                    )}
+                                </Grid>
 
-        </BasicModal>
+                                <Grid item xs={12}>
+                                    <BasicDatePicker
+                                        label='Дата'
+                                        value={formikProps.values.date}
+                                        onChange={(date) => {
+                                            formikProps.setFieldValue('date', date);
+                                            const selectedDoctorId = formikProps.values.doctorId;
+                                            fetchTimeSlots(date, selectedDoctorId);
+                                        }}
+                                        error={formikProps.touched.date && !!formikProps.errors.date}
+                                    />
+                                    {formikProps.errors.date && (
+                                        <Typography color='error'>{formikProps.errors.date}</Typography>
+                                    )}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth variant='outlined'>
+                                        <InputLabel htmlFor='scheduleId'>Время</InputLabel>
+                                        <Select
+                                            id='scheduleId'
+                                            name='scheduleId'
+                                            label='Время'
+                                            value={formikProps.values.scheduleId}
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                const selectedSchedule = timeSlots.find(schedule => schedule.id === parseInt(e.target.value));
+                                                if(selectedSchedule) {
+                                                    formikProps.setFieldValue('time', selectedSchedule.time)
+                                                } 
+                                            }}
+                                            onBlur={formikProps.handleBlur}
+                                            error={formikProps.touched.scheduleId && !!formikProps.errors.scheduleId}
+                                        >
+                                            <MenuItem value=''>
+                                                <em>Выберите время</em>
+                                            </MenuItem>
+                                            {timeSlots.map((schedule) => (
+                                                <MenuItem key={schedule.id} value={schedule.id}>
+                                                    {schedule.time}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    {formikProps.errors.time && formikProps.touched.time && (
+                                        <Typography color='error'>{formikProps.errors.time}</Typography>
+                                    )}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button type='submit' disabled={formikProps.isSubmitting} variant='contained' color='primary'>
+                                        Создать
+                                    </Button>
+                                    <Link to={'/appoitments'}>
+                                        <Button type='button'>
+                                            Назад
+                                        </Button>
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Form>
+                    )}
+                </Formik>
+            </GridWrapper>
+        </>
     )
 }
 
-export default NewAppoitmentModal;
+export default NewAppoitmentForm;

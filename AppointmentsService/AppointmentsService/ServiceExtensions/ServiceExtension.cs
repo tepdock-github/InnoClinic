@@ -39,6 +39,9 @@ namespace AppointmentsService.ServiceExtensions
         public static void AddResultService(this IServiceCollection services) =>
             services.AddScoped<IResultService, ResultService>();
 
+        public static void AddScheduleService(this IServiceCollection services) =>
+            services.AddScoped<IScheduleService, ScheduleService>();
+
         public static void ConfigureMassTransit(this IServiceCollection services)
         {
             services.AddMassTransit(x =>

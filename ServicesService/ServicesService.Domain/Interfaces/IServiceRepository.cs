@@ -7,5 +7,6 @@ namespace ServicesService.Domain.Interfaces
         void CreateService(Service service);
         Task<Service> GetServiceByIdAsync(int id, bool trackChanges);
         Task<IEnumerable<Service>> GetAllServicesAsync(bool trackChanges);
+        Task<IEnumerable<Service>> GetActiveServicesAsync(bool trackChanges);
     }
 }

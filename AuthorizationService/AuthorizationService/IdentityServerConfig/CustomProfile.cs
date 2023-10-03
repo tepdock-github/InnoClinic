@@ -25,20 +25,17 @@ namespace AuthorizationService.IdentityServerConfig
             var user = await _userManager.GetUserAsync(subject);
 
             string roleName = "";
-            string email = "";
             string guid = "";
             if (user != null) 
             {
                 var role = await _userManager.GetRolesAsync(user);
                 roleName = role.FirstOrDefault().ToString();
-                email = user.Email;
                 guid = user.Id;
             }
 
             var claims = new List<Claim>
             {
                 new Claim(JwtClaimTypes.Id, guid),
-                new Claim(JwtClaimTypes.Email, email),
                 new Claim(JwtClaimTypes.Role, roleName)
             };
 

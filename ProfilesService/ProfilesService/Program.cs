@@ -36,12 +36,13 @@ namespace ProfilesService
 
             builder.Services.AddAuthorization();
             builder.Services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
-                {
-                    options.Authority = "http://auth-api";
-                    options.RequireHttpsMetadata = false;
-                    options.Audience = "gatewayAPI";
-                });
+               .AddJwtBearer("Bearer", options =>
+               {
+                   options.Authority = "http://auth-api";
+                   options.RequireHttpsMetadata = false;
+                   options.Audience = "gatewayAPI";
+               });
+
 
             builder.Services.AddCors(options =>
             {

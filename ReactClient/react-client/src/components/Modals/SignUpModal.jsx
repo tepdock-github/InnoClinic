@@ -1,110 +1,111 @@
-import React, { useEffect, useState } from 'react';
-import BasicModal from '../common/Modal/BasicModal';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
+import {
+    Button,
+    TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from '@mui/material';
+import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 
+const validationSchema = yup.object().shape({
+    email: yup.string()
+        .email()
+        .required('Email is required'),
+    password: yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters')
+        .max(12, 'password must be at most 12 characters'),
+    confirmPassword: yup.string()
+        .required('Confirm password is required')
+        .min(6, 'Password must be at least 6 characters')
+        .max(12, 'password must be at most 12 characters'),
+});
 
-const defaultInputValues = {
-    email: '',
-    password: '',
-    confirmPassword: ''
-}
+const SignUpModal = ({ isOpen, onClose }) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-const SignUpModal = ({ open, onClose, addNewUser }) => {
-    const [values, setValues] = useState(defaultInputValues);
-
-    const modalStyles = {
-        inputFields: {
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '20px',
-            marginBottom: '15px',
-            '.MuiFormControl-root': {
-                marginBottom: '20px',
-            },
-        },
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        setIsSubmitting(true);
+        try {
+            const response = await fetch('http://localhost:5010/connect/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values),
+            });
+            if (response.ok) {
+                resetForm();
+                onClose();
+                alert('Регистрация успешна! Пожалуйста авторизируйтесь');
+            }
+            else {
+                const errorResponse = await response.json();
+                for (const key in errorResponse) {
+                    if (errorResponse.hasOwnProperty(key)) {
+                        const errorMessage = errorResponse[key][0];
+                        alert(`Error for ${key}: ${errorMessage}`);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Что-то пошло не так. Попробуйте через некоторое время');
+        }
+        setIsSubmitting(false);
     };
-
-    const validationSchema = Yup.object().shape({
-        email: Yup.string()
-            .required('Email is required')
-            .email('Email is invalid'),
-        password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(12, 'password must be at most 12 characters'),
-        confirmPassword: Yup.string()
-            .required('Confirm password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(12, 'password must be at most 12 characters'),
-    });
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(validationSchema)
-    })
-
-    const handleChange = (value) => {
-        setValues(value)
-    };
-
-    useEffect(() => {
-        if (open) setValues(defaultInputValues);
-    }, [open])
-
-    const getContent = () => (
-        <Box sx={modalStyles.inputFields}>
-            <TextField
-                placeholder='email'
-                name='email'
-                label='email'
-                required
-                {...register('email')}
-                value={values.email}
-                onChange={(event)=> handleChange({...values, email: event.target.value})}
-                error={errors.email ? true : false}
-                helperText={errors.email?.message}
-            />
-            <TextField
-                placeholder='password'
-                name='password'
-                type='password'
-                label='password'
-                required
-                {...register('password')}
-                value={values.password}
-                onChange={(event)=> handleChange({...values, password: event.target.value})}
-            />
-            <TextField
-                placeholder='confirm password'
-                name='confirmPassword'
-                type='password'
-                label='confirm password'
-                required
-                {...register('confirmPassword')}
-                value={values.confirmPassword}
-                onChange={(event)=> handleChange({...values, confirmPassword: event.target.value})}
-            />
-        </Box>
-    )
 
     return (
-        <BasicModal
-            open={open}
-            onClose={onClose}
-            title="Sign up"
-            subTitle="Sign Up to contineu to use our services"
-            content={getContent()}
-            validate={handleSubmit()}
-        >
-
-        </BasicModal>
+        <>
+            <Dialog open={isOpen} onClose={onClose}>
+                <DialogTitle>Регистрация</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Введите ваш email и пароль для создания аккаунта
+                    </DialogContentText>
+                    <Formik initialValues={{ email: '', password: '', confirmPassword: '', roles: ["Patient"] }}
+                        onSubmit={handleSubmit}
+                        validationSchema={validationSchema}>
+                        {({ errors, touched, isSubmitting }) => (
+                            <Form>
+                                <Field as={TextField} name='email' label='Email'
+                                    fullWidth
+                                    error={touched.email && !!errors.email}
+                                    helperText={touched.email && errors.email}
+                                    margin='normal'
+                                    variant='outlined' />
+                                <Field as={TextField} name='password' label='Пароль'
+                                    type='password'
+                                    fullWidth
+                                    error={touched.password && !!errors.password}
+                                    helperText={touched.password && errors.password}
+                                    margin='normal'
+                                    variant='outlined' />
+                                <Field as={TextField} name='confirmPassword' label='подтвердите пароль'
+                                    type='password'
+                                    fullWidth
+                                    error={touched.confirmPassword && !!errors.confirmPassword}
+                                    helperText={touched.confirmPassword && errors.confirmPassword}
+                                    margin='normal'
+                                    variant='outlined' />
+                                <DialogActions>
+                                    <Button onClick={onClose} disabled={isSubmitting}>
+                                        Отмена
+                                    </Button>
+                                    <Button type='submit' color='primary' disabled={isSubmitting}>
+                                        Регистрация
+                                    </Button>
+                                </DialogActions>
+                            </Form>
+                        )}
+                    </Formik>
+                </DialogContent>
+            </Dialog>
+        </>
     )
 }
 

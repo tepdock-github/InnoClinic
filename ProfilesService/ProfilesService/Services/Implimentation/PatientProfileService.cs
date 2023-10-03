@@ -53,6 +53,15 @@ namespace ProfilesService.Services.Implimentation
             return _mapper.Map<PatientProfileDto>(profile);
         }
 
+        public async Task<PatientProfileDto> GetPatientProfileByAccount(string id)
+        {
+            var profile = await _repositoryManager.PatientProfile.GetPatientProfileByAccountId(id, trackChanges: false);
+            if (profile == null)
+                throw new NotFoundException("patient with account id: " + id + " wasnt found");
+
+            return _mapper.Map<PatientProfileDto>(profile);
+        }
+
         public async Task<IEnumerable<PatientProfileDto>> GetPatientProfiles(PatientParameters patientParameters)
         {
             var profiles = await _repositoryManager.PatientProfile.GetPatientProfiles(patientParameters, trackChanges: false);
@@ -71,7 +80,7 @@ namespace ProfilesService.Services.Implimentation
 
             await _publishEndpoint.Publish<IPatientProfileManipulation>(new
             {
-                Id = id,
+                Id = id.ToString(),
                 patientProfileDto.FirstName,
                 patientProfileDto.LastName,
                 patientProfileDto.IsLinkedToAccount,

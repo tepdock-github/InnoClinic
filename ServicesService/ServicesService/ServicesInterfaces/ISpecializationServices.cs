@@ -8,5 +8,6 @@ namespace ServicesService.ServicesInterfaces
         Task<SpecializationDto> CreateSpecialization(SpecializationManipulationDto specializationDto);
         Task<SpecializationDto?> GetSpecializationById(int id);
         Task<IEnumerable<SpecializationDto>> GetAllSpecializations();
+        Task<IEnumerable<SpecializationDto>> GetActiveSpecializations();
     }
 }

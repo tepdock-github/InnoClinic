@@ -8,8 +8,8 @@ export const NavbarItems = [
     {
         id: 0, 
         icon: <ManageAccountsIcon/>,
-        label: "Authentication",
-        route: "authentication"
+        label: "Profile",
+        route: "profile"
     },
     {
         id: 1, 
@@ -21,7 +21,7 @@ export const NavbarItems = [
         id: 2, 
         icon: <AssignmentIcon/>,
         label: "Medical Results",
-        route: "medical-results"
+        route: "results"
     },
     {
         id: 3, 

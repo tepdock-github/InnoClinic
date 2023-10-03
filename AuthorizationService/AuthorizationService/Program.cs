@@ -4,6 +4,7 @@ using Authorization.Domain.Interfaces;
 using Authorization.Domain.Models;
 using AuthorizationService;
 using AuthorizationService.IdentityServerConfig;
+using AuthorizationService.Services;
 using CustomExceptionMiddleware;
 using EmailService;
 using EmailService.Services;
@@ -28,6 +29,7 @@ namespace AuthorizationAPI
                 options.UseSqlServer(connectionString,
                 x => x.MigrationsAssembly("AuthorizationService")));
             builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             builder.Services.AddSingleton<IConfigureOptions<IdentityOptions>, AspIdentityConfig>();
 
@@ -39,7 +41,7 @@ namespace AuthorizationAPI
             {
                 x.IssuerUri = "auth-api";
             })
-                .AddAspNetIdentity<Account>()
+               .AddAspNetIdentity<Account>()
                 .AddInMemoryClients(IdentityServerConfiguration.GetClients())
                 .AddInMemoryIdentityResources(IdentityServerConfiguration.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityServerConfiguration.GetApiResources())
@@ -58,6 +60,18 @@ namespace AuthorizationAPI
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:7111", "http://localhost:5000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
+
             builder.Services.ConfigureSwagger();
             builder.Services.AddSwaggerGen(s =>
             {
@@ -75,7 +89,8 @@ namespace AuthorizationAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<ExceptionMiddleware>();
-            app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseRouting();

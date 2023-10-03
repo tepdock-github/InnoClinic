@@ -1,34 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import DataTable from '../common/DataTable/DataTable'
+import React, { useMemo, useState, useEffect } from 'react';
+import MaterialReactTable from 'material-react-table';
+import { Box, IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
-const columns = [
-    {field: 'serviceName', headerName: 'Service Name', width: 150},
-    {field: 'price', headerName: 'Price', width: 50},
-    {field: 'serviceCategory', headerName: 'Service Category', width: 150}
-];
-
-const serviceTableStyle = {
-    height: '450px'
-};
-
-const ServiceTable = ({onError}) => {
+const ServiceTable = () => {
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: 'serviceName',
+                header: 'Service'
+            },
+            {
+                accessorKey: 'price',
+                header: 'Price'
+            },
+        ], []
+    );
     const [services, setServices] = useState([]);
 
     useEffect(() => {
-        const getServices = async () => {
-            const response = await fetch('http://localhost:7111/gateway/services');
-            setServices(await response.json());
+        const getData = async () => {
+            const responseService = await fetch('http://localhost:7111/gateway/services');
+            setServices(await responseService.json());
         }
-        getServices();
+        getData();
     }, []);
 
     return (
-        <DataTable 
-            rows={services}
-            columns={columns}
-            loading={!services.length}
-            sx={serviceTableStyle}
-        />
+        <>
+            <MaterialReactTable
+                columns={columns}
+                data={services}
+                enableRowActions
+                renderRowActions={({row}) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+                        <Link to={`/services/${row.original.id}`}>
+                            <Button variant='text' color='primary' size='small'>
+                                View Details
+                            </Button>
+                        </Link>
+                    </Box>
+                )}
+            />
+        </>
     );
 };
 

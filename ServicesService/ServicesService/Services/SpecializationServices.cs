@@ -38,6 +38,13 @@ namespace ServicesService.Services
             await _repositoryManager.SaveAsync();
         }
 
+        public async Task<IEnumerable<SpecializationDto>> GetActiveSpecializations()
+        {
+            var specializations = await _repositoryManager.SpecializationRepository.GetActiveSpecializationsAsync(trackChanges: false);
+
+            return _mapper.Map<IEnumerable<SpecializationDto>>(specializations);
+        }
+
         public async Task<IEnumerable<SpecializationDto>> GetAllSpecializations()
         {
             var specializations = await _repositoryManager.SpecializationRepository.GetAllSpecializationsAsync(trackChanges: false);

@@ -6,6 +6,7 @@ namespace ServicesService.Domain.Interfaces
     {
         void CreateSpecialization(Specialization specialization);
         Task<IEnumerable<Specialization>> GetAllSpecializationsAsync(bool trackChanges);
+        Task<IEnumerable<Specialization>> GetActiveSpecializationsAsync(bool trackChanges);
         Task<Specialization> GetSpecializationAsync(int id, bool trackChanges);
     }
 }

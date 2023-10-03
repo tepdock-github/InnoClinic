@@ -17,7 +17,7 @@ namespace AppointmentsService.Consumers.ProfilesConsumers
         {
             var message = context.Message;
 
-            int id = message.Id;
+            string id = message.Id;
             string firstName = message.FirstName;
             string lastName = message.LastName;
 

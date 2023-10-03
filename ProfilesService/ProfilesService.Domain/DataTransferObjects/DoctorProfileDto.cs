@@ -7,9 +7,9 @@
         public required string LastName { get; set; }
         public string? MiddleName { get; set; }
         public required string DateOfBirth { get; set; }
-        public int AccountId { get; set; }
+        public string AccountId { get; set; }
         public required string SpecializationName { get; set; }
-        public int OfficeId { get; set; }
+        public string OfficeId { get; set; }
         public required string CareerStartYear { get; set; }
         public required string Status { get; set; }
     }

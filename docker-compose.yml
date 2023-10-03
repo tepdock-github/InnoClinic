@@ -14,12 +14,6 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=Adminxyz22
 
-  mongo-db:
-    image: mongo
-    container_name: mongo-db
-    ports:
-      - "27017:27017"
-
   rabbitmq:
     image: rabbitmq
     container_name: rabbitmq
@@ -77,7 +71,7 @@ services:
     ports:
       - "5261:80"
     depends_on:
-      - "mongo-db"
+      - "mssql-db"
       - "rabbitmq"
     
   storage-api:

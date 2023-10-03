@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^13.5.0",
     "formik": "^2.2.9",
     "formix": "^0.0.1",
+    "jsonwebtoken": "^9.0.0",
     "material-react-table": "^1.9.3",
     "moment": "^2.29.4",
     "react": "^18.2.0",

@@ -1,37 +1,109 @@
-import React, { useEffect, useState } from 'react'
-import DataTable from '../common/DataTable/DataTable'
+import React, { useMemo, useState, useEffect } from 'react';
+import MaterialReactTable from 'material-react-table';
+import SignInModal from '../Modals/SignInModal';
+import { Box, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const columns = [
-    {field: 'id', headerName: 'Id', width: 50},
-    {field: 'doctorFirstName', headerName: 'Doctor first name', width: 150},
-    {field: 'doctorLastName', headerName: 'Doctor last name', width: 150},
-    {field: 'serviceName', headerName: 'Service Name', width: 150},
-    {field: 'date', headerName: 'Date', width: 120},
-    {field: 'time', headerName: 'Time', width: 120}
-];
+const AppoitmentsTable = () => {
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: 'id',
+                header: 'N'
+            },
+            {
+                accessorKey: 'doctorFirstName',
+                header: 'Имя доктора'
+            },
+            {
+                accessorKey: 'doctorLastName',
+                header: 'Отчество доктора'
+            },
+            {
+                accessorKey: 'serviceName',
+                header: 'сервис'
+            },
+            {
+                accessorKey: 'date',
+                header: 'Дата'
+            },
+            {
+                accessorKey: 'time',
+                header: 'время'
+            }
+        ], []
+    );
 
-const appoitmentTableStyle = {
-    height: '450px'
-};
+    const [data, setData] = useState([]);
+    const [statusCode, setStatusCode] = useState([]);
+    const [openSignIn, setOpenSignIn] = useState(false);
 
-const AppoitmentsTable = ({onError}) => {
-    const [appoitments, setAppoitments] = useState([]);
+    const handleOpenSignIn = () => {
+        setOpenSignIn(true);
+    }
+    const handleCloseSignIn = () => {
+        setOpenSignIn(false);
+    }
+
+    var accessToken = localStorage.getItem('accessToken');
+    var userId = localStorage.getItem('userId');
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${accessToken}`);
+    headers.append('Content-Type', 'application/json');
 
     useEffect(() => {
         const getAppoitments = async () => {
-            const response = await fetch('https://localhost:7111/gateway/appoitments');
-            setAppoitments(await response.json());
+            const patientProfileResponse = await fetch(`http://localhost:7111/gateway/patients/account/${userId}`, {
+                headers: headers
+            });
+            const patientProfile = await patientProfileResponse.json();
+            if(patientProfile.id){
+                const respAppoitments = await fetch(`http://localhost:7111/gateway/appoitments/patient-schedule/${patientProfile.id}`, {
+                    headers: headers
+                });
+
+                if (respAppoitments.status === 200) {
+                    setData(await respAppoitments.json());
+                    setStatusCode(200);
+                }
+                else setStatusCode(401);
+            }
         }
         getAppoitments();
     }, []);
 
+    const handleDeleteAppointment = async (id) => {
+        await fetch(`http://localhost:7111/gateway/appoitments/${id}`, {
+            method: 'DELETE',
+            headers: headers
+        })
+        console.log('Deleting appointment:');
+    };
+
     return (
-        <DataTable
-            rows={appoitments}
-            columns={columns}
-            loading={!appoitments.length}
-            sx={appoitmentTableStyle}
-        />
+        <>
+            {statusCode === 200 &&
+                <MaterialReactTable
+                    columns={columns}
+                    data={data}
+                    enableRowActions
+                    renderRowActions={({ row }) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
+                            <IconButton
+                                color='primary'
+                                onClick={() => {
+                                    console.log(row.original.id);
+                                    handleDeleteAppointment(row.original.id)
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
+                    )}
+                />}
+            {statusCode === 401 &&
+                <SignInModal isOpen={() => handleOpenSignIn()} onClose={() => handleCloseSignIn(false)} />}
+        </>
     )
 };
 

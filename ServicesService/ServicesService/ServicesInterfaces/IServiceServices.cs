@@ -8,5 +8,6 @@ namespace ServicesService.ServicesInterfaces
         Task<ServiceDto?> CreateService(ServicesManipulationDto serviceDto);
         Task<ServiceDto> GetServiceById(int id);
         Task<IEnumerable<ServiceDto>> GetServices();
+        Task<IEnumerable<ServiceDto>> GetActiveServices();
     }
 }

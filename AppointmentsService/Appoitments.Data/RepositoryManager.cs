@@ -14,6 +14,7 @@ namespace Appoitments.Data
         private RepositoryContext _repositoryContext;
         private IAppoitmentRepository _appoitmentRepository;
         private IResultRepository _resultRepository;
+        private IScheduleRepository _scheduleRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -39,6 +40,17 @@ namespace Appoitments.Data
                     _resultRepository = new ResultRepository(_repositoryContext);
 
                 return _resultRepository;
+            }
+        }
+
+        public IScheduleRepository ScheduleRepository
+        {
+            get
+            {
+                if( _scheduleRepository == null)
+                    _scheduleRepository = new ScheduleRepository(_repositoryContext);
+
+                return _scheduleRepository;
             }
         }
 

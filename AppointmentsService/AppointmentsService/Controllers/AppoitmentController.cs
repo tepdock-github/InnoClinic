@@ -42,7 +42,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpGet("doctor-history/{doctorId}")]
         [Authorize(Roles = "Receptionist, Doctor")]
-        public async Task<IActionResult> GetDoctorHistory(int doctorId) =>
+        public async Task<IActionResult> GetDoctorHistory(string doctorId) =>
             Ok(await _appoitmentService.GetDoctorHistory(doctorId));
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpGet("patient-history/{patientId}")]
         [Authorize(Roles = "Receptionist, Patient")]
-        public async Task<IActionResult> GetPatientHistory(int patientId) =>
+        public async Task<IActionResult> GetPatientHistory(string patientId) =>
          Ok(await _appoitmentService.GetPatientHistory(patientId));
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpGet("doctor-schedule/{doctorId}")]
         [Authorize(Roles = "Receptionist, Doctor")]
-        public async Task<IActionResult> GetDoctorSchedule(int doctorId) =>
+        public async Task<IActionResult> GetDoctorSchedule(string doctorId) =>
          Ok(await _appoitmentService.GetDoctorSchedule(doctorId));
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpGet("patient-schedule/{patientId}")]
         [Authorize(Roles = "Receptionist, Patient")]
-        public async Task<IActionResult> GetPatientAppoitments(int patientId) =>
+        public async Task<IActionResult> GetPatientAppoitments(string patientId) =>
             Ok(await _appoitmentService.GetPatientAppoitments(patientId));
 
         /// <summary>
@@ -101,6 +101,14 @@ namespace AppointmentsService.Controllers
         public async Task<IActionResult> UpdateAppoitment(int id, [FromBody] AppoitmentManipulationDto appoitmentDto)
         {
             await _appoitmentService.UpdateAppoitment(id, appoitmentDto);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAppoitment(int id)
+        {
+            await _appoitmentService.DeleteAppoitment(id);
 
             return NoContent();
         }

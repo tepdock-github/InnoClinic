@@ -18,6 +18,10 @@ namespace AppointmentsService.Controllers
             _resultService = resultService;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Receptionist")]
+        public async Task<IActionResult> GetResults() =>
+            Ok(await _resultService.GetResults());
         /// <summary>
         ///     Get Result By Id
         /// </summary>
@@ -27,13 +31,17 @@ namespace AppointmentsService.Controllers
         public async Task<IActionResult> GetResultById(int id) =>
             Ok(await _resultService.GetResultById(id));
 
+        [HttpGet("appoitment/{id}")]
+        public async Task<IActionResult> GetResultByAppoitmentId(int id) =>
+            Ok(await _resultService.GetResultByAppoitmentId(id));
+
         /// <summary>
         ///     Get all Patient's Results
         /// </summary>
         /// <param name="patientId"></param>
         /// <returns></returns>
         [HttpGet("patient/{patientId}")]
-        public async Task<IActionResult> GetResultsByPatients(int patientId) =>
+        public async Task<IActionResult> GetResultsByPatients(string patientId) =>
             Ok(await _resultService.GetResultsByPatient(patientId));
 
         /// <summary>
@@ -43,7 +51,7 @@ namespace AppointmentsService.Controllers
         /// <returns></returns>
         [HttpGet("doctor/{doctorId}")]
         [Authorize(Roles = "Receptionist, Doctor")]
-        public async Task<IActionResult> GetResultsByDoctors(int doctorId) =>
+        public async Task<IActionResult> GetResultsByDoctors(string doctorId) =>
             Ok(await _resultService.GetResultsByDoctor(doctorId));
 
         /// <summary>
@@ -67,6 +75,7 @@ namespace AppointmentsService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> DeleteResult(int id)

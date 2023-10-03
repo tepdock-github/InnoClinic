@@ -1,96 +1,151 @@
-import React, { useEffect, useState } from 'react';
-import BasicModal from '../common/Modal/BasicModal';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
+import {
+    Button,
+    TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from '@mui/material';
+import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
 
 
-const defaultInputValues = {
-    email: '',
-    password: ''
-}
+const validationSchemaSignIn = yup.object().shape({
+    username: yup.string()
+        .email()
+        .required('Email is required'),
+    password: yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters')
+        .max(12, 'password must be at most 12 characters'),
+});
 
-const SignInModal = ({ open, onClose }) => {
-    const [values, setValues] = useState(defaultInputValues);
+const SignInModal = ({ isOpen, onClose }) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const modalStyles = {
-        inputFields: {
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '20px',
-            marginBottom: '15px',
-            '.MuiFormControl-root': {
-                marginBottom: '20px',
-            },
-        },
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        console.log("a");
+        setIsSubmitting(true);
+        try {
+            console.log(JSON.stringify(values))
+            const response = await fetch('http://localhost:5010/connect/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ 
+                    username: values.username,
+                    password: values.password,
+                    grant_type: 'password',
+                    client_id: 'authMicroservice',
+                    client_secret: 'innoClinicSecret',
+                    scope: ['gatewayAPI.scope']
+                }),
+            });
+            if (response.ok) {
+                console.log(JSON.stringify(values));
+                response.json()
+                    .then(data => {
+                        console.log(data);
+                        localStorage.setItem("accessToken", data.access_token);
+                        const parts = data.access_token.split('.');
+                        const decodedPayload = JSON.parse(atob(parts[1]));
+                        console.log(decodedPayload.id);
+                        localStorage.setItem("userId", decodedPayload.id);
+                    })
+                resetForm();
+                onClose();
+                alert('авторизация успешна!');
+            }
+            else {
+                const errorResponse = await response.json();
+                for (const key in errorResponse) {
+                    if (errorResponse.hasOwnProperty(key)) {
+                        const errorMessage = errorResponse[key][0];
+                        alert(`Error for ${key}: ${errorMessage}`);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Что-то пошло не так. Попробуйте через некоторое время');
+        }
+        setIsSubmitting(false);
     };
-
-    const validationSchema = Yup.object().shape({
-        email: Yup.string()
-            .required('Email is required')
-            .email('Email is invalid'),
-        password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(12, 'password must be at most 12 characters'),
-    });
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(validationSchema)
-    })
-
-    const handleChange = (value) => {
-        setValues(value)
-    };
-
-    useEffect(() => {
-        if (open) setValues(defaultInputValues);
-    }, [open])
-
-    const getContent = () => (
-        <Box sx={modalStyles.inputFields}>
-            <TextField
-                placeholder='email'
-                name='email'
-                label='email'
-                required
-                {...register('email')}
-                value={values.email}
-                onChange={(event)=> handleChange({...values, email: event.target.value})}
-                error={errors.email ? true : false}
-                helperText={errors.email?.message}
-            />
-            <TextField
-                placeholder='password'
-                name='password'
-                type='password'
-                label='password'
-                required
-                {...register('password')}
-                value={values.password}
-                onChange={(event)=> handleChange({...values, password: event.target.value})}
-            />
-        </Box>
-    )
 
     return (
-        <BasicModal
-            open={open}
-            onClose={onClose}
-            title="Sign In"
-            subTitle="Sign In to contineu to use our services"
-            content={getContent()}
-            validate={handleSubmit()}
-        >
-
-        </BasicModal>
-    )
+        <>
+            <Dialog open={isOpen} onClose={onClose}>
+                <DialogTitle>Авторизация</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Введите ваш email и пароль для авторизации
+                    </DialogContentText>
+                    <Formik initialValues={{
+                        username: '',
+                        password: '',
+                        grant_type: 'password',
+                        client_id: 'authMicroservice',
+                        client_secret: 'innoClinicSecret',
+                        scope: ['gatewayAPI.scope']
+                    }}
+                        onSubmit={handleSubmit}
+                        validationSchema={validationSchemaSignIn}>
+                        {({ errors, touched, isSubmitting }) => (
+                            <Form>
+                                <Field as={TextField} name='username' label='Email'
+                                    fullWidth
+                                    error={touched.username && !!errors.username}
+                                    helperText={touched.username && errors.username}
+                                    margin='normal'
+                                    variant='outlined' />
+                                <Field as={TextField} name='password' label='Пароль'
+                                    type='password'
+                                    fullWidth
+                                    error={touched.password && !!errors.password}
+                                    helperText={touched.password && errors.password}
+                                    margin='normal'
+                                    variant='outlined' />
+                                <Field
+                                    as={TextField}
+                                    type='hidden'
+                                    name='grant_type'
+                                    value='password'
+                                />
+                                <Field
+                                    as={TextField}
+                                    type='hidden'
+                                    name='client_id'
+                                    value='authMicroservice'
+                                />
+                                <Field
+                                    as={TextField}
+                                    type='hidden'
+                                    name='client_secret'
+                                    value='innoClinicSecret'
+                                />
+                                <Field
+                                    as={TextField}
+                                    type='hidden'
+                                    name='scope'
+                                />
+                                <DialogActions>
+                                    <Button onClick={onClose} disabled={isSubmitting}>
+                                        Отмена
+                                    </Button>
+                                    <Button type='submit' color='primary' disabled={isSubmitting}>
+                                        Авторизация
+                                    </Button>
+                                </DialogActions>
+                            </Form>
+                        )}
+                    </Formik>
+                </DialogContent>
+            </Dialog>
+        </>
+    );
 }
 
 export default SignInModal;

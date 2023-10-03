@@ -41,7 +41,7 @@ namespace OfficesService.Controllers
         /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
-        public async Task<IActionResult> CreateOffice([FromForm] OfficeForManipulationDto officeDto)
+        public async Task<IActionResult> CreateOffice([FromBody] OfficeForManipulationDto officeDto)
         {
             var office = await _officeService.AddOffice(officeDto);
 

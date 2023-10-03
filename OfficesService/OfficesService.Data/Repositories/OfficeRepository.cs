@@ -1,34 +1,28 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.EntityFrameworkCore;
+using OfficesService.Domain;
 using OfficesService.Domain.Interfaces;
 using OfficesService.Domain.Models;
 
 namespace OfficesService.Data.Repositories
 {
-    public class OfficeRepository : IOfficeRepository
+    public class OfficeRepository : RepositoryBase<Office>, IOfficeRepository
     {
-        private readonly IMongoCollection<Office> _offices;
-
-        public OfficeRepository(IOfficeDatabaseSettings settings)
+        public OfficeRepository(RepositoryContext repositoryContext) 
+            : base(repositoryContext)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-            _offices = database.GetCollection<Office>(settings.OfficeCollectionName);
         }
 
-        public async Task<List<Office>> GetOfficesAsync() =>
-            await _offices.Find(p => true).ToListAsync();
+        public void CreateOfficeAsync(Office office) => Create(office);
 
-        public async Task<Office> GetOfficeAsync(string id) =>
-            await _offices.Find(p => p.Id.Equals(id)).FirstOrDefaultAsync();
+        public async Task<Office?> GetOfficeAsync(string id, bool trackChanges) =>
+            await FindByCondition(o => o.Id.Equals(id), trackChanges)
+            .SingleOrDefaultAsync();
 
-        public async Task<Office> CreateOfficeAsync(Office office) 
-        { 
-            await _offices.InsertOneAsync(office);
-            return office;
-        }
+        public async Task<IEnumerable<Office>> GetOfficesActiveAsync(bool trackChanges) =>
+            await FindByCondition(o => o.IsActive == true, trackChanges)
+            .ToListAsync();
 
-        public async Task UpdateOfficeAsync(string id, Office office) => await _offices.ReplaceOneAsync(p => p.Id.Equals(id), office);
-
-        //public async Task DeletePhotoAsync(string id) => await _offices.DeleteOneAsync(p => p.Id.Equals(id));
+        public async Task<IEnumerable<Office>> GetOfficesAsync(bool trackChanges) =>
+               await FindAll(trackChanges).ToListAsync();
     }
 }

@@ -20,7 +20,7 @@ namespace ProfilesService.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist, Doctor")]
         public async Task<IActionResult> GetAllPatientsProfiles([FromQuery] PatientParameters patientParameters)=>
             Ok(await _patientProfile.GetPatientProfiles(patientParameters));
 
@@ -28,6 +28,11 @@ namespace ProfilesService.Controllers
         [Authorize]
         public async Task<IActionResult> GetPatientProfileById(int id) =>
             Ok(await _patientProfile.GetPatientProfile(id));
+
+        [HttpGet("account/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetPatientProfileByAccount(string id) =>
+            Ok(await _patientProfile.GetPatientProfileByAccount(id));
 
         [HttpPost]
         [ServiceFilter(typeof(ValidateModelFilter))]
