@@ -24,8 +24,6 @@ namespace ProfilesService
 
             builder.Services.AddControllers();
 
-            builder.Services.AddAuthorization();
-
             builder.Services.ConfigureSqlContext(builder.Configuration);
             builder.Services.ConfigureRepositoryManager();
 
@@ -44,6 +42,7 @@ namespace ProfilesService
                    options.RequireHttpsMetadata = false;
                    options.Audience = "gatewayAPI";
                });
+
 
             builder.Services.AddCors(options =>
             {

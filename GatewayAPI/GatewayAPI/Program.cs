@@ -46,6 +46,7 @@ namespace GatewayAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseOcelot();
 
 

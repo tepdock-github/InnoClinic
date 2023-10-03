@@ -1,4 +1,4 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["AuthorizationService/AuthorizationService.csproj", "AuthorizationService/"]
 COPY ["Authorization.Data/Authorization.Data.csproj", "Authorization.Data/"]
 COPY ["Authorization.Domain/Authorization.Domain.csproj", "Authorization.Domain/"]
+COPY ["EmailService/EmailService.csproj", "EmailService/"]
 RUN dotnet restore "AuthorizationService/AuthorizationService.csproj"
 COPY . .
 WORKDIR "/src/AuthorizationService"
